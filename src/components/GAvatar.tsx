@@ -83,7 +83,7 @@ export default defineComponent({
       [`${name}--${props.color}`]: !!props.color
     }
     const style = {
-      'background-color': props.background || defaultBackground,
+      'background-color': !props.color && (props.background || defaultBackground),
       'min-height': numberToPxOrString(props.size),
       'max-height': numberToPxOrString(props.size),
       height: numberToPxOrString(props.size),
