@@ -1,1 +1,1 @@
-export { default as GApp } from './GApp'
+export { default as GAvatar } from './GAvatar'
