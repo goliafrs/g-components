@@ -1,6 +1,6 @@
 import { defineComponent } from 'vue'
 
-import { numberToPxOrString } from '@/utils'
+import { numberToPxOrString } from '../utils'
 
 const name = 'g-avatar'
 
