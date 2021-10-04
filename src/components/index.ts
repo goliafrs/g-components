@@ -1,1 +1,1 @@
-export * from './GApp'
+export { default as GApp } from './GApp'
