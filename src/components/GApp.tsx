@@ -19,7 +19,7 @@ export default defineComponent({
     return h(
       'div',
       {
-        attrs: { id: 'app' },
+        id: 'app',
         class: {
           [`${name}`]: true,
           [`${name}--${this.theme}`]: true
