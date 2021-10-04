@@ -1,4 +1,4 @@
-import { defineComponent } from 'vue'
+import { defineComponent, h } from 'vue'
 
 const name = 'g-app'
 
@@ -16,14 +16,16 @@ export default defineComponent({
   },
 
   render() {
-    return <div
-      id='app'
-      class={{
-        [`${name}`]: true,
-        [`${name}--${this.theme}`]: true
-      }}
-    >
-      {this.$slots.default ? this.$slots.default() : undefined}
-    </div>
+    return h(
+      'div',
+      {
+        attrs: { id: 'app' },
+        class: {
+          [`${name}`]: true,
+          [`${name}--${this.theme}`]: true
+        }
+      },
+      { default: () => this.$slots.default ? this.$slots.default() : undefined }
+    )
   }
 })
