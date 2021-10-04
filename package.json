@@ -1,0 +1,28 @@
+{
+  "name": "g-components",
+  "version": "1.0.0",
+  "description": "Набор компонентов на Vue 2 в стиле Google Material.",
+  "main": "./src/index.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/GoliafRS/g-components.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/GoliafRS/g-components/issues"
+  },
+  "homepage": "https://github.com/GoliafRS/g-components#readme",
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^4.31.1",
+    "@typescript-eslint/parser": "^4.31.1",
+    "@vue/babel-plugin-jsx": "^1.0.7",
+    "eslint": "^7.32.0",
+    "eslint-plugin-vue": "^7.18.0",
+    "typescript": "^4.4.3",
+    "vue-eslint-parser": "^7.11.0"
+  }
+}
