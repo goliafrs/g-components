@@ -22,8 +22,7 @@ export default defineComponent({
         [`${name}`]: true,
         [`${name}--${props.theme}`]: true
       }}
-    >
-      {slots}
-    </div>
+      v-slots={{ default: () => slots.default ? slots.default() : slots.default }}
+    ></div>
   }
 })
