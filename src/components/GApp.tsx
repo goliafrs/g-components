@@ -1,6 +1,6 @@
 import { defineComponent } from 'vue'
 
-const name = 'app'
+const name = 'g-app'
 
 export default defineComponent({
   name,
@@ -17,10 +17,10 @@ export default defineComponent({
 
   setup(props, { slots }) {
     return () => <div
-      id={name}
+      id='app'
       class={{
-        [`g-${name}`]: true,
-        [`g-${name}--${props.theme}`]: true
+        [`${name}`]: true,
+        [`${name}--${props.theme}`]: true
       }}
     >
       {slots}
