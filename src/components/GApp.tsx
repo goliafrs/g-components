@@ -15,15 +15,15 @@ export default defineComponent({
     }
   },
 
-  setup(props, { slots }) {
-    return () => <div
+  render() {
+    return <div
       id='app'
       class={{
         [`${name}`]: true,
-        [`${name}--${props.theme}`]: true
+        [`${name}--${this.theme}`]: true
       }}
     >
-      {slots.default ? slots.default() : undefined}
+      {this.$slots.default ? this.$slots.default() : undefined}
     </div>
   }
 })
