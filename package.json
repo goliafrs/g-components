@@ -1,7 +1,7 @@
 {
   "name": "g-components",
   "version": "1.0.0",
-  "description": "Набор компонентов на Vue 2 в стиле Google Material.",
+  "description": "Набор компонентов.",
   "main": "./src/index.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
