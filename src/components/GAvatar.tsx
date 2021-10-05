@@ -2,20 +2,28 @@ import { defineComponent } from 'vue'
 
 import { numberToPxOrString } from '../utils'
 
-const name = 'g-avatar'
+export const name = 'g-avatar'
 
-const colors = [
-  '#E53935',
-  '#D81B60',
+export const colors = [
+  '#F44336',
+  '#E91E63',
   '#9C27B0',
-  '#5E35B1',
-  '#43A047',
-  '#E65100',
-  '#F4511E',
-  '#FF3D00',
-  '#F50057',
-  '#D500F9',
-  '#FF1744'
+  '#673AB7',
+  '#3F51B5',
+  '#2196F3',
+  '#03A9F4',
+  '#00BCD4',
+  '#009688',
+  '#4CAF50',
+  '#8BC34A',
+  '#CDDC39',
+  '#FFEB3B',
+  '#FFC107',
+  '#FF9800',
+  '#FF5722',
+  '#795548',
+  '#9E9E9E',
+  '#607D8B'
 ]
 
 export default defineComponent({
