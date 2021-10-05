@@ -1,2 +1,3 @@
 # g-components
-Набор компонентов на Vue 2 в стиле Google Material.
+
+Vue 3 component library.

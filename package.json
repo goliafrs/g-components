@@ -1,7 +1,7 @@
 {
   "name": "g-components",
   "version": "1.0.0",
-  "description": "Набор компонентов.",
+  "description": "Vue 3 component library.",
   "main": "src/index.ts",
   "scripts": {
     "clean": "rm -rf dist",
