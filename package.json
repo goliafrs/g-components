@@ -2,10 +2,11 @@
   "name": "g-components",
   "version": "1.0.0",
   "description": "Набор компонентов.",
-  "main": "./src/index.ts",
+  "main": "./dist/index.js",
   "scripts": {
-    "clean": "rimraf src node_modules tsconfig.json .eslintrc.js .gitignore",
-    "preinstall": "tsc -b --force"
+    "clean": "rimraf src tsconfig.json .eslintrc.js",
+    "preinstall": "tsc -b --force",
+    "postinstall": "npm run clean"
   },
   "repository": {
     "type": "git",
