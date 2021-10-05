@@ -4,7 +4,7 @@
   "description": "Набор компонентов.",
   "main": "./dist/index.js",
   "scripts": {
-    "clean": "rimraf src tsconfig.json .eslintrc.js",
+    "clean": "rimraf ./src ./tsconfig.json ./.eslintrc.js",
     "preinstall": "tsc -b --force && npm run clean"
   },
   "repository": {
