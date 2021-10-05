@@ -37,7 +37,7 @@ export default defineComponent({
   },
 
   setup(props) {
-    const clasess = {
+    const classes = {
       [`${name}`]: true,
 
       [`${name}--left`]: props.left,
@@ -51,6 +51,6 @@ export default defineComponent({
       [`fz--${props.size}`]: true
     }
 
-    return () => <i class={clasess}></i>
+    return () => <i class={classes}></i>
   }
 })

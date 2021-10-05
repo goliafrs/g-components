@@ -11,7 +11,22 @@ export function numberToPxOrString(value: string | number): string {
   return value + 'px'
 }
 
+export function normalizedValue(value: string | number): number {
+  value = parseFloat(value + '')
+
+  if (isNaN(value) || value < 0) {
+    value = 0
+  }
+
+  if (value > 100) {
+    value = 100
+  }
+
+  return value
+}
+
 export default {
   isHEX,
-  numberToPxOrString
+  numberToPxOrString,
+  normalizedValue
 }
