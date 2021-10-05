@@ -6,7 +6,7 @@
   "scripts": {
     "clean": "rimraf src tsconfig.json .eslintrc.js",
     "preinstall": "tsc -b --force",
-    "postinstall": "npm run clean"
+    "postpack": "npm run clean"
   },
   "repository": {
     "type": "git",
