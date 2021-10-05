@@ -1,5 +1,7 @@
 import { defineComponent } from 'vue'
 
+import GIcon from './GIcon'
+
 import { numberToPxOrString } from '../utils'
 
 export const name = 'g-avatar'
