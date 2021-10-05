@@ -2,7 +2,7 @@
   "compilerOptions": {
     "strict": true,
     "sourceMap": false,
-    "jsx": "react",
+    "jsx": "preserve",
     "target": "esnext",
     "module": "esnext",
     "lib": ["esnext", "dom"],
