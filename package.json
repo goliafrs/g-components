@@ -21,6 +21,7 @@
   },
   "homepage": "https://github.com/GoliafRS/g-components#readme",
   "devDependencies": {
+    "@babel/types": "^7.15.6",
     "@typescript-eslint/eslint-plugin": "^4.31.1",
     "@typescript-eslint/parser": "^4.31.1",
     "eslint": "^7.32.0",
