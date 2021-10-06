@@ -69,6 +69,11 @@ export default defineComponent({
     tabindex: {
       type: [ String, Number ],
       default: undefined
+    },
+
+    onClick: {
+      type: Function as PropType<(e: MouseEvent) => void>,
+      default: () => undefined
     }
   },
 
@@ -126,6 +131,8 @@ export default defineComponent({
       type={props.type}
 
       class={clasess}
+
+      onClick={props.onClick}
     >
       <div v-if={props.loading} class={[ `${name}__loading` ]}>
         <GProgress indeterminate={true} size={24}></GProgress>

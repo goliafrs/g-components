@@ -108,7 +108,7 @@ export default defineComponent({
       } else if (props.icon) {
         return <GIcon value={props.icon} color={props.color} size={props.fontSize}></GIcon>
       } else if (firstChar) {
-        return <span class={`fz--${props.fontSize}`}>{firstChar}</span>
+        return <span style={`font-size: ${props.fontSize}px`}>{firstChar}</span>
       }
 
       return { default: () => slots.default ? slots.default() : undefined }
