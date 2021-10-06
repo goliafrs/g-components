@@ -1,4 +1,4 @@
-import { StyleValue, defineComponent } from 'vue'
+import { StyleValue, defineComponent, h } from 'vue'
 
 import { normalizedValue, numberToPxOrString } from '../../utils'
 

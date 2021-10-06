@@ -45,12 +45,6 @@ module.exports = {
     'dot-notation': 'error',
     'no-var': 'error',
     'no-extra-parens': 'error',
-    'no-unused-vars': [
-      'error',
-      {
-        args: 'after-used'
-      }
-    ],
     indent: [
       'error',
       2,
@@ -246,6 +240,7 @@ module.exports = {
       }
     ],
     'no-debugger': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
-    '@typescript-eslint/no-explicit-any': 'off'
+    '@typescript-eslint/no-explicit-any': 'off',
+    '@typescript-eslint/no-unused-vars': 'off'
   }
 }

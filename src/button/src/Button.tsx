@@ -1,4 +1,4 @@
-import { PropType, defineComponent } from 'vue'
+import { PropType, defineComponent, h } from 'vue'
 
 import { GIcon, GProgress } from 'g-components'
 
