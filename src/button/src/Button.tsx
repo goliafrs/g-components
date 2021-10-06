@@ -1,7 +1,6 @@
 import { PropType, defineComponent } from 'vue'
 
-import GIcon from './GIcon'
-import GProgress from './GProgress'
+import { GIcon, GProgress } from 'g-components'
 
 export const name = 'g-button'
 

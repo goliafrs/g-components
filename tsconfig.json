@@ -1,5 +1,9 @@
 {
   "compilerOptions": {
+    "paths": {
+      "@/*": ["./src/*"],
+      "g-components": ["./src"],
+    },
     "strict": true,
     "sourceMap": false,
     "jsx": "preserve",
