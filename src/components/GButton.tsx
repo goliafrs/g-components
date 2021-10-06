@@ -1,6 +1,7 @@
-import { defineComponent } from 'vue'
+import { PropType, defineComponent } from 'vue'
 
 import GIcon from './GIcon'
+import GProgress from './GProgress'
 
 export const name = 'g-button'
 
@@ -62,7 +63,7 @@ export default defineComponent({
     },
 
     type: {
-      type: String,
+      type: String as PropType<'button' | 'submit' | 'reset'>,
       default: 'button'
     },
 
