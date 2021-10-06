@@ -72,13 +72,13 @@ export default defineComponent({
     },
 
     onClick: {
-      type: Function as PropType<(e: MouseEvent) => void>,
+      type: Function as PropType<(event: MouseEvent) => void>,
       default: () => undefined
     }
   },
 
   setup(props, { slots }) {
-    const clasess = {
+    const classes = {
       [`${name}`]: true,
 
       [`${name}--small`]: props.small,
@@ -130,7 +130,7 @@ export default defineComponent({
       name={props.name}
       type={props.type}
 
-      class={clasess}
+      class={classes}
 
       onClick={props.onClick}
 
