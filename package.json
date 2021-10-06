@@ -7,7 +7,6 @@
   "scripts": {
     "clean": "rm -rf dist",
     "build": "npm run clean && tsc -b --force tsconfig.esm.json && tsc -b --force tsconfig.cjs.json",
-    "release": "npm run build",
     "prepare": "npm run build"
   },
   "repository": {
