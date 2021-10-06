@@ -1,6 +1,6 @@
 import { StyleValue, defineComponent } from 'vue'
 
-import { normalizedValue, numberToPxOrString } from '@/utils'
+import { normalizedValue, numberToPxOrString } from '../../utils'
 
 export const name = 'g-progress'
 
