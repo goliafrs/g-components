@@ -133,6 +133,8 @@ export default defineComponent({
       class={clasess}
 
       onClick={props.onClick}
+
+      v-slots={slots}
     >
       <div v-if={props.loading} class={[ `${name}__loading` ]}>
         <GProgress indeterminate={true} size={24}></GProgress>
