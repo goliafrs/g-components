@@ -3,7 +3,7 @@
   "exclude": ["./**/*.spec.*"],
   "compilerOptions": {
     "rootDir": ".",
-    "outDir": "../dist/es",
+    "outDir": "../dist/esm",
     "module": "ES6",
     "target": "ES6"
   }
