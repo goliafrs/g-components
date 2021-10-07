@@ -103,28 +103,28 @@ export default defineComponent({
 
     const size: number = props.small ? 18 : props.large ? 26 : props.fab ? 30 : 22
 
-    const renderLoading = () => {
+    const renderloading = () => {
       if (props.loading) {
         return <div class={[ `${name}__loading` ]}>
           <GProgress indeterminate={true} size={24}></GProgress>
         </div>
       }
     }
-    const renderIcon = () => {
+    const rendericon = () => {
       if (props.icon) {
         return <div class={[ `${name}__icon` ]}>
           <GIcon value={props.icon} size={size} />
         </div>
       }
     }
-    const renderLabel = () => {
+    const renderlabel = () => {
       if (props.label) {
         return <div class={[ `${name}__content` ]}>{props.label}</div>
       } else if (slots.default) {
         return { default: slots.default() }
       }
     }
-    const renderDialog = () => {
+    const renderdialog = () => {
       if (slots.dialog) {
         return { dialog: slots.dialog() }
       }
@@ -143,10 +143,10 @@ export default defineComponent({
 
       onClick={props.onClick}
     >
-      <renderLoading />
-      <renderIcon />
-      <renderLabel />
-      <renderDialog />
+      <renderloading />
+      <rendericon />
+      <renderlabel />
+      <renderdialog />
     </button>
   }
 })
