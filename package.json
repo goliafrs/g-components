@@ -6,8 +6,8 @@
   "module": "dist/esm/index.js",
   "scripts": {
     "clean": "rm -rf dist",
-    "sass": "npx sass src/_styles/main.scss dist/styles/main.css --style=compressed --no-source-map",
-    "tail": "npx tailwindcss --input dist/styles/main.css --output dist/styles/main.css --minify",
+    "sass": "npx sass src/_styles/main.scss dist/styles/main.css --no-source-map",
+    "tail": "npx tailwindcss --input dist/styles/main.css --output dist/styles/main.css",
     "build": "npm run clean && npm run sass && tsc -b --force tsconfig.esm.json && tsc -b --force tsconfig.cjs.json",
     "prepare": "npm run build"
   },
