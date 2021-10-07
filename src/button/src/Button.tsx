@@ -34,14 +34,6 @@ export default defineComponent({
       type: String,
       default: undefined
     },
-    prefix: {
-      type: [ String, Number ],
-      default: undefined
-    },
-    suffix: {
-      type: [ String, Number ],
-      default: undefined
-    },
 
     fixed: Boolean,
     absolute: Boolean,
@@ -87,13 +79,10 @@ export default defineComponent({
       [`${name}--fab`]: props.fab,
       [`${name}--flat`]: props.flat,
       [`${name}--block`]: props.block,
-      [`${name}--round`]: props.round ? true : (!!props.icon || !!props.prefix || !!props.suffix) && !props.label,
+      [`${name}--round`]: props.round ? true : !!props.icon && !props.label,
       [`${name}--rounded`]: props.rounded,
       [`${name}--outline`]: props.outline,
       [`${name}--depressed`]: props.depressed,
-
-      [`${name}--prefix`]: props.prefix || props.icon,
-      [`${name}--suffix`]: props.suffix,
 
       [`${name}--toolbar`]: props.toolbar,
 
@@ -111,15 +100,8 @@ export default defineComponent({
       [`${name}--${props.type}`]: !!props.type,
       [`${name}--${props.color}`]: !!props.color
     }
-    // const renderIconHolder = (icon: string) => {
-    //   if (props.icon) {
-    //     const size = props.small ? 18 : props.large ? 26 : props.fab ? 30 : 22
 
-    //     return <div class={[ `${name}__icon` ]}>
-    //       <GIcon value={icon} size={size} />
-    //     </div>
-    //   }
-    // }
+    const size = props.small ? 18 : props.large ? 26 : props.fab ? 30 : 22
 
     return () => <button
       tabindex={props.tabindex}
@@ -140,9 +122,11 @@ export default defineComponent({
         <GProgress indeterminate={true} size={24}></GProgress>
       </div>
 
-      {/* <renderIconHolder icon={props.prefix || props.icon} /> */}
+      <div class={[ `${name}__icon` ]} v-if={props.icon}>
+        <GIcon value={props.icon} size={size} />
+      </div>
+
       <div v-if={props.label}>{props.label}</div>
-      {/* <renderIconHolder icon={props.suffix} /> */}
     </button>
   }
 })
