@@ -120,9 +120,14 @@ export default defineComponent({
     const renderLabel = () => {
       if (props.label) {
         return <div class={[ `${name}__content` ]}>{props.label}</div>
+      } else if (slots.default) {
+        return { default: slots.default() }
       }
-
-      return { default: slots.default ? slots.default() : undefined }
+    }
+    const renderDialog = () => {
+      if (slots.dialog) {
+        return { dialog: slots.dialog() }
+      }
     }
 
     return () => <button
@@ -141,8 +146,7 @@ export default defineComponent({
       <renderLoading />
       <renderIcon />
       <renderLabel />
-
-      {{ dialog: slots.dialog ? slots.dialog() : undefined }}
+      <renderDialog />
     </button>
   }
 })
