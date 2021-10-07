@@ -111,15 +111,15 @@ export default defineComponent({
       [`${name}--${props.type}`]: !!props.type,
       [`${name}--${props.color}`]: !!props.color
     }
-    const renderIconHolder = (icon: string) => {
-      if (props.icon) {
-        const size = props.small ? 18 : props.large ? 26 : props.fab ? 30 : 22
+    // const renderIconHolder = (icon: string) => {
+    //   if (props.icon) {
+    //     const size = props.small ? 18 : props.large ? 26 : props.fab ? 30 : 22
 
-        return <div class={[ `${name}__icon` ]}>
-          <GIcon value={icon} size={size} />
-        </div>
-      }
-    }
+    //     return <div class={[ `${name}__icon` ]}>
+    //       <GIcon value={icon} size={size} />
+    //     </div>
+    //   }
+    // }
 
     return () => <button
       tabindex={props.tabindex}
@@ -140,11 +140,9 @@ export default defineComponent({
         <GProgress indeterminate={true} size={24}></GProgress>
       </div>
 
-      <renderIconHolder icon={props.prefix || props.icon} />
+      {/* <renderIconHolder icon={props.prefix || props.icon} /> */}
       <div v-if={props.label}>{props.label}</div>
-      <renderIconHolder icon={props.suffix} />
-
-      {{ dialog: () => slots.dialog ? slots.dialog() : undefined }}
+      {/* <renderIconHolder icon={props.suffix} /> */}
     </button>
   }
 })
