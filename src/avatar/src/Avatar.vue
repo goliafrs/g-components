@@ -1,23 +1,8 @@
 <template>
-  <div
-    :class="classes"
-    :style="style"
-  >
-    <img
-      v-if="src"
-      :src="src"
-      :alt="title"
-    >
-    <GIcon
-      v-else-if="icon"
-      :value="icon"
-      :color="color"
-      :size="fontSize"
-    />
-    <span
-      v-else-if="firstChar"
-      :style="`font-size: ${fontSize}px`"
-    >{{ firstChar }}</span>
+  <div :class="classes" :style="style">
+    <img v-if="src" :src="src" :alt="title">
+    <GIcon v-else-if="icon" :value="icon" :color="color" :size="fontSize" />
+    <span v-else-if="firstChar" :style="`font-size: ${fontSize}px`">{{ firstChar }}</span>
   </div>
 </template>
 

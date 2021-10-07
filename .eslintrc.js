@@ -241,6 +241,7 @@ module.exports = {
     ],
     'no-debugger': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
     '@typescript-eslint/no-explicit-any': 'off',
-    '@typescript-eslint/no-unused-vars': 'off'
+    '@typescript-eslint/no-unused-vars': 'off',
+    'vue/max-attributes-per-line': [ 'error', { singleline: 5 } ]
   }
 }
