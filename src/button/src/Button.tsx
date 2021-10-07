@@ -125,31 +125,24 @@ export default defineComponent({
       return { default: slots.default ? slots.default() : undefined }
     }
 
-    return {
-      classes,
-      renderLoading,
-      renderIcon,
-      renderLabel
-    }
-  },
+    return () => <button
+      tabindex={props.tabindex}
 
-  render() {
-    return <button
-      tabindex={this.tabindex}
+      disabled={props.disabled}
+      autofocus={props.autofocus}
 
-      disabled={this.disabled}
-      autofocus={this.autofocus}
+      name={props.name}
+      type={props.type}
 
-      name={this.name}
-      type={this.type}
+      class={classes}
 
-      class={this.classes}
-
-      onClick={this.onClick}
+      onClick={props.onClick}
     >
       <renderLoading />
       <renderIcon />
       <renderLabel />
+
+      {{ dialog: slots.dialog ? slots.dialog() : undefined }}
     </button>
   }
 })
