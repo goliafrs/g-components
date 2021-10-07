@@ -132,6 +132,7 @@ export default defineComponent({
 
     return {
       classes,
+      size,
 
       renderLoading,
       renderIcon,
@@ -155,10 +156,10 @@ export default defineComponent({
 
         onClick={this.onClick}
       >
-        <renderLoading />
-        <renderIcon />
-        <renderLabel />
-        <renderDialog />
+        {this.loading ? <div class={[ `${name}__loading` ]}><GProgress indeterminate={true} size={24}></GProgress></div> : null}
+        {this.icon ? <div class={[ `${name}__icon` ]}><GIcon value={this.icon} size={this.size} /></div> : null}
+        {this.label ? <div class={[ `${name}__content` ]}>{this.label}</div> : null}
+        {this.$slots}
       </button>
     )
   }
