@@ -103,41 +103,41 @@ export default defineComponent({
 
     const size: number = props.small ? 18 : props.large ? 26 : props.fab ? 30 : 22
 
-    const renderLoading = () => {
-      if (props.loading) {
-        return <div class={[ `${name}__loading` ]}>
-          <GProgress indeterminate={true} size={24}></GProgress>
-        </div>
-      }
-    }
-    const renderIcon = () => {
-      if (props.icon) {
-        return <div class={[ `${name}__icon` ]}>
-          <GIcon value={props.icon} size={size} />
-        </div>
-      }
-    }
-    const renderLabel = () => {
-      if (props.label) {
-        return <div class={[ `${name}__content` ]}>{props.label}</div>
-      } else if (slots.default) {
-        return { default: slots.default() }
-      }
-    }
-    const renderDialog = () => {
-      if (slots.dialog) {
-        return { dialog: slots.dialog() }
-      }
-    }
+    // const renderLoading = () => {
+    //   if (props.loading) {
+    //     return <div class={[ `${name}__loading` ]}>
+    //       <GProgress indeterminate={true} size={24}></GProgress>
+    //     </div>
+    //   }
+    // }
+    // const renderIcon = () => {
+    //   if (props.icon) {
+    //     return <div class={[ `${name}__icon` ]}>
+    //       <GIcon value={props.icon} size={size} />
+    //     </div>
+    //   }
+    // }
+    // const renderLabel = () => {
+    //   if (props.label) {
+    //     return <div class={[ `${name}__content` ]}>{props.label}</div>
+    //   } else if (slots.default) {
+    //     return { default: slots.default() }
+    //   }
+    // }
+    // const renderDialog = () => {
+    //   if (slots.dialog) {
+    //     return { dialog: slots.dialog() }
+    //   }
+    // }
 
     return {
       classes,
-      size,
+      size
 
-      renderLoading,
-      renderIcon,
-      renderLabel,
-      renderDialog
+      // renderLoading,
+      // renderIcon,
+      // renderLabel,
+      // renderDialog
     }
   },
 
@@ -158,8 +158,8 @@ export default defineComponent({
       >
         {this.loading ? <div class={[ `${name}__loading` ]}><GProgress indeterminate={true} size={24}></GProgress></div> : null}
         {this.icon ? <div class={[ `${name}__icon` ]}><GIcon value={this.icon} size={this.size} /></div> : null}
-        {this.label ? <div class={[ `${name}__content` ]}>{this.label}</div> : null}
-        {this.$slots}
+        {this.label ? <div class={[ `${name}__content` ]}>{this.label}</div> : this.$slots.default ? this.$slots.default() : null}
+        {this.$slots.dialog ? this.$slots.dialog() : null}
       </button>
     )
   }
