@@ -103,6 +103,26 @@ export default defineComponent({
 
     const size: number = props.small ? 18 : props.large ? 26 : props.fab ? 30 : 22
 
+    const renderLoading = () => {
+      if (props.loading) {
+        return <div class={[ `${name}__loading` ]}>
+          <GProgress indeterminate={true} size={24}></GProgress>
+        </div>
+      }
+    }
+    const renderIcon = () => {
+      if (props.icon) {
+        return <div class={[ `${name}__icon` ]}>
+          <GIcon value={props.icon} size={size} />
+        </div>
+      }
+    }
+    const renderLabel = () => {
+      if (props.label) {
+        return <div class={[ `${name}__content` ]}>{props.label}</div>
+      }
+    }
+
     return () => <button
       tabindex={props.tabindex}
 
@@ -118,15 +138,9 @@ export default defineComponent({
 
       v-slots={slots}
     >
-      <div v-if={props.loading} class={[ `${name}__loading` ]}>
-        <GProgress indeterminate={true} size={24}></GProgress>
-      </div>
-
-      <div v-if={props.icon} class={[ `${name}__icon` ]}>
-        <GIcon value={props.icon} size={size} />
-      </div>
-
-      <div v-if={props.label}>{props.label}</div>
+      <renderLoading />
+      <renderIcon />
+      <renderLabel />
     </button>
   }
 })
