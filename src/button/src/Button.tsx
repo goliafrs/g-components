@@ -121,6 +121,8 @@ export default defineComponent({
       if (props.label) {
         return <div class={[ `${name}__content` ]}>{props.label}</div>
       }
+
+      return { default: slots.default ? slots.default() : undefined }
     }
 
     return () => <button
@@ -135,12 +137,10 @@ export default defineComponent({
       class={classes}
 
       onClick={props.onClick}
-
-      v-slots={slots}
     >
-      <renderLoading />
-      <renderIcon />
-      <renderLabel />
+      {renderLoading}
+      {renderIcon}
+      {renderLabel}
     </button>
   }
 })
