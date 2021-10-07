@@ -1,3 +1,3 @@
-import './_styles/main.css'
+import '../styles/main.css'
 
 export * from './components'

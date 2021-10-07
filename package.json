@@ -6,7 +6,7 @@
   "module": "dist/esm/index.js",
   "scripts": {
     "clean": "rm -rf dist",
-    "sass": "npx sass src/_styles/main.scss dist/_styles/main.css --no-source-map",
+    "sass": "npx tailwindcss src/_styles/main.scss dist/styles/main.css -m",
     "build": "npm run clean && npm run sass && tsc -b --force tsconfig.esm.json && tsc -b --force tsconfig.cjs.json",
     "prepare": "npm run build"
   },
