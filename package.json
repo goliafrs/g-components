@@ -6,7 +6,8 @@
   "module": "dist/esm/index.js",
   "scripts": {
     "clean": "rm -rf dist",
-    "build": "npm run clean && tsc -b --force tsconfig.esm.json && tsc -b --force tsconfig.cjs.json",
+    "sass": "npx sass src/_styles/main.scss dist/_styles/main.css --no-source-map",
+    "build": "npm run clean && npm run sass && tsc -b --force tsconfig.esm.json && tsc -b --force tsconfig.cjs.json",
     "prepare": "npm run build"
   },
   "repository": {
@@ -27,6 +28,7 @@
     "eslint": "^7.32.0",
     "eslint-plugin-vue": "^7.18.0",
     "postcss": "^8.3.9",
+    "sass": "^1.42.1",
     "tailwindcss": "^2.2.16",
     "typescript": "^4.4.3",
     "vue": "^3.2.12",
