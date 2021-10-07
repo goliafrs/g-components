@@ -1,3 +1,3 @@
-import 'dist/_styles/main.css'
+import './_styles/main.css'
 
 export * from './components'
