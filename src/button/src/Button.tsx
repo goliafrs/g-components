@@ -103,50 +103,63 @@ export default defineComponent({
 
     const size: number = props.small ? 18 : props.large ? 26 : props.fab ? 30 : 22
 
-    const renderloading = () => {
+    const renderLoading = () => {
       if (props.loading) {
         return <div class={[ `${name}__loading` ]}>
           <GProgress indeterminate={true} size={24}></GProgress>
         </div>
       }
     }
-    const rendericon = () => {
+    const renderIcon = () => {
       if (props.icon) {
         return <div class={[ `${name}__icon` ]}>
           <GIcon value={props.icon} size={size} />
         </div>
       }
     }
-    const renderlabel = () => {
+    const renderLabel = () => {
       if (props.label) {
         return <div class={[ `${name}__content` ]}>{props.label}</div>
       } else if (slots.default) {
         return { default: slots.default() }
       }
     }
-    const renderdialog = () => {
+    const renderDialog = () => {
       if (slots.dialog) {
         return { dialog: slots.dialog() }
       }
     }
 
-    return () => <button
-      tabindex={props.tabindex}
+    return {
+      classes,
 
-      disabled={props.disabled}
-      autofocus={props.autofocus}
+      renderLoading,
+      renderIcon,
+      renderLabel,
+      renderDialog
+    }
+  },
 
-      name={props.name}
-      type={props.type}
+  render() {
+    return (
+      <button
+        tabindex={this.tabindex}
 
-      class={classes}
+        disabled={this.disabled}
+        autofocus={this.autofocus}
 
-      onClick={props.onClick}
-    >
-      <renderloading />
-      <rendericon />
-      <renderlabel />
-      <renderdialog />
-    </button>
+        name={this.name}
+        type={this.type}
+
+        class={this.classes}
+
+        onClick={this.onClick}
+      >
+        <renderLoading />
+        <renderIcon />
+        <renderLabel />
+        <renderDialog />
+      </button>
+    )
   }
 })
