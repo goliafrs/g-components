@@ -130,6 +130,25 @@ export default defineComponent({
     //   }
     // }
 
+    // return () => <button
+    //   tabindex={props.tabindex}
+
+    //   disabled={props.disabled}
+    //   autofocus={props.autofocus}
+
+    //   name={props.name}
+    //   type={props.type}
+
+    //   class={classes}
+
+    //   onClick={props.onClick}
+    // >
+    //   <renderLoading />
+    //   <renderIcon />
+    //   <renderLabel />
+    //   <renderDialog />
+    // </button>
+
     return {
       classes,
       size
