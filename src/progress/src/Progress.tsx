@@ -77,38 +77,11 @@ export default defineComponent({
       }
     }
 
-    const renderCircular = () => {
-      if (props.type === 'circular') {
-        const radius = 20
-        const viewBoxSize = radius / (1 - Number(props.width) / +props.size)
-        const viewBoxSizeDouble = viewBoxSize * 2
-        const viewBox = `${viewBoxSize} ${viewBoxSize} ${viewBoxSizeDouble} ${viewBoxSizeDouble}`
-        const circumference = 2 * Math.PI * radius
-
-        return () => <svg xmlns='http://www.w3.org/2000/svg' viewBox={viewBox} style={{ transform: `rotate(${Number(props.rotate)}deg)` }}>
-          <circle
-            fill='transparent'
-            cx={viewBoxSizeDouble}
-            cy={viewBoxSizeDouble}
-            r={radius}
-            stroke-width={Number(props.width) / +props.size * viewBoxSizeDouble}
-            stroke-dasharray={Math.round(circumference * 1000) / 1000}
-            stroke-dashoffset={(100 - normalizedValue(props.value || 0)) / 100 * circumference + 'px'}
-          ></circle>
-        </svg>
-      }
-    }
-    const renderLinear = () => {
-      if (props.type === 'linear') {
-        return () => <div
-          class={{
-            [`${name}-linear__bar`]: true,
-            [`${name}-linear__bar--determinate`]: props.value
-          }}
-          style={{ width: props.indeterminate ? `${props.value || 0}%` : undefined }}
-        ></div>
-      }
-    }
+    const radius = 20
+    const viewBoxSize = radius / (1 - Number(props.width) / +props.size)
+    const viewBoxSizeDouble = viewBoxSize * 2
+    const viewBox = `${viewBoxSize} ${viewBoxSize} ${viewBoxSizeDouble} ${viewBoxSizeDouble}`
+    const circumference = 2 * Math.PI * radius
 
     return () => <div
       role='progressbar'
@@ -120,8 +93,31 @@ export default defineComponent({
       class={classes}
       style={style}
     >
-      <renderCircular />
-      <renderLinear />
+      <svg
+        v-if={props.type === 'circular'}
+        xmlns='http://www.w3.org/2000/svg'
+        viewBox={viewBox}
+        style={{ transform: `rotate(${Number(props.rotate)}deg)` }}
+      >
+        <circle
+          fill='transparent'
+          cx={viewBoxSizeDouble}
+          cy={viewBoxSizeDouble}
+          r={radius}
+          stroke-width={Number(props.width) / +props.size * viewBoxSizeDouble}
+          stroke-dasharray={Math.round(circumference * 1000) / 1000}
+          stroke-dashoffset={(100 - normalizedValue(props.value || 0)) / 100 * circumference + 'px'}
+        ></circle>
+      </svg>
+
+      <div
+        v-if={props.type === 'linear'}
+        class={{
+          [`${name}-linear__bar`]: true,
+          [`${name}-linear__bar--determinate`]: props.value
+        }}
+        style={{ width: props.indeterminate ? `${props.value || 0}%` : undefined }}
+      ></div>
 
       <div v-if={props.info} class={[ `${name}__info` ]}>{props.value}</div>
     </div>

@@ -122,7 +122,7 @@ export default defineComponent({
         <GProgress indeterminate={true} size={24}></GProgress>
       </div>
 
-      <div class={[ `${name}__icon` ]} v-if={props.icon}>
+      <div v-if={props.icon} class={[ `${name}__icon` ]}>
         <GIcon value={props.icon} size={size} />
       </div>
 

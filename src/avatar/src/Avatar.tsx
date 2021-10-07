@@ -102,20 +102,10 @@ export default defineComponent({
       width: numberToPxOrString(props.size)
     }
 
-    const renderContent = () => {
-      if (props.src) {
-        return <img src={props.src} alt={props.title} />
-      } else if (props.icon) {
-        return <GIcon value={props.icon} color={props.color} size={props.fontSize}></GIcon>
-      } else if (firstChar) {
-        return <span style={`font-size: ${props.fontSize}px`}>{firstChar}</span>
-      }
-
-      return { default: () => slots.default ? slots.default() : undefined }
-    }
-
-    return () => <div class={classes} style={style}>
-      <renderContent />
+    return () => <div class={classes} style={style} v-slots={slots}>
+      <img v-if={props.src} src={props.src} alt={props.title} />
+      <GIcon v-else-if={props.icon} value={props.icon} color={props.color} size={props.fontSize}></GIcon>
+      <span v-else-if={firstChar} style={`font-size: ${props.fontSize}px`}>{firstChar}</span>
     </div>
   }
 })
