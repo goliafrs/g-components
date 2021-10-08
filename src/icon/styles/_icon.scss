@@ -10,23 +10,32 @@
   &-icon {
     @include colors;
 
-    font-family: 'MaterialIcons';
+    font-family: 'Material Icons';
     font-weight: normal;
     font-style: normal;
     font-size: 24px;
-    font-display: block;
+
     font-feature-settings: 'liga';
+
     color: currentColor;
+
     text-rendering: optimizeLegibility;
     text-transform: none;
+
     line-height: 1;
     letter-spacing: normal;
+
     word-wrap: normal;
     white-space: nowrap;
+
     direction: ltr;
+
     display: inline-flex;
     align-items: center;
     justify-content: center;
+    
     user-select: none;
+
+    -webkit-font-smoothing: antialiased;
   }
 }
