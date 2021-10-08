@@ -1,4 +1,4 @@
-import { computed, defineComponent, getCurrentInstance, h, ref, watch } from 'vue'
+import { computed, defineComponent, getCurrentInstance, h, reactive, ref, watch } from 'vue'
 
 export const name = 'g-checkbox'
 
@@ -52,12 +52,12 @@ export default defineComponent({
       }
     })
 
-    const classes = {
+    const classes = reactive({
       [`${name}`]: true,
 
       [`${name}--checked`]: checked,
       [`${name}--disabled`]: props.disabled
-    }
+    })
 
     const clickHandler = () => {
       if (!props.disabled) {
