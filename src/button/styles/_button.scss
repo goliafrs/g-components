@@ -3,6 +3,12 @@
     &--#{$name} {
       color: var(--#{$name});
 
+      & > .g-button__icon,
+      & > .g-button__content,
+      & > .g-button__loading {
+        color: var(--white);
+      }
+
       &.g-button--outline,
       &.g-button--flat {
 
