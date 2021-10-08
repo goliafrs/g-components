@@ -27,9 +27,7 @@
 </template>
 
 <script lang="ts">
-import { PropType, defineComponent, h } from 'vue'
-
-import { GIcon, GProgress } from 'g-components'
+import { PropType, computed, defineComponent, h } from 'vue'
 
 export const name = 'g-button'
 
@@ -130,11 +128,9 @@ export default defineComponent({
       [`${name}--${props.color}`]: !!props.color
     }
 
-    const size: number = props.small ? 18 : props.large ? 26 : props.fab ? 30 : 22
-
     return {
       classes,
-      size
+      size: computed(() => props.small ? 18 : props.large ? 26 : props.fab ? 30 : 22)
     }
   }
 })

@@ -1,4 +1,4 @@
-import { PropType, defineComponent, h } from 'vue'
+import { PropType, computed, defineComponent, h } from 'vue'
 
 import { GIcon, GProgress } from 'g-components'
 
@@ -101,85 +101,52 @@ export default defineComponent({
       [`${name}--${props.color}`]: !!props.color
     }
 
-    const size: number = props.small ? 18 : props.large ? 26 : props.fab ? 30 : 22
+    const size = props.small ? 18 : props.large ? 26 : props.fab ? 30 : 22
 
-    // const renderLoading = () => {
-    //   if (props.loading) {
-    //     return <div class={[ `${name}__loading` ]}>
-    //       <GProgress indeterminate={true} size={24}></GProgress>
-    //     </div>
-    //   }
-    // }
-    // const renderIcon = () => {
-    //   if (props.icon) {
-    //     return <div class={[ `${name}__icon` ]}>
-    //       <GIcon value={props.icon} size={size} />
-    //     </div>
-    //   }
-    // }
-    // const renderLabel = () => {
-    //   if (props.label) {
-    //     return <div class={[ `${name}__content` ]}>{props.label}</div>
-    //   } else if (slots.default) {
-    //     return { default: slots.default() }
-    //   }
-    // }
-    // const renderDialog = () => {
-    //   if (slots.dialog) {
-    //     return { dialog: slots.dialog() }
-    //   }
-    // }
-
-    // return () => <button
-    //   tabindex={props.tabindex}
-
-    //   disabled={props.disabled}
-    //   autofocus={props.autofocus}
-
-    //   name={props.name}
-    //   type={props.type}
-
-    //   class={classes}
-
-    //   onClick={props.onClick}
-    // >
-    //   <renderLoading />
-    //   <renderIcon />
-    //   <renderLabel />
-    //   <renderDialog />
-    // </button>
-
-    return {
-      classes,
-      size
-
-      // renderLoading,
-      // renderIcon,
-      // renderLabel,
-      // renderDialog
+    const renderLoading = () => {
+      if (props.loading) {
+        return <div class={[ `${name}__loading` ]}>
+          <GProgress indeterminate={true} size={24}></GProgress>
+        </div>
+      }
     }
-  },
+    const renderIcon = () => {
+      if (props.icon) {
+        return <div class={[ `${name}__icon` ]}>
+          <GIcon value={props.icon} size={size} />
+        </div>
+      }
+    }
+    const renderLabel = () => {
+      if (props.label) {
+        return <div class={[ `${name}__content` ]}>{props.label}</div>
+      } else if (slots.default) {
+        return slots.default()
+      }
+    }
+    const renderDialog = () => {
+      if (slots.dialog) {
+        return slots.dialog()
+      }
+    }
 
-  render() {
-    return (
-      <button
-        tabindex={this.tabindex}
+    return () => <button
+      tabindex={props.tabindex}
 
-        disabled={this.disabled}
-        autofocus={this.autofocus}
+      disabled={props.disabled}
+      autofocus={props.autofocus}
 
-        name={this.name}
-        type={this.type}
+      name={props.name}
+      type={props.type}
 
-        class={this.classes}
+      class={classes}
 
-        onClick={this.onClick}
-      >
-        {this.loading ? <div class={[ `${name}__loading` ]}><GProgress indeterminate={true} size={24}></GProgress></div> : null}
-        {this.icon ? <div class={[ `${name}__icon` ]}><GIcon value={this.icon} size={this.size} /></div> : null}
-        {this.label ? <div class={[ `${name}__content` ]}>{this.label}</div> : this.$slots.default ? this.$slots.default() : null}
-        {this.$slots.dialog ? this.$slots.dialog() : null}
-      </button>
-    )
+      onClick={props.onClick}
+    >
+      {renderLoading()}
+      {renderIcon()}
+      {renderLabel()}
+      {renderDialog()}
+    </button>
   }
 })
