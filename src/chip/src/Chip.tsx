@@ -88,7 +88,7 @@ export default defineComponent({
     const renderLoading = () => {
       if (props.loading) {
         return <div class={`${name}__loading`}>
-          <GProgress indeterminate width={props.tiny || props.small ? 1 : 2} size={size.value}></GProgress>
+          <GProgress indeterminate width={1} size={size.value - 4}></GProgress>
         </div>
       }
     }

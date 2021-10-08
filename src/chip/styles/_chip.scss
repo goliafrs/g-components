@@ -3,27 +3,31 @@
     &--#{$name} {
       color: var(--#{$name});
 
-      @if $name == 'white' {
+      &>.g-chip__loading {
+        color: var(--white);
+      }
+
+      @if $name=='white' {
         &.g-chip--outline {
-          & > .g-chip__content {
+          &>.g-chip__content {
             color: $black-84;
           }
         }
 
-        & > .g-chip__content {
+        &>.g-chip__content {
           color: $black-84;
         }
       }
 
       &.g-chip--outline {
-        & > .g-chip__holder {
-          & > .g-chip__icon {
+        &>.g-chip__holder {
+          &>.g-chip__icon {
             color: currentColor;
           }
         }
 
-        & > .g-chip__content,
-        & > .g-chip__loading {
+        &>.g-chip__content,
+        &>.g-chip__loading {
           color: currentColor;
         }
       }
@@ -50,7 +54,7 @@
     position: relative;
     min-width: 28px;
 
-    & + .g-chip {
+    &+.g-chip {
       margin-left: 8px;
     }
 
@@ -62,7 +66,7 @@
       align-items: center;
       justify-content: center;
 
-      & > .g-icon {
+      &>.g-icon {
         color: var(--white);
       }
     }
@@ -94,9 +98,9 @@
       background-color: transparent;
       border-color: currentColor;
 
-      & > .g-chip__icon,
-      & > .g-chip__content,
-      & > .g-chip__loading {
+      &>.g-chip__icon,
+      &>.g-chip__content,
+      &>.g-chip__loading {
         color: currentColor;
       }
     }
@@ -109,15 +113,15 @@
       border-radius: 10px;
       min-width: 20px;
 
-      & + .g-chip {
+      &+.g-chip {
         margin-left: 4px;
       }
 
-      & > .g-chip__content {
+      &>.g-chip__content {
         font-size: 11px;
       }
 
-      & > .g-chip__holder {
+      &>.g-chip__holder {
         @include absolute-height(20px);
         @include absolute-width(20px);
       }
@@ -135,15 +139,15 @@
       border-radius: 12px;
       min-width: 24px;
 
-      & + .g-chip {
+      &+.g-chip {
         margin-left: 6px;
       }
 
-      & > .g-chip__content {
+      &>.g-chip__content {
         font-size: 13px;
       }
 
-      & > .g-chip__holder {
+      &>.g-chip__holder {
         @include absolute-height(24px);
         @include absolute-width(24px);
       }
@@ -161,15 +165,15 @@
       border-radius: 24px;
       min-width: 36px;
 
-      & + .g-chip {
+      &+.g-chip {
         margin-left: 10px;
       }
 
-      & > .g-chip__content {
+      &>.g-chip__content {
         font-size: 15px;
       }
 
-      & > .g-chip__holder {
+      &>.g-chip__holder {
         @include absolute-height(36px);
         @include absolute-width(36px);
       }
@@ -197,7 +201,7 @@
     &--prefix {
       padding-left: 0;
 
-      & > .g-chip__content {
+      &>.g-chip__content {
         padding-left: 0;
       }
     }
@@ -205,7 +209,7 @@
     &--suffix {
       padding-right: 0;
 
-      & > .g-chip__content {
+      &>.g-chip__content {
         padding-right: 0;
       }
     }
@@ -217,8 +221,8 @@
     &--loading {
       pointer-events: none;
 
-      & > .g-chip__holder,
-      & > .g-chip__content {
+      &>.g-chip__holder,
+      &>.g-chip__content {
         opacity: 0;
       }
     }
@@ -238,19 +242,19 @@
         background-color: transparent !important;
       }
 
-      & > .g-chip__icon {
-        & > .g-chip__holder {
-          & > .g-icon {
+      &>.g-chip__icon {
+        &>.g-chip__holder {
+          &>.g-icon {
             color: $grey-400 !important;
           }
         }
       }
 
-      & > .g-chip__content,
-      & > .g-chip__loading {
+      &>.g-chip__content,
+      &>.g-chip__loading {
         color: $grey-400 !important;
 
-        & > .g-progress-circular {
+        &>.g-progress-circular {
           color: $grey-400 !important;
         }
       }
