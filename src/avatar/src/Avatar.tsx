@@ -104,7 +104,7 @@ export default defineComponent({
 
     const renderContent = () => {
       if (props.src) {
-        return <img src={props.src} alt={props.title} />
+        return <img class={`${name}__img`} src={props.src} alt={props.title} />
       } else if (props.icon) {
         return <GIcon value={props.icon} color={props.color} size={props.fontSize}></GIcon>
       } else if (firstChar) {
