@@ -39,18 +39,17 @@ export default defineComponent({
 
   setup(props, { slots, emit }) {
     const uid = `${name}_${getCurrentInstance()?.uid}`
+
     const proxy = ref(props.modelValue)
+    const checked = ref(false)
 
     watch(() => props.modelValue, () => {
       proxy.value = props.modelValue
-    })
-
-    const checked = computed(() => {
       if (proxy.value === props.trueValue) {
-        return true
+        checked.value = true
+      } else {
+        checked.value = false
       }
-
-      return false
     })
 
     const classes = {
