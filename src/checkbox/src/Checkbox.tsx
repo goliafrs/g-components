@@ -81,11 +81,9 @@ export default defineComponent({
       </div>
     }
     const renderLabel = () => {
-      if (props.label) {
-        return <label for={uid}>{props.label}</label>
+      if (slots.default || props.label) {
+        return <label for={uid} class={`${name}__label`}>{slots.default ? slots.default() : props.label}</label>
       }
-
-      return slots.default ? slots.default() : null
     }
 
     return () => <div role='checkbox' aria-checked={proxy.value} class={classes} onClick={clickHandler}>
