@@ -45,11 +45,6 @@ export default defineComponent({
 
     watch(() => props.modelValue, () => {
       proxy.value = props.modelValue
-      if (proxy.value === props.trueValue) {
-        checked.value = true
-      } else {
-        checked.value = false
-      }
     })
 
     const classes = reactive({
@@ -63,8 +58,10 @@ export default defineComponent({
       if (!props.disabled) {
         if (proxy.value === props.falseValue) {
           proxy.value = props.trueValue
+          checked.value = true
         } else {
           proxy.value = props.falseValue
+          checked.value = false
         }
         emit('update:modelValue', proxy.value)
       }
