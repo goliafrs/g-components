@@ -50,7 +50,7 @@ export default defineComponent({
       default: 'clear'
     },
     cancelCallback: {
-      type: Function,
+      type: Function as PropType<(event: MouseEvent) => void>,
       default: () => undefined
     },
 
@@ -109,7 +109,7 @@ export default defineComponent({
     }
     const renderCancelable = () => {
       if (props.cancelable) {
-        return <div class={`${name}__holder`}>
+        return <div class={`${name}__holder`} onClick={props.cancelCallback}>
           <GIcon value={props.cancelIcon} size={size.value} color={props.color ? 'white' : undefined}></GIcon>
         </div>
       }
