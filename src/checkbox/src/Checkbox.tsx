@@ -1,4 +1,4 @@
-import { computed, defineComponent, getCurrentInstance, h, ref } from 'vue'
+import { computed, defineComponent, getCurrentInstance, h, ref, watch } from 'vue'
 
 export const name = 'g-checkbox'
 
@@ -40,6 +40,10 @@ export default defineComponent({
   setup(props, { slots, emit }) {
     const uid = `${name}_${getCurrentInstance()?.uid}`
     const proxy = ref(props.modelValue)
+
+    watch(() => props.modelValue, () => {
+      proxy.value = props.modelValue
+    })
 
     const checked = computed(() => {
       if (proxy.value === props.trueValue) {
