@@ -18,6 +18,7 @@ export default defineComponent({
       default: undefined
     },
 
+    tiny: Boolean,
     small: Boolean,
     large: Boolean,
 
@@ -73,6 +74,7 @@ export default defineComponent({
     const classes = reactive({
       [`${name}`]: true,
 
+      [`${name}--tiny`]: props.tiny,
       [`${name}--small`]: props.small,
       [`${name}--large`]: props.large,
 
@@ -101,7 +103,7 @@ export default defineComponent({
       [`${name}--${props.color}`]: !!props.color
     })
 
-    const size: number = props.small ? 18 : props.large ? 26 : props.fab ? 30 : 22
+    const size: number = props.tiny ? 14 : props.small ? 18 : props.large ? 26 : props.fab ? 30 : 22
 
     const renderLoading = () => {
       if (props.loading) {

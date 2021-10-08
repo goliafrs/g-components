@@ -1,9 +1,6 @@
 {
   "compilerOptions": {
-    "paths": {
-      "@/*": ["./src/*"],
-      "g-components": ["./src"],
-    },
+    "paths": {"g-components": ["./src"]},
     "strict": true,
     "sourceMap": false,
     "jsx": "react",
