@@ -1,4 +1,4 @@
-import { StyleValue, defineComponent, h } from 'vue'
+import { StyleValue, defineComponent, h, reactive } from 'vue'
 
 import { numberToPxOrString } from '../../utils'
 
@@ -81,7 +81,7 @@ export default defineComponent({
   },
 
   setup(props, { slots }) {
-    const classes = {
+    const classes = reactive({
       [`${name}`]: true,
 
       [`${name}--flat`]: props.flat,
@@ -93,15 +93,15 @@ export default defineComponent({
       [`${name}--accent-${props.accentColor}`]: !!props.accentColor,
       [`${name}--accent-${props.accentSize}`]: !!props.accentSize,
       [`${name}--accent-${props.accentPosition}`]: !!props.accentPosition
-    }
-    const style: StyleValue = {
+    })
+    const style: StyleValue = reactive({
       minHeight: numberToPxOrString(props.minHeight),
       maxHeight: numberToPxOrString(props.maxHeight),
       height: numberToPxOrString(props.height),
       minWidth: numberToPxOrString(props.minWidth),
       maxWidth: numberToPxOrString(props.maxWidth),
       width: numberToPxOrString(props.width)
-    }
+    })
 
     return () => <div class={classes} style={style}>
       {slots.default ? slots.default() : null}

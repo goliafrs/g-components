@@ -1,4 +1,4 @@
-import { defineComponent, h } from 'vue'
+import { defineComponent, h, reactive } from 'vue'
 
 export const name = 'g-icon'
 
@@ -37,7 +37,7 @@ export default defineComponent({
   },
 
   setup(props) {
-    const classes = {
+    const classes = reactive({
       [`${name}`]: true,
 
       [`${name}--left`]: props.left,
@@ -49,7 +49,7 @@ export default defineComponent({
       [`${name}__icon--${props.value}`]: !!props.value,
 
       [`fz--${props.size}`]: true
-    }
+    })
 
     return () => <i class={classes}></i>
   }

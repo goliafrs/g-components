@@ -1,4 +1,4 @@
-import { StyleValue, defineComponent, h } from 'vue'
+import { StyleValue, defineComponent, h, reactive } from 'vue'
 
 import { GIcon } from 'g-components'
 
@@ -95,7 +95,7 @@ export default defineComponent({
       defaultBackground = colors[charCode % colors.length]
     }
 
-    const classes = {
+    const classes = reactive({
       [`${name}`]: true,
 
       [`${name}--round`]: props.round,
@@ -103,15 +103,15 @@ export default defineComponent({
       [`${name}--outline`]: props.outline,
 
       [`${name}--${props.color}`]: !!props.color
-    }
-    const style: StyleValue = {
+    })
+    const style: StyleValue = reactive({
       minHeight: numberToPxOrString(props.size),
       maxHeight: numberToPxOrString(props.size),
       height: numberToPxOrString(props.size),
       minWidth: numberToPxOrString(props.size),
       maxWidth: numberToPxOrString(props.size),
       width: numberToPxOrString(props.size)
-    }
+    })
     if (!props.color) {
       const background = props.background || defaultBackground
       if (props.outline) {

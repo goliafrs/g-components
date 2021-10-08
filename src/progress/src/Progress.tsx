@@ -1,4 +1,4 @@
-import { StyleValue, defineComponent, h } from 'vue'
+import { StyleValue, defineComponent, h, reactive } from 'vue'
 
 import { normalizedValue, numberToPxOrString } from '../../utils'
 
@@ -53,16 +53,16 @@ export default defineComponent({
   },
 
   setup(props) {
-    const classes = {
+    const classes = reactive({
       [`${name}`]: true,
 
       [`${name}-${props.type}`]: true,
       [`${name}-${props.type}--indeterminate`]: props.indeterminate,
 
       [`${name}--${props.color}`]: !!props.color
-    }
+    })
 
-    const style: StyleValue = {}
+    const style: StyleValue = reactive({})
     if (props.type === 'circular') {
       style.minHeight = numberToPxOrString(props.size)
       style.height = numberToPxOrString(props.size)
