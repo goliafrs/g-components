@@ -108,7 +108,7 @@ export default defineComponent({
       return <div class={`${name}__content`}>{content}</div>
     }
     const renderCancelable = () => {
-      if (props.icon) {
+      if (props.cancelable) {
         return <div class={`${name}__holder`}>
           <GIcon value={props.cancelIcon} size={size.value} color={props.color ? 'white' : undefined}></GIcon>
         </div>
