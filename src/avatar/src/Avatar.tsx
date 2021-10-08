@@ -94,7 +94,6 @@ export default defineComponent({
     }
     const style: StyleValue = {
       backgroundColor: !props.color && (props.background || defaultBackground) || undefined,
-      fontSize: numberToPxOrString(props.fontSize),
       minHeight: numberToPxOrString(props.size),
       maxHeight: numberToPxOrString(props.size),
       height: numberToPxOrString(props.size),
@@ -107,10 +106,10 @@ export default defineComponent({
       if (props.src) {
         return <img class={`${name}__img`} src={props.src} alt={props.title} />
       } else if (props.icon) {
-        return <GIcon value={props.icon} color={props.color} size={props.fontSize}></GIcon>
+        return <GIcon value={props.icon} color={props.color} size={props.fontSize} />
       }
 
-      return slots.default ? slots.default() : firstChar
+      return <div class={`${name}__text`} style={{ fontSize: numberToPxOrString(props.fontSize) }}>{slots.default ? slots.default() : firstChar}</div>
     }
 
     return () => <div class={classes} style={style}>
