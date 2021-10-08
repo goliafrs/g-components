@@ -33,6 +33,9 @@
 
 .g {
   &-chip {
+    @include colors;
+    @include absolute-height(28px);
+
     padding-left: 12px;
     padding-right: 12px;
     color: $black-84;
@@ -46,9 +49,6 @@
     justify-content: center;
     position: relative;
     min-width: 28px;
-
-    @include absolute-height(28px);
-    @include colors;
 
     & + .g-chip {
       margin-left: 8px;
@@ -217,7 +217,7 @@
     &--loading {
       pointer-events: none;
 
-      & > .g-chip__icon,
+      & > .g-chip__holder,
       & > .g-chip__content {
         opacity: 0;
       }
@@ -240,7 +240,7 @@
 
       & > .g-chip__icon {
         & > .g-chip__holder {
-          & > i {
+          & > .g-icon {
             color: $grey-400 !important;
           }
         }
