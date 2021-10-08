@@ -19,6 +19,7 @@
     overflow: hidden;
     user-select: none;
     pointer-events: none;
+    color: var(--white);
     mix-blend-mode: difference;
 
     &--tile {
