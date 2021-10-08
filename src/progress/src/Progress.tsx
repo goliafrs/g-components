@@ -15,7 +15,10 @@ export default defineComponent({
 
     type: {
       type: String,
-      default: 'circular'
+      default: 'circular',
+      validator: (value: string): boolean => {
+        return !!~[ 'circular', 'linear' ].indexOf(value)
+      }
     },
 
     size: {
