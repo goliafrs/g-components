@@ -51,7 +51,15 @@ export default defineComponent({
       default: 48
     },
 
-    tile: {
+    round: {
+      type: Boolean,
+      default: false
+    },
+    rounded: {
+      type: Boolean,
+      default: false
+    },
+    outline: {
       type: Boolean,
       default: false
     },
@@ -89,17 +97,28 @@ export default defineComponent({
 
     const classes = {
       [`${name}`]: true,
-      [`${name}--tile`]: props.tile,
+
+      [`${name}--round`]: props.round,
+      [`${name}--rounded`]: props.rounded,
+      [`${name}--outline`]: props.outline,
+
       [`${name}--${props.color}`]: !!props.color
     }
     const style: StyleValue = {
-      backgroundColor: !props.color && (props.background || defaultBackground) || undefined,
       minHeight: numberToPxOrString(props.size),
       maxHeight: numberToPxOrString(props.size),
       height: numberToPxOrString(props.size),
       minWidth: numberToPxOrString(props.size),
       maxWidth: numberToPxOrString(props.size),
       width: numberToPxOrString(props.size)
+    }
+    if (!props.color) {
+      const background = props.background || defaultBackground
+      if (props.outline) {
+        style.borderColor = background
+      } else {
+        style.backgroundColor = background
+      }
     }
 
     const renderContent = () => {

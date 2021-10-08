@@ -1,20 +1,22 @@
 @mixin colors {
-  @each $name, $color in $colors {
+
+  @each $name,
+  $color in $colors {
     &--#{$name} {
       color: var(--#{$name});
 
-      & > .g-button__icon,
-      & > .g-button__content,
-      & > .g-button__loading {
+      &>.g-button__icon,
+      &>.g-button__content,
+      &>.g-button__loading {
         color: var(--white);
       }
 
       &.g-button--outline,
       &.g-button--flat {
 
-        & > .g-button__icon,
-        & > .g-button__content,
-        & > .g-button__loading {
+        &>.g-button__icon,
+        &>.g-button__content,
+        &>.g-button__loading {
           color: currentColor;
         }
 
@@ -83,6 +85,8 @@
     }
 
     &__content {
+      @include default-text-style(14px, 500);
+
       color: var(--white);
       white-space: nowrap;
       text-transform: uppercase;
@@ -91,8 +95,6 @@
       align-items: center;
       justify-content: center;
       flex: 1;
-
-      @include default-text-style(14px, 500);
     }
 
     &__loading {
@@ -107,7 +109,7 @@
       justify-content: center;
     }
 
-    & + .g-button {
+    &+.g-button {
       margin-left: 0;
     }
 
@@ -155,7 +157,7 @@
     &--prefix {
       padding-left: 4px;
 
-      & > .g-button__content {
+      &>.g-button__content {
         padding-left: 0;
       }
     }
@@ -163,7 +165,7 @@
     &--suffix {
       padding-right: 4px;
 
-      & > .g-button__content {
+      &>.g-button__content {
         padding-right: 0;
       }
     }
@@ -174,7 +176,7 @@
 
       @include absolute-height(28px);
 
-      & > .g-button__content {
+      &>.g-button__content {
         font-size: 13px;
       }
     }
@@ -185,7 +187,7 @@
 
       @include absolute-height(44px);
 
-      & > .g-button__content {
+      &>.g-button__content {
         font-size: 15px;
       }
     }
@@ -240,9 +242,9 @@
       background-color: transparent;
       box-shadow: none;
 
-      & > .g-button__icon,
-      & > .g-button__content,
-      & > .g-button__loading {
+      &>.g-button__icon,
+      &>.g-button__content,
+      &>.g-button__loading {
         color: currentColor;
       }
 
@@ -335,16 +337,16 @@
         background-color: transparent !important;
       }
 
-      & > .g-button__icon,
-      & > .g-button__content,
-      & > .g-button__loading {
+      &>.g-button__icon,
+      &>.g-button__content,
+      &>.g-button__loading {
         color: $grey-400 !important;
 
-        & > i {
+        &>i {
           color: $grey-400 !important;
         }
 
-        & > .g-progress-circular {
+        &>.g-progress-circular {
           color: $grey-400 !important;
         }
       }
@@ -353,8 +355,8 @@
     &--loading {
       pointer-events: none;
 
-      & > .g-button__icon,
-      & > .g-button__content {
+      &>.g-button__icon,
+      &>.g-button__content {
         opacity: 0;
       }
     }

@@ -1,7 +1,13 @@
 @mixin colors() {
   @each $name, $color in $colors {
     &--#{$name} {
-      background-color: $color;
+      &:not(.g-avatar--outline) {
+        background-color: $color;
+      }
+
+      &.g-avatar--outline {
+        border-color: $color;
+      }
     }
   }
 }
@@ -11,16 +17,22 @@
     @include colors;
 
     text-transform: uppercase;
-    border-radius: 50%;
     display: inline-flex;
     align-items: center;
     justify-content: center;
     overflow: hidden;
     user-select: none;
     pointer-events: none;
-
-    &--tile {
-      border-radius: 0;
+    
+    &--round {
+      border-radius: 50%;
+    }
+    &--rounded {
+      border-radius: 16px;
+    }
+    &--outline {
+      border-style: solid;
+      border-width: 1px;
     }
 
     &__img {
