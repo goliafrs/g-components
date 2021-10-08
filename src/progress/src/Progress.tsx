@@ -72,8 +72,8 @@ export default defineComponent({
       style.minWidth = numberToPxOrString(props.size)
       style.width = numberToPxOrString(props.size)
     } else {
-      style.minHeight = numberToPxOrString(props.size)
-      style.height = numberToPxOrString(props.size)
+      style.minHeight = numberToPxOrString(props.height)
+      style.height = numberToPxOrString(props.height)
     }
 
     const renderCircular = () => {
