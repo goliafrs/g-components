@@ -7,6 +7,10 @@
 
       &.g-avatar--outline {
         border-color: $color;
+
+        & > .g-avatar__text {
+          color: var(--#{$name})
+        }
       }
     }
   }
