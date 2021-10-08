@@ -9,7 +9,8 @@
         border-color: $color;
 
         & > .g-avatar__text {
-          color: var(--#{$name})
+          color: var(--#{$name});
+          mix-blend-mode: unset;
         }
       }
     }
