@@ -93,6 +93,7 @@ export default defineComponent({
             stroke-width={Number(props.width) / +props.size * viewBoxSizeDouble}
             stroke-dasharray={Math.round(circumference * 1000) / 1000}
             stroke-dashoffset={(100 - normalizedValue(props.value || 0)) / 100 * circumference + 'px'}
+            class={`${name}-circular__circle`}
           ></circle>
         </svg>
       }
