@@ -1,4 +1,4 @@
-import { defineComponent, h } from 'vue'
+import { StyleValue, defineComponent, h } from 'vue'
 
 import { GIcon } from 'g-components'
 
@@ -92,13 +92,13 @@ export default defineComponent({
       [`${name}--tile`]: props.tile,
       [`${name}--${props.color}`]: !!props.color
     }
-    const style = {
-      'background-color': !props.color && (props.background || defaultBackground),
-      'min-height': numberToPxOrString(props.size),
-      'max-height': numberToPxOrString(props.size),
+    const style: StyleValue = {
+      backgroundColor: !props.color && (props.background || defaultBackground) || undefined,
+      minHeight: numberToPxOrString(props.size),
+      maxHeight: numberToPxOrString(props.size),
       height: numberToPxOrString(props.size),
-      'min-width': numberToPxOrString(props.size),
-      'max-width': numberToPxOrString(props.size),
+      minWidth: numberToPxOrString(props.size),
+      maxWidth: numberToPxOrString(props.size),
       width: numberToPxOrString(props.size)
     }
 
