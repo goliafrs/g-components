@@ -31,7 +31,7 @@
       @include default-text-style;
 
       color: var(--white);
-      mix-blend-mode: difference;
+      mix-blend-mode: screen;
     }
   }
 }
