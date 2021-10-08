@@ -6,7 +6,7 @@ export default defineComponent({
   name,
 
   props: {
-    value: {
+    modelValue: {
       type: null,
       default: false
     },
@@ -35,11 +35,11 @@ export default defineComponent({
     }
   },
 
-  emits: [ 'input' ],
+  emits: [ 'update:modelValue' ],
 
   setup(props, { slots, emit }) {
     const uid = `${name}_${getCurrentInstance()?.uid}`
-    const proxy = ref(props.value)
+    const proxy = ref(props.modelValue)
 
     const checked = computed(() => {
       if (proxy.value === props.trueValue) {
@@ -63,7 +63,7 @@ export default defineComponent({
         } else {
           proxy.value = props.falseValue
         }
-        emit('input', proxy.value)
+        emit('update:modelValue', proxy.value)
       }
     }
 
