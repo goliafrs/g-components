@@ -105,7 +105,7 @@ export default defineComponent({
             [`${name}-linear__bar`]: true,
             [`${name}-linear__bar--determinate`]: props.value
           }}
-          style={{ width: props.indeterminate ? `${props.value || 0}%` : undefined }}
+          style={{ width: !props.indeterminate ? `${props.value || 0}%` : undefined }}
         ></div>
       }
     }
