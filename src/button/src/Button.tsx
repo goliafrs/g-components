@@ -101,7 +101,7 @@ export default defineComponent({
       [`${name}--${props.color}`]: !!props.color
     })
 
-    const size: ComputedRef<number> = computed((): number => props.small ? 18 : props.large ? 26 : props.fab ? 30 : 22)
+    const size: number = props.small ? 18 : props.large ? 26 : props.fab ? 30 : 22
 
     const renderLoading = () => {
       if (props.loading) {
