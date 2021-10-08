@@ -11,7 +11,7 @@
     @include accent-colors;
 
     background-color: var(--white);
-    display: flex;
+    display: inline-flex;
     flex-direction: column;
 
     &-actions {
