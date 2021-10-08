@@ -1,9 +1,0 @@
-@mixin get-icon($codepoints, $library: 'MaterialIcons', $pseudo: 'before') {
-  @each $name, $codepoint in $codepoints {
-    &--#{$name} {
-      &:#{$pseudo} {
-        content: unquote('"\\#{$codepoint}"');
-      }
-    }
-  }
-}

@@ -28,29 +28,5 @@
     align-items: center;
     justify-content: center;
     user-select: none;
-
-    &--link {
-      cursor: pointer;
-    }
-
-    &--left {
-      margin-right: 8px;
-    }
-
-    &--right {
-      margin-left: 8px;
-    }
-
-    &--icofont {
-      font-family: 'IcoFont';
-
-      &.g-icon__icon {
-        @include get-icon($ico-font-codepoints, 'IcoFont');
-      }
-    }
-
-    &__icon {
-      @include get-icon($material-icons-codepoints);
-    }
   }
 }

@@ -8,7 +8,8 @@ export default defineComponent({
   props: {
     value: {
       type: String,
-      default: undefined
+      default: '',
+      required: true
     },
 
     size: {
@@ -19,38 +20,18 @@ export default defineComponent({
     color: {
       type: String,
       default: undefined
-    },
-
-    left: {
-      type: Boolean,
-      default: false
-    },
-    right: {
-      type: Boolean,
-      default: false
-    },
-
-    library: {
-      type: String,
-      default: undefined
     }
   },
 
-  setup(props) {
+  setup(props, { slots }) {
     const classes = reactive({
       [`${name}`]: true,
 
-      [`${name}--left`]: props.left,
-      [`${name}--right`]: props.right,
-
-      [`${name}--${props.library}`]: !!props.library,
       [`${name}--${props.color}`]: !!props.color,
 
-      [`${name}__icon--${props.value}`]: !!props.value,
-
-      [`fz--${props.size}`]: true
+      [`fz-${props.size}`]: true
     })
 
-    return () => <i class={classes}></i>
+    return () => <i class={classes}>{slots.default ? slots.default() : props.value}</i>
   }
 })

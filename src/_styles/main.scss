@@ -3,12 +3,12 @@
 // @tailwind utilities;
 
 @import url('https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&subset=cyrillic');
+@import url('https://fonts.googleapis.com/icon?family=Material+Icons');
 
 @import 'variables';
 @import 'colors';
 
 @import 'mixins/index';
-@import 'icons/index';
 @import 'helpers/index';
 
 @import 'general';
