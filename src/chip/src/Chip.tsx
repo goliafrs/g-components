@@ -95,7 +95,7 @@ export default defineComponent({
     const renderIcon = () => {
       if (props.icon) {
         return <div class={`${name}__holder`}>
-          <GIcon class={`${name}__icon`} value={props.icon} size={size.value}></GIcon>
+          <GIcon value={props.icon} size={size.value}></GIcon>
         </div>
       }
     }
@@ -110,7 +110,7 @@ export default defineComponent({
     const renderCancelable = () => {
       if (props.cancelable) {
         return <div class={`${name}__holder`} onClick={props.cancelCallback}>
-          <GIcon class={`${name}__icon`} value={props.cancelIcon} size={size.value} color={props.color ? 'white' : undefined}></GIcon>
+          <GIcon value={props.cancelIcon} size={size.value} color={props.color ? 'white' : undefined}></GIcon>
         </div>
       }
     }
