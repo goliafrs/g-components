@@ -4,7 +4,9 @@
       color: var(--#{$name});
 
       &>.g-chip__loading {
-        color: var(--white);
+        &>.g-progress {
+          color: var(--white);
+        }
       }
 
       @if $name=='white' {
@@ -26,9 +28,13 @@
           }
         }
 
-        &>.g-chip__content,
-        &>.g-chip__loading {
+        &>.g-chip__content {
           color: currentColor;
+        }
+        &>.g-chip__loading {
+          &>.g-progress {
+            color: currentColor;
+          }
         }
       }
     }
