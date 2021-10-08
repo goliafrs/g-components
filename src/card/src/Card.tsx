@@ -53,7 +53,7 @@ export default defineComponent({
     }
   },
 
-  setup(props) {
+  setup(props, { slots }) {
     const classes = {
       [`${name}`]: true,
 
@@ -68,6 +68,8 @@ export default defineComponent({
       [`${name}--accent-${props.accentPosition}`]: !!props.accentPosition
     }
 
-    return () => <div class={classes}></div>
+    return () => <div class={classes}>
+      {slots.default ? slots.default() : null}
+    </div>
   }
 })

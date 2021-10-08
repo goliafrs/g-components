@@ -105,21 +105,21 @@ export default defineComponent({
 
     const renderLoading = () => {
       if (props.loading) {
-        return <div class={[ `${name}__loading` ]}>
+        return <div class={`${name}__loading`}>
           <GProgress indeterminate={true} size={24}></GProgress>
         </div>
       }
     }
     const renderIcon = () => {
       if (props.icon) {
-        return <div class={[ `${name}__icon` ]}>
+        return <div class={`${name}__icon`}>
           <GIcon value={props.icon} size={size} />
         </div>
       }
     }
     const renderLabel = () => {
       if (props.label) {
-        return <div class={[ `${name}__content` ]}>{props.label}</div>
+        return <div class={`${name}__content`}>{props.label}</div>
       } else if (slots.default) {
         return slots.default()
       }
