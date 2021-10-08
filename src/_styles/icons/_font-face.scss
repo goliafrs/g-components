@@ -1,4 +1,4 @@
-$path-to-icofont: './fonts/IcoFont';
+$path-to-icofont: '../fonts/IcoFont';
 
 @font-face {
   font-family: 'IcoFont';
@@ -10,7 +10,7 @@ $path-to-icofont: './fonts/IcoFont';
   url('#{$path-to-icofont}.ttf') format('truetype');
 }
 
-$path-to-material-icons: './fonts/MaterialIcons';
+$path-to-material-icons: '../fonts/MaterialIcons';
 
 @font-face {
   font-family: 'MaterialIcons';
