@@ -19,6 +19,7 @@
     overflow: hidden;
     user-select: none;
     pointer-events: none;
+    mix-blend-mode: difference;
 
     &--tile {
       border-radius: 0;
