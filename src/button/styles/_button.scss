@@ -322,6 +322,10 @@
       right: 0;
     }
 
+    &--marginless {
+      margin: 0;
+    }
+
     &--disabled {
       cursor: default;
       color: $grey-400 !important;

@@ -30,6 +30,7 @@ export default defineComponent({
     toolbar: Boolean,
     outline: Boolean,
     depressed: Boolean,
+    marginless: Boolean,
 
     icon: {
       type: String,
@@ -67,6 +68,14 @@ export default defineComponent({
     onClick: {
       type: Function as PropType<(event: MouseEvent) => void>,
       default: () => undefined
+    },
+    onMouseover: {
+      type: Function as PropType<(event: MouseEvent) => void>,
+      default: () => undefined
+    },
+    onMouseout: {
+      type: Function as PropType<(event: MouseEvent) => void>,
+      default: () => undefined
     }
   },
 
@@ -85,6 +94,7 @@ export default defineComponent({
       [`${name}--rounded`]: props.rounded,
       [`${name}--outline`]: props.outline,
       [`${name}--depressed`]: props.depressed,
+      [`${name}--marginless`]: props.marginless,
 
       [`${name}--toolbar`]: props.toolbar,
 
@@ -140,6 +150,8 @@ export default defineComponent({
       class={classes}
 
       onClick={props.onClick}
+      onMouseover={props.onMouseover}
+      onMouseout={props.onMouseout}
     >
       {renderLoading()}
       {renderIcon()}
