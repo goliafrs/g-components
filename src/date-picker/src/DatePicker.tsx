@@ -410,6 +410,7 @@ export default defineComponent({
       })
     }
     const renderDay = (day: number | undefined) => {
+      console.log('renderDay')
       if (day) {
         const currentMs = today.getTime()
         const unixTime = getUnixTimeByDay(day)
@@ -435,6 +436,8 @@ export default defineComponent({
       }
     }
     const renderWeek = (week: (number | undefined)[]) => {
+      console.log('renderWeek')
+
       return week.map(day => {
         const unixTime = getUnixTimeByDay(day || 0)
 
@@ -479,11 +482,14 @@ export default defineComponent({
       })
     }
     const renderWeeks = () => {
+      console.log('renderWeeks')
+
       return computedDate.value.days.map(week => {
         return <tr>{renderWeek(week)}</tr>
       })
     }
     const renderDaysMatrix = () => {
+      console.log('renderDaysMatrix')
       if (state.value === 'days') {
         return <div class={`${name}__holder`}>
           <table class={`${name}__matrix`}>
