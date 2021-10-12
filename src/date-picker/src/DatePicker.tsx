@@ -307,10 +307,6 @@ export default defineComponent({
     }
 
     watch(() => props.modelValue, () => {
-      if (!Array.isArray(proxy.value)) {
-        proxy.value = [ proxy.value ]
-      }
-
       proxy.value = proxy.value.reduce<number[]>((result, value) => {
         const date = new Date(value)
         if (date instanceof Date) {

@@ -3,17 +3,18 @@
     @include absolute-height(330px);
     @include absolute-width(282px);
 
-    display: flex;
-    flex-direction: column;
+    padding: 8px;
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-gap: 8px;
     position: relative;
     overflow: hidden;
 
     &__header {
-      @include absolute-height(56px);
+      @include absolute-height(36px);
 
-      padding-left: 8px;
-      padding-right: 8px;
-      display: flex;
+      display: grid;
+      grid-template-columns: 36px 1fr 36px;
       align-items: center;
     }
 
@@ -56,12 +57,9 @@
     }
 
     &__holder {
-      padding-bottom: 8px;
-      padding-left: 8px;
-      padding-right: 8px;
-      height: 100%;
-
       @include absolute-width(282px);
+
+      height: 100%;
     }
 
     &__matrix {
