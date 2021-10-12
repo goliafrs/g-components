@@ -2,6 +2,7 @@ import { chunk } from 'lodash'
 
 import { PropType, computed, defineComponent, getCurrentInstance, h, onMounted, reactive, ref, watch } from 'vue'
 import { GButton, GIcon, GProgress } from 'g-components'
+import { GList, GListItem } from '../../list'
 
 export const name = 'g-date-picker'
 
@@ -9,6 +10,12 @@ export interface DateToday {
   year: number,
   month: number,
   day: number
+}
+
+export interface Month {
+  full: string,
+  short: string,
+  number: number
 }
 
 const today = new Date()
@@ -19,8 +26,8 @@ export default defineComponent({
 
   props: {
     modelValue: {
-      type: null,
-      default: undefined
+      type: Array as PropType<(number | string)[]>,
+      default: () => []
     },
 
     localeTag: {
@@ -55,6 +62,9 @@ export default defineComponent({
   emits: [ 'update:modelValue' ],
 
   setup(props, { emit }) {
+    const datePicker = ref<HTMLElement>()
+    const yearsList = ref<HTMLElement>()
+
     const defaultDate = {
       year: today.getFullYear(),
       month: today.getMonth(),
@@ -62,7 +72,6 @@ export default defineComponent({
     } as DateToday
     const date: DateToday = reactive<DateToday>(defaultDate)
     const hoveringDate = ref(0)
-    const yearsList = ref(null)
     const state = ref<'days' | 'months' | 'years'>('days')
     const proxy = ref(props.modelValue)
 
@@ -80,7 +89,7 @@ export default defineComponent({
 
       return result
     })
-    const months = computed((): any[] => {
+    const months = computed((): Month[] => {
       const result = []
 
       for (let index = 0; index < 12; index++) {
@@ -140,8 +149,8 @@ export default defineComponent({
         year: currentDate.getFullYear(),
         month: currentDate.getMonth(),
         day: currentDate.getDate(),
-        daysMatrix: chunk(daysMatrix, 7),
-        monthsMatrix: chunk(months.value, 3)
+        days: chunk(daysMatrix, 7),
+        months: chunk(months.value, 3)
       }
     })
 
@@ -161,8 +170,11 @@ export default defineComponent({
     const scrollYearsList = (): void => {
       if (state.value === 'years') {
         setTimeout(() => {
-          if (yearsList.value) {
-            yearsList.value.scrollTop = props.yearsList.querySelector('.g-date-picker__years-list-item--active').offsetTop - props.datePicker.offsetHeight / 2
+          if (datePicker.value && yearsList.value) {
+            const activeYearElement: HTMLElement = yearsList.value.querySelector(`.${name}__years-list-item--active`) as HTMLElement
+            if (activeYearElement) {
+              yearsList.value.scrollTop = activeYearElement.offsetTop - datePicker.value.offsetHeight / 2
+            }
           }
         }, 100)
       }
@@ -258,8 +270,9 @@ export default defineComponent({
     }
     const isActiveHoverDay = (unixTime: number): boolean => {
       if (hoveringDate.value && proxy.value.length === 1) {
-        const lt = unixTime < Math.max(proxy.value[0], hoveringDate.value)
-        const gt = unixTime > Math.min(proxy.value[0], hoveringDate.value)
+        const value = new Date(proxy.value[0]).getTime()
+        const lt = unixTime < Math.max(value, hoveringDate.value)
+        const gt = unixTime > Math.min(value, hoveringDate.value)
 
         return lt && gt
       }
@@ -309,11 +322,11 @@ export default defineComponent({
     }
 
     watch(() => props.modelValue, () => {
-      if (!Array.isArray(proxy)) {
-        proxy.value = [ proxy ]
+      if (!Array.isArray(proxy.value)) {
+        proxy.value = [ proxy.value ]
       }
 
-      proxy.value = proxy.value.reduce((result, value) => {
+      proxy.value = proxy.value.reduce<number[]>((result, value) => {
         if (value) {
           const date = new Date(value)
           if (date instanceof Date) {
@@ -336,7 +349,7 @@ export default defineComponent({
       if (props.range) {
         value = proxy.value
       } else {
-        value = proxy.value[0]
+        value = [ proxy.value[0] ]
       }
 
       if (JSON.stringify(props.modelValue) !== JSON.stringify(value)) {
@@ -394,15 +407,24 @@ export default defineComponent({
       </div>
     }
 
-    const renderDay = (day: number) => {
-      const currentMs: number = today.getTime()
-      const unixTime: number = getUnixTimeByDay(day)
+    const renderDaysOfWeek = (cols: boolean) => {
+      return daysOfWeek.value.map(day => {
+        if (cols) {
+          return <col class={`${name}__matrix-col ${name}__matrix-col--${day}`} />
+        }
 
-      const { isActiveDate, isLeftActiveEdge, isRightActiveEdge } = isActiveDay(unixTime)
-
-      const isActive = isActiveDate || isLeftActiveEdge || isRightActiveEdge || unixTime === currentMs || false
-
+        return <th class={`${name}__matrix-day-of-week`}>{day}</th>
+      })
+    }
+    const renderDay = (day: number | undefined) => {
       if (day) {
+        const currentMs: number = today.getTime()
+        const unixTime: number = getUnixTimeByDay(day)
+
+        const { isActiveDate, isLeftActiveEdge, isRightActiveEdge } = isActiveDay(unixTime)
+
+        const isActive = isActiveDate || isLeftActiveEdge || isRightActiveEdge || unixTime === currentMs || false
+
         return <GButton
           class={`${name}__matrix-day`}
           label={day}
@@ -419,34 +441,144 @@ export default defineComponent({
         />
       }
     }
-    const renderDaysOfWeek = (cols: boolean) => {
-      if (cols) {
-        return daysOfWeek.value.map(day => {
-          return <col class={`${name}__matrix-col ${name}__matrix-col--${day}`} />
-        })
-      }
+    const renderWeek = (week: (number | undefined)[]) => {
+      return week.map(day => {
+        const unixTime = getUnixTimeByDay(day || 0)
 
-      return <tr class={`${name}__matrix-day-of-week`}>{day}</tr>
+        const { isInRange, isLeftActiveEdge, isRightActiveEdge } = isActiveDay(unixTime)
+
+        let isLeftActiveHoverDate = false
+        let isRightActiveHoverDate = false
+
+        const arrTimeForHover = []
+
+        if (hoveringDate.value) {
+          arrTimeForHover.push(convertDate(proxy.value[0]))
+          arrTimeForHover.push(hoveringDate.value)
+        }
+
+        arrTimeForHover.sort()
+
+        if (arrTimeForHover.length === 2 && proxy.value.length === 1) {
+          if (unixTime === arrTimeForHover[0]) {
+            isLeftActiveHoverDate = true
+          }
+          if (unixTime === arrTimeForHover[1]) {
+            isRightActiveHoverDate = true
+          }
+        }
+
+        return <td
+          class={{
+            [`${name}__matrix-day-cell`]: true,
+            [`${name}__matrix-day-cell--active`]: day && isInRange,
+            [`${name}__matrix-day-cell--active-left`]: day && isLeftActiveEdge,
+            [`${name}__matrix-day-cell--active-right`]: day && isRightActiveEdge,
+            [`${name}__matrix-day-cell--active-hover`]: day && isActiveHoverDay(unixTime) && props.range,
+            [`${name}__matrix-day-cell--active-hover-left`]: day && isLeftActiveHoverDate && !isLeftActiveEdge && props.range,
+            [`${name}__matrix-day-cell--active-hover-right`]: day && isRightActiveHoverDate && !isRightActiveEdge && props.range
+          }}
+        >
+          {renderDay(day)}
+        </td>
+      })
     }
-    const renderDays = () => {
+    const renderWeeks = () => {
+      return computedDate.value.days.map(week => {
+        return <tr>{renderWeek(week)}</tr>
+      })
+    }
+    const renderDaysMatrix = () => {
       if (state.value === 'days') {
         return <div class={`${name}__holder`}>
           <table class={`${name}__matrix`}>
-            <colgroup>
-              {renderDaysOfWeek(true)}
-            </colgroup>
-            <thead>
-              <tr>
-                {renderDaysOfWeek(false)}
-              </tr>
-            </thead>
+            <colgroup>{renderDaysOfWeek(true)}</colgroup>
+            <thead><tr>{renderDaysOfWeek(false)}</tr></thead>
+            <tbody>{renderWeeks()}</tbody>
           </table>
         </div>
       }
     }
 
-    return () => <div>
+    const renderMonth = (month: Month) => {
+      const isActive = isActiveMonth(date.year, month.number)
+      const currentYear = today.getFullYear() === date.year
+      const currentMonth = today.getMonth() === month.number
+      const outline = !isActive && currentYear && currentMonth
+      const color = isActive || currentYear && currentMonth ? 'primary' : undefined
 
+      return <GButton
+        class={`${name}__matrix-month`}
+        label={month.short}
+        flat={!isActive}
+        color={color}
+        outline={outline}
+        rounded
+        block
+        depressed
+        onClick={() => {
+          date.month = month.number
+          state.value = 'days'
+        }}
+        key={`${name}-month-${month.number}`}
+      />
+    }
+    const renderQuarter = (quarter: Month[]) => {
+      return quarter.map(month => {
+        return <td class={`${name}__matrix-month-cell`}>{renderMonth(month)}</td>
+      })
+    }
+    const renderQuarters = () => {
+      return computedDate.value.months.map(quarter => {
+        return <tr>{renderQuarter(quarter)}</tr>
+      })
+    }
+    const renderMonthsMatrix = () => {
+      if (state.value === 'months') {
+        return <div class={`${name}__holder`}>
+          <table class={`${name}__matrix`}>
+            <tbody>
+              {renderQuarters()}
+            </tbody>
+          </table>
+        </div>
+      }
+    }
+
+    const renderYears = () => {
+      return years.value.map(year => {
+        return <GListItem
+          class={{
+            [`${name}__years-list-item`]: true,
+            [`${name}__years-list-item--active`]: year === date.year,
+            [`${name}__years-list-item--current`]: year === today.getFullYear(),
+            [`${name}__years-list-item--selected`]: isActiveYear(year)
+          }}
+
+          label={year}
+          active={date.year === year}
+          onClick={() => {
+            date.year = year
+            state.value = 'months'
+          }}
+        />
+      })
+    }
+    const renderYearsList = () => {
+      if (state.value === 'years') {
+        return <div class={`${name}__years-list`} ref={yearsList}>
+          <GList>
+            {renderYears()}
+          </GList>
+        </div>
+      }
+    }
+
+    return () => <div class={`${name}`} ref={datePicker}>
+      {renderHeader()}
+      {renderDaysMatrix()}
+      {renderMonthsMatrix()}
+      {renderYearsList()}
     </div>
   }
 })
