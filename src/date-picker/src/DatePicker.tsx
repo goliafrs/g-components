@@ -353,14 +353,14 @@ export default defineComponent({
     })
 
     onMounted(() => {
-      const value = new Date(proxy.value[0])
-      console.log('> value', value)
-      if (value instanceof Date) {
-        date.year = value.getFullYear()
-        date.month = value.getMonth()
-        date.day = value.getDate()
+      if (proxy.value[0]) {
+        const value = new Date(proxy.value[0])
+        if (value instanceof Date) {
+          date.year = value.getFullYear()
+          date.month = value.getMonth()
+          date.day = value.getDate()
+        }
       }
-      console.log('> date', date)
     })
 
     const renderTitle = () => {
