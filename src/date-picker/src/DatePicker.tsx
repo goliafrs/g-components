@@ -65,12 +65,11 @@ export default defineComponent({
     const datePicker = ref<HTMLElement>()
     const yearsList = ref<HTMLElement>()
 
-    const defaultDate = {
+    const date = reactive<DateToday>({
       year: today.getFullYear(),
       month: today.getMonth(),
       day: today.getDate()
-    } as DateToday
-    const date: DateToday = reactive<DateToday>(defaultDate)
+    })
     const hoveringDate = ref(0)
     const state = ref<'days' | 'months' | 'years'>('days')
     const proxy = ref(props.modelValue)
@@ -377,7 +376,6 @@ export default defineComponent({
         date.month = chosenDate.value.month
         date.day = chosenDate.value.day
       }
-      console.log(chosenDate)
     })
 
     const renderTitle = () => {
