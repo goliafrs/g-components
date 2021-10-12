@@ -298,11 +298,13 @@ export default defineComponent({
         return false
       }
 
+      const currentDate = new Date(proxy.value[0])
+
       if (proxy.value.length < 2) {
-        return new Date(proxy.value[0]).getFullYear() === year
+        return currentDate.getFullYear() === year
       }
 
-      const topBorder = new Date(proxy.value[0])
+      const topBorder = currentDate
       const bottomBorder = new Date(proxy.value[1])
 
       return topBorder.getFullYear() <= year && bottomBorder.getFullYear() >= year
