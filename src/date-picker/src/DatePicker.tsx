@@ -224,7 +224,7 @@ export default defineComponent({
       console.log('isActiveDay')
       const isActiveDate = proxy.value.some((value: string | number) => {
         if (value) {
-          const timeToCompare = convertDate(value)
+          const timeToCompare = value
           if (unixTime === timeToCompare) {
             return true
           }
@@ -242,8 +242,8 @@ export default defineComponent({
       let isRightActiveEdge = false
 
       if (proxy.value.length === 2) {
-        const leftEdge = convertDate(proxy.value[0])
-        const rightEdge = convertDate(proxy.value[1])
+        const leftEdge = proxy.value[0]
+        const rightEdge = proxy.value[1]
         if (leftEdge === unixTime) {
           isLeftActiveEdge = true
         }
