@@ -446,7 +446,7 @@ export default defineComponent({
         const arrTimeForHover = []
 
         if (hoveringDate.value) {
-          arrTimeForHover.push(convertDate(proxy.value[0]))
+          arrTimeForHover.push(proxy.value[0])
           arrTimeForHover.push(hoveringDate.value)
         }
 
@@ -471,6 +471,8 @@ export default defineComponent({
             [`${name}__matrix-day-cell--active-hover-left`]: day && isLeftActiveHoverDate && !isLeftActiveEdge && props.range,
             [`${name}__matrix-day-cell--active-hover-right`]: day && isRightActiveHoverDate && !isRightActiveEdge && props.range
           }}
+
+          key={`${name}-${uid}-day-cell-${day}`}
         >
           {renderDay(day)}
         </td>
