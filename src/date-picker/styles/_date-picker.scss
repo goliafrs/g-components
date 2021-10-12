@@ -77,13 +77,14 @@
       &-day {
         &-of-week {
           @include default-text-style(12px, 700);
+          @include absolute-height(38px);
+          @include absolute-width(38px);
 
           cursor: default;
           color: $black-36;
           text-align: center;
           user-select: none;
           vertical-align: middle;
-          height: 38px;
         }
 
         &-cell {
