@@ -41,7 +41,7 @@ export default defineComponent({
       }
     }
 
-    return <div
+    return () => <div
       role='list'
 
       class={{
