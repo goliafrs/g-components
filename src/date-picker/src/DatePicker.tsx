@@ -327,12 +327,10 @@ export default defineComponent({
       }
 
       proxy.value = proxy.value.reduce<number[]>((result, value) => {
-        if (value) {
-          const date = new Date(value)
-          if (date instanceof Date) {
-            date.setHours(0, 0, 0, 0)
-            result.push(date.getTime())
-          }
+        const date = new Date(value)
+        if (date instanceof Date) {
+          date.setHours(0, 0, 0, 0)
+          result.push(date.getTime())
         }
 
         return result
