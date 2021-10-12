@@ -153,19 +153,6 @@ export default defineComponent({
       }
     })
 
-    const chosenDate = computed((): DateToday | void => {
-      const value = new Date(props.modelValue[0])
-      if (value instanceof Date) {
-        return {
-          year: value.getFullYear(),
-          month: value.getMonth(),
-          day: value.getDate()
-        }
-      }
-
-      return undefined
-    })
-
     const scrollYearsList = (): void => {
       if (state.value === 'years') {
         setTimeout(() => {
@@ -371,10 +358,11 @@ export default defineComponent({
     })
 
     onMounted(() => {
-      if (chosenDate.value) {
-        date.year = chosenDate.value.year
-        date.month = chosenDate.value.month
-        date.day = chosenDate.value.day
+      const value = new Date(props.modelValue[0])
+      if (value instanceof Date) {
+        date.year = value.getFullYear()
+        date.month = value.getMonth()
+        date.day = value.getDate()
       }
     })
 
