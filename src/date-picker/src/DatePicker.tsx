@@ -377,7 +377,7 @@ export default defineComponent({
         date.month = chosenDate.value.month
         date.day = chosenDate.value.day
       }
-      console.log(date)
+      console.log(chosenDate)
     })
 
     const renderTitle = () => {
