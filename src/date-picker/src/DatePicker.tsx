@@ -357,7 +357,7 @@ export default defineComponent({
     })
 
     onMounted(() => {
-      const value = new Date(props.modelValue[0])
+      const value = new Date(proxy.value[0])
       if (value instanceof Date) {
         date.year = value.getFullYear()
         date.month = value.getMonth()
