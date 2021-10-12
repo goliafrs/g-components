@@ -194,12 +194,9 @@ export default defineComponent({
       }
     }
     const getUnixTimeByDay = (day: number): number => {
-      console.log('getUnixTimeByDay')
-
       return new Date(date.year, date.month, day).getTime()
     }
     const pickDateHandler = (day: number) => {
-      console.log('pickDateHandler')
       if (day && !isNaN(day)) {
         const pickedDate = getUnixTimeByDay(day)
 
@@ -214,14 +211,12 @@ export default defineComponent({
       }
     }
     const convertDate = (date: string | number): number => {
-      console.log('convertDate')
       const result = new Date(date)
       result.setHours(0, 0, 0, 0)
 
       return result.getTime()
     }
     const isActiveDay = (unixTime: number): boolean | any => {
-      console.log('isActiveDay')
       const isActiveDate = proxy.value.some((value: string | number) => {
         if (value) {
           const timeToCompare = value
@@ -260,7 +255,6 @@ export default defineComponent({
       }
     }
     const isActiveHoverDay = (unixTime: number): boolean => {
-      console.log('isActiveHoverDay')
       if (hoveringDate.value && proxy.value.length === 1) {
         const value = new Date(proxy.value[0]).getTime()
         const lt = unixTime < Math.max(value, hoveringDate.value)
@@ -272,7 +266,6 @@ export default defineComponent({
       return false
     }
     const isActiveMonth = (year: number, month: number): boolean => {
-      console.log('isActiveMonth')
       if (!proxy.value.length) {
         return false
       }
@@ -295,7 +288,6 @@ export default defineComponent({
       return leftBorder.getTime() <= monthForCheck.getTime() && rightBorder.getTime() >= monthForCheck.getTime()
     }
     const isActiveYear = (year: number): boolean => {
-      console.log('isActiveYear')
       if (!proxy.value.length) {
         return false
       }
@@ -312,8 +304,6 @@ export default defineComponent({
       return topBorder.getFullYear() <= year && bottomBorder.getFullYear() >= year
     }
     const isDisabledDay = (unixTime: number): boolean => {
-      console.log('isDisabledDay')
-
       return unixTime < min.value || unixTime > max.value
     }
 
@@ -410,7 +400,6 @@ export default defineComponent({
       })
     }
     const renderDay = (day: number | undefined) => {
-      console.log('renderDay')
       if (day) {
         const currentMs = today.getTime()
         const unixTime = getUnixTimeByDay(day)
@@ -436,8 +425,6 @@ export default defineComponent({
       }
     }
     const renderWeek = (week: (number | undefined)[]) => {
-      console.log('renderWeek')
-
       return week.map(day => {
         const unixTime = getUnixTimeByDay(day || 0)
 
@@ -482,14 +469,11 @@ export default defineComponent({
       })
     }
     const renderWeeks = () => {
-      console.log('renderWeeks')
-
       return computedDate.value.days.map(week => {
         return <tr>{renderWeek(week)}</tr>
       })
     }
     const renderDaysMatrix = () => {
-      console.log('renderDaysMatrix')
       if (state.value === 'days') {
         return <div class={`${name}__holder`}>
           <table class={`${name}__matrix`}>
