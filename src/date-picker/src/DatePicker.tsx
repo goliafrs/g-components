@@ -143,10 +143,9 @@ export default defineComponent({
       }
 
       return {
-        date: currentDate,
         year: currentDate.getFullYear(),
-        month: currentDate.getMonth(),
-        day: currentDate.getDate(),
+        month: currentDate.toLocaleString(props.localeTag, { month: 'long' }),
+        day: currentDate.toLocaleString(props.localeTag, { day: 'numeric' }),
         days: chunk(daysMatrix, 7),
         months: chunk(months.value, 3)
       }
@@ -193,9 +192,12 @@ export default defineComponent({
       }
     }
     const getUnixTimeByDay = (day: number): number => {
+      console.log('getUnixTimeByDay')
+
       return new Date(date.year, date.month, day).getTime()
     }
     const pickDateHandler = (day: number) => {
+      console.log('pickDateHandler')
       if (day && !isNaN(day)) {
         const pickedDate = getUnixTimeByDay(day)
 
@@ -210,12 +212,14 @@ export default defineComponent({
       }
     }
     const convertDate = (date: string | number): number => {
+      console.log('convertDate')
       const result = new Date(date)
       result.setHours(0, 0, 0, 0)
 
       return result.getTime()
     }
     const isActiveDay = (unixTime: number): boolean | any => {
+      console.log('isActiveDay')
       const isActiveDate = proxy.value.some((value: string | number) => {
         if (value) {
           const timeToCompare = convertDate(value)
@@ -254,6 +258,7 @@ export default defineComponent({
       }
     }
     const isActiveHoverDay = (unixTime: number): boolean => {
+      console.log('isActiveHoverDay')
       if (hoveringDate.value && proxy.value.length === 1) {
         const value = new Date(proxy.value[0]).getTime()
         const lt = unixTime < Math.max(value, hoveringDate.value)
@@ -265,20 +270,19 @@ export default defineComponent({
       return false
     }
     const isActiveMonth = (year: number, month: number): boolean => {
+      console.log('isActiveMonth')
       if (!proxy.value.length) {
         return false
       }
 
       const monthForCheck = new Date(year, month)
+      const currentDate = new Date(proxy.value[0])
 
       if (proxy.value.length < 2) {
-        return (
-          new Date(proxy.value[0]).getMonth() === monthForCheck.getMonth() &&
-          new Date(proxy.value[0]).getFullYear() === monthForCheck.getFullYear()
-        )
+        return currentDate.getMonth() === monthForCheck.getMonth() && currentDate.getFullYear() === monthForCheck.getFullYear()
       }
 
-      const leftBorder = new Date(proxy.value[0])
+      const leftBorder = currentDate
       leftBorder.setDate(1)
       leftBorder.setHours(0, 0, 0, 0)
 
@@ -289,6 +293,7 @@ export default defineComponent({
       return leftBorder.getTime() <= monthForCheck.getTime() && rightBorder.getTime() >= monthForCheck.getTime()
     }
     const isActiveYear = (year: number): boolean => {
+      console.log('isActiveYear')
       if (!proxy.value.length) {
         return false
       }
@@ -303,6 +308,8 @@ export default defineComponent({
       return topBorder.getFullYear() <= year && bottomBorder.getFullYear() >= year
     }
     const isDisabledDay = (unixTime: number): boolean => {
+      console.log('isDisabledDay')
+
       return unixTime < min.value || unixTime > max.value
     }
 
@@ -365,15 +372,15 @@ export default defineComponent({
 
     const renderTitle = () => {
       return <div class={`${name}__title`}>
-        <div class={`${name}__title-item ${name}__title-item--day`} onClick={() => state.value = 'days'}>
-          {new Date(computedDate.value.date).toLocaleString(props.localeTag, { day: 'numeric' })}
-        </div>
-        <div class={`${name}__title-item ${name}__title-item--month`} onClick={() => state.value = 'months'}>
-          {new Date(computedDate.value.date).toLocaleString(props.localeTag, { month: 'long' })}
-        </div>
-        <div class={`${name}__title-item ${name}__title-item--year`} onClick={() => state.value = 'years'}>
+        <span class={`${name}__title-item ${name}__title-item--day`} onClick={() => state.value = 'days'}>
+          {computedDate.value.day}
+        </span>
+        <span class={`${name}__title-item ${name}__title-item--month`} onClick={() => state.value = 'months'}>
+          {computedDate.value.month}
+        </span>
+        <span class={`${name}__title-item ${name}__title-item--year`} onClick={() => state.value = 'years'}>
           {computedDate.value.year}
-        </div>
+        </span>
       </div>
     }
     const renderArrow = (direction = -1) => {
