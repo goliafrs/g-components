@@ -1,6 +1,6 @@
 import { chunk } from 'lodash'
 
-import { PropType, computed, defineComponent, h, onMounted, reactive, ref, watch } from 'vue'
+import { PropType, computed, defineComponent, getCurrentInstance, h, onMounted, reactive, ref, watch } from 'vue'
 import { GButton, GList, GListItem } from 'g-components'
 
 export const name = 'g-date-picker'
@@ -63,6 +63,8 @@ export default defineComponent({
   setup(props, { emit }) {
     const datePicker = ref<HTMLElement>()
     const yearsList = ref<HTMLElement>()
+
+    const uid = getCurrentInstance()?.uid
 
     const date = reactive<DateToday>({
       year: today.getFullYear(),
@@ -409,8 +411,8 @@ export default defineComponent({
     }
     const renderDay = (day: number | undefined) => {
       if (day) {
-        const currentMs: number = today.getTime()
-        const unixTime: number = getUnixTimeByDay(day)
+        const currentMs = today.getTime()
+        const unixTime = getUnixTimeByDay(day)
 
         const { isActiveDate, isLeftActiveEdge, isRightActiveEdge } = isActiveDay(unixTime)
 
@@ -427,7 +429,7 @@ export default defineComponent({
           onClick={() => pickDateHandler(day)}
           onMouseover={() => hoveringDate.value = getUnixTimeByDay(day)}
           onMouseout={() => hoveringDate.value = 0}
-          key={`${name}-day-${day}`}
+          key={`${name}-${uid}-day-${day}`}
           round
         />
       }
@@ -511,7 +513,7 @@ export default defineComponent({
           date.month = month.number
           state.value = 'days'
         }}
-        key={`${name}-month-${month.number}`}
+        key={`${name}-${uid}-month-${month.number}`}
       />
     }
     const renderQuarter = (quarter: Month[]) => {
@@ -552,6 +554,7 @@ export default defineComponent({
             date.year = year
             state.value = 'months'
           }}
+          key={`${name}-${uid}-year-${year}`}
         />
       })
     }
