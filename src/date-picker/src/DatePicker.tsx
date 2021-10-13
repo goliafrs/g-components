@@ -211,56 +211,22 @@ export default defineComponent({
       }
     }
     const isActiveDay = (ms: number): boolean | any => {
-      const isActiveDate = proxy.value.some((value: string | number) => {
-        if (value) {
-          const timeToCompare = value
-          if (ms === timeToCompare) {
-            return true
-          }
-        }
+      const isActiveDate = proxy.value.some((value: string | number) => ms === value)
 
-        return false
-      })
+      const [ leftEdge, rightEdge ] = proxy.value
 
-      let isInRange = false
-      if (proxy.value.length > 1) {
-        isInRange = ms < proxy.value[1] && ms > proxy.value[0]
-      }
+      const isInRange = ms < rightEdge && ms > leftEdge
 
-      let isLeftActiveEdge = false
-      let isRightActiveEdge = false
+      const isLeftActiveEdge = ms === leftEdge
+      const isRightActiveEdge = ms === rightEdge
 
-      if (proxy.value.length === 2) {
-        const leftEdge = proxy.value[0]
-        const rightEdge = proxy.value[1]
-        if (leftEdge === ms) {
-          isLeftActiveEdge = true
-        }
-        if (rightEdge === ms) {
-          isRightActiveEdge = true
-        }
-      }
-
-      let isLeftActiveHoverDate = false
-      let isRightActiveHoverDate = false
-
-      const hoveringDates = []
-
-      if (hoveringDate.value) {
-        hoveringDates.push(proxy.value[0])
-        hoveringDates.push(hoveringDate.value)
-      }
-
+      const hoveringDates = [ leftEdge, hoveringDate.value ]
       hoveringDates.sort()
 
-      if (hoveringDates.length === 2 && proxy.value.length === 1) {
-        if (ms === hoveringDates[0]) {
-          isLeftActiveHoverDate = true
-        }
-        if (ms === hoveringDates[1]) {
-          isRightActiveHoverDate = true
-        }
-      }
+      const [ leftHoveringEdge, rightHoveringEdge ] = hoveringDates
+
+      const isLeftActiveHoverDate = ms === leftHoveringEdge
+      const isRightActiveHoverDate = ms === rightHoveringEdge
 
       let isActiveHoverDay = false
 
@@ -319,9 +285,6 @@ export default defineComponent({
       const bottomBorder = new Date(proxy.value[1])
 
       return topBorder.getFullYear() <= year && bottomBorder.getFullYear() >= year
-    }
-    const isDisabledDay = (ms: number): boolean => {
-      return ms < min.value || ms > max.value
     }
 
     watch(() => props.modelValue, () => {
@@ -422,22 +385,25 @@ export default defineComponent({
         const ms = getMSByDay(day)
 
         const { isActiveDate, isLeftActiveEdge, isRightActiveEdge } = isActiveDay(ms)
+        console.log('isActiveDate', isActiveDate)
+        console.log('isLeftActiveEdge', isLeftActiveEdge)
+        console.log('isRightActiveEdge', isRightActiveEdge)
 
         const isActive = isActiveDate || isLeftActiveEdge || isRightActiveEdge || ms === currentMs || false
 
         return <GButton
-          class={`${name}__matrix-day`}
           label={day}
           flat={!isActive}
           depressed={isActive}
           outline={ms === currentMs && !isActiveDate}
           color={isActive ? 'primary' : undefined}
-          disabled={isDisabledDay(ms)}
+          disabled={ms < min.value || ms > max.value}
           onClick={() => pickDateHandler(day)}
-          onMouseover={() => hoveringDate.value = getMSByDay(day)}
+          onMouseover={() => hoveringDate.value = ms}
           onMouseout={() => hoveringDate.value = 0}
           key={`${name}-${uid}-day-${day}`}
           round
+          marginless
         />
       }
     }
@@ -501,9 +467,10 @@ export default defineComponent({
         flat={!isActive}
         color={color}
         outline={outline}
-        rounded
         block
+        rounded
         depressed
+        marginless
         onClick={() => {
           date.month = month.number
           state.value = 'days'
