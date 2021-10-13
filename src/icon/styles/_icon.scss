@@ -1,7 +1,7 @@
-@mixin colors() {
-  @each $name, $color in $colors {
+@mixin colors {
+  @each $name in $colors {
     &--#{$name} {
-      color: $color;
+      color: var(--#{$name});
     }
   }
 }
@@ -33,7 +33,7 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    
+
     user-select: none;
 
     -webkit-font-smoothing: antialiased;

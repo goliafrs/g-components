@@ -1,14 +1,14 @@
-@mixin colors() {
-  @each $name, $color in $colors {
+@mixin colors {
+  @each $name in $colors {
     &--#{$name} {
       &:not(.g-avatar--outline) {
-        background-color: $color;
+        background-color: var(--#{$name});
       }
 
       &.g-avatar--outline {
-        border-color: $color;
+        border-color: var(--#{$name});
 
-        & > .g-avatar__text {
+        &>.g-avatar__text {
           color: var(--#{$name});
           mix-blend-mode: unset;
         }
@@ -28,13 +28,15 @@
     overflow: hidden;
     user-select: none;
     pointer-events: none;
-    
+
     &--round {
       border-radius: 50%;
     }
+
     &--rounded {
       border-radius: 16px;
     }
+
     &--outline {
       border-style: solid;
       border-width: 1px;

@@ -1,5 +1,5 @@
 @mixin colors {
-  @each $name, $color in $colors {
+  @each $name in $colors {
     &--#{$name} {
       color: var(--#{$name});
 
@@ -31,6 +31,7 @@
         &>.g-chip__content {
           color: currentColor;
         }
+
         &>.g-chip__loading {
           &>.g-progress {
             color: currentColor;

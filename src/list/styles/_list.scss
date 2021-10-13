@@ -2,7 +2,7 @@ $size: 48px;
 $size-dense: 40px;
 
 @mixin colors {
-  @each $name, $color in $colors {
+  @each $name in $colors {
     &--#{$name} {
       color: var(--#{$name});
     }
@@ -90,12 +90,12 @@ $size-dense: 40px;
       }
 
       &--active {
-        & > .g-list-item__content {
+        &>.g-list-item__content {
           color: var(--primary);
         }
 
-        & > .g-list-item__holder {
-          & > .g-list-item__icon {
+        &>.g-list-item__holder {
+          &>.g-list-item__icon {
             color: var(--primary);
           }
         }
@@ -110,7 +110,7 @@ $size-dense: 40px;
       &--prefix {
         padding-left: 0;
 
-        & > .g-list-item__content {
+        &>.g-list-item__content {
           padding-left: 8px;
         }
       }
@@ -118,7 +118,7 @@ $size-dense: 40px;
       &--suffix {
         padding-right: 0;
 
-        & > .g-list-item__content {
+        &>.g-list-item__content {
           padding-right: 8px;
         }
       }
@@ -126,7 +126,7 @@ $size-dense: 40px;
 
     &-group {
       &__activator {
-        & > .g-list-item {
+        &>.g-list-item {
           &::after {
             @include absolute-height($size);
             @include absolute-width($size);
@@ -151,18 +151,18 @@ $size-dense: 40px;
       }
 
       &--active {
-        & > .g-list-group__activator {
-          & > .g-list-item {
+        &>.g-list-group__activator {
+          &>.g-list-item {
             &::after {
               transform: rotate(90deg);
             }
           }
         }
 
-        & > .g-list-group__content {
+        &>.g-list-group__content {
           display: flex;
 
-          & > .g-list-item {
+          &>.g-list-item {
             padding-left: $size + 8px;
           }
         }
@@ -173,19 +173,19 @@ $size-dense: 40px;
       & .g-list-item {
         min-height: $size-dense;
 
-        & > .g-list-item__holder {
+        &>.g-list-item__holder {
           @include absolute-height($size-dense);
           @include absolute-width($size-dense);
 
-          & > .g-list-item__icon {
+          &>.g-list-item__icon {
             font-size: 18px;
           }
         }
       }
 
-      & > .g-list-group {
-        & > .g-list-group__activator {
-          & > .g-list-item {
+      &>.g-list-group {
+        &>.g-list-group__activator {
+          &>.g-list-item {
             &::after {
               @include absolute-height($size-dense);
               @include absolute-width($size-dense);
@@ -195,8 +195,8 @@ $size-dense: 40px;
           }
         }
 
-        & > .g-list-group__content {
-          & > .g-list-item {
+        &>.g-list-group__content {
+          &>.g-list-item {
             padding-left: $size-dense + 8px;
           }
         }

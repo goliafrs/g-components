@@ -1,13 +1,23 @@
+@mixin colors {
+  @each $name in $colors {
+    &--#{$name} {
+      background-color: var(--#{$name});
+    }
+  }
+}
+
 @mixin accent-colors {
-  @each $name, $color in $colors {
+  @each $name in $colors {
     &--accent-#{$name} {
-      border-color: $color;
+      border-color: var(--#{$name});
+      ;
     }
   }
 }
 
 .g {
   &-card {
+    @include colors;
     @include accent-colors;
 
     background-color: var(--white);
@@ -24,12 +34,12 @@
       display: flex;
       align-items: center;
 
-      & > *,
+      &>*,
       & .g-button {
         margin: 0;
       }
 
-      & .g-button + .g-button {
+      & .g-button+.g-button {
         margin-left: 8px;
       }
 
