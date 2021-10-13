@@ -66,7 +66,7 @@ export default defineComponent({
     const datePicker = ref<HTMLElement>()
     const yearsList = ref<HTMLElement>()
 
-    const date = reactive<DateToday>({
+    const date = ref<DateToday>({
       year: today.getFullYear(),
       month: today.getMonth(),
       day: today.getDate()
@@ -105,7 +105,7 @@ export default defineComponent({
     const years = computed((): number[] => {
       const result = []
 
-      for (let year = date.year + props.yearsFill; year >= date.year - props.yearsFill; year--) {
+      for (let year = date.value.year + props.yearsFill; year >= date.value.year - props.yearsFill; year--) {
         result.push(year)
       }
 
@@ -128,9 +128,9 @@ export default defineComponent({
     })
 
     const computedDate = computed(() => {
-      const currentDate = new Date(date.year, date.month, date.day)
-      const dayOfFirstDate = new Date(date.year, date.month, 1).getDay()
-      const dayAmount = new Date(date.year, date.month + 1, 0).getDate()
+      const currentDate = new Date(date.value.year, date.value.month, date.value.day)
+      const dayOfFirstDate = new Date(date.value.year, date.value.month, 1).getDay()
+      const dayAmount = new Date(date.value.year, date.value.month + 1, 0).getDate()
       const daysMatrix = []
 
       const diff = dayOfFirstDate - 1
@@ -169,38 +169,38 @@ export default defineComponent({
       if (direction < 0) {
         switch (state.value) {
           case 'years':
-            date.year--
+            date.value.year--
             break
           case 'months':
           case 'days':
           default:
-            date.month--
-            date.day = 1
+            date.value.month--
+            date.value.day = 1
             break
         }
       }
       if (direction > 0) {
         switch (state.value) {
           case 'years':
-            date.year++
+            date.value.year++
             break
           case 'months':
           case 'days':
           default:
-            date.month++
-            date.day = 1
+            date.value.month++
+            date.value.day = 1
             break
         }
       }
     }
     const getMSByDay = (day: number): number => {
-      return new Date(date.year, date.month, day).getTime()
+      return new Date(date.value.year, date.value.month, day).getTime()
     }
     const pickDateHandler = (day: number) => {
       if (day && !isNaN(day)) {
         const pickedDate = getMSByDay(day)
 
-        date.day = day
+        date.value.day = day
 
         if (props.range && proxy.value.length < 2 && pickedDate !== proxy.value[0]) {
           proxy.value.push(pickedDate)
@@ -327,18 +327,18 @@ export default defineComponent({
     })
     watch(() => state, scrollYearsList)
     watch(() => date, (oldData, newData) => {
-      if (oldData.year !== newData.year) {
+      if (oldData.value.year !== newData.value.year) {
         scrollYearsList()
       }
 
-      if (date.month < 0) {
-        date.year--
-        date.month = 11
-        date.day = 1
-      } else if (date.month > 11) {
-        date.year++
-        date.month = 0
-        date.day = 1
+      if (date.value.month < 0) {
+        date.value.year--
+        date.value.month = 11
+        date.value.day = 1
+      } else if (date.value.month > 11) {
+        date.value.year++
+        date.value.month = 0
+        date.value.day = 1
       }
     })
 
@@ -346,9 +346,9 @@ export default defineComponent({
       if (proxy.value[0]) {
         const value = new Date(proxy.value[0])
         if (value instanceof Date) {
-          date.year = value.getFullYear()
-          date.month = value.getMonth()
-          date.day = value.getDate()
+          date.value.year = value.getFullYear()
+          date.value.month = value.getMonth()
+          date.value.day = value.getDate()
         }
       }
     })
@@ -461,8 +461,8 @@ export default defineComponent({
     }
 
     const renderMonth = (month: Month) => {
-      const isActive = isActiveMonth(date.year, month.number)
-      const currentYear = today.getFullYear() === date.year
+      const isActive = isActiveMonth(date.value.year, month.number)
+      const currentYear = today.getFullYear() === date.value.year
       const currentMonth = today.getMonth() === month.number
       const outline = !isActive && currentYear && currentMonth
       const color = isActive || currentYear && currentMonth ? 'primary' : undefined
@@ -478,7 +478,7 @@ export default defineComponent({
         depressed
         marginless
         onClick={() => {
-          date.month = month.number
+          date.value.month = month.number
           state.value = 'days'
         }}
         key={`${name}-${uid}-month-${month.number}`}
@@ -511,16 +511,16 @@ export default defineComponent({
         return <GListItem
           class={{
             [`${name}__years-list-item`]: true,
-            [`${name}__years-list-item--active`]: year === date.year,
+            [`${name}__years-list-item--active`]: year === date.value.year,
             [`${name}__years-list-item--current`]: year === today.getFullYear(),
             [`${name}__years-list-item--selected`]: isActiveYear(year)
           }}
 
           label={year}
-          active={date.year === year}
+          active={date.value.year === year}
 
           onClick={() => {
-            date.year = year
+            date.value.year = year
             state.value = 'months'
           }}
 
