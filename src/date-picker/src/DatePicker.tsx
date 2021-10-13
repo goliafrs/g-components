@@ -408,7 +408,7 @@ export default defineComponent({
           flat={!isActive}
           depressed={isActive}
           outline={unixTime === currentMs && !isActiveDate}
-          color={isActive ? 'primary' : 'transparent'}
+          color={isActive ? 'primary' : undefined}
           disabled={isDisabledDay(unixTime)}
           onClick={() => pickDateHandler(day)}
           onMouseover={() => hoveringDate.value = getUnixTimeByDay(day)}
