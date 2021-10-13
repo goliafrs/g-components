@@ -10,7 +10,6 @@
   @each $name in $colors {
     &--accent-#{$name} {
       border-color: var(--#{$name});
-      ;
     }
   }
 }
