@@ -1,5 +1,8 @@
 export type Color = 'primary' | 'secondary' | 'info' | 'warning' | 'error' | 'success' | 'accent' | 'white' | 'black' | 'grey' | 'gray' | 'transparent'
-export const colors = [ 'primary', 'secondary', 'info', 'warning', 'error', 'success', 'accent', 'white', 'black', 'grey', 'gray', 'transparent' ]
+export type Position = 'top' | 'bottom' | 'left' | 'right'
+
+export const colors: Color[] = [ 'primary', 'secondary', 'info', 'warning', 'error', 'success', 'accent', 'white', 'black', 'grey', 'gray', 'transparent' ]
+export const positions: Position[] = [ 'top', 'bottom', 'left', 'right' ]
 
 const REGEXP_IS_HEX = /^#?[0-9A-Fa-f]{3,6}$/
 

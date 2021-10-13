@@ -2,13 +2,6 @@
   @each $name in $colorNames {
     &--#{$name} {
       background-color: rgba(var(--#{$name}), 0.2);
-    }
-  }
-}
-
-@mixin accent-colors {
-  @each $name in $colorNames {
-    &--accent-#{$name} {
       border-color: var(--#{$name});
     }
   }
@@ -17,7 +10,6 @@
 .g {
   &-card {
     @include colors;
-    @include accent-colors;
 
     background-color: var(--white);
     display: inline-flex;
@@ -79,8 +71,26 @@
       overflow: hidden;
     }
 
-    &--transparent {
-      background-color: transparent;
+    &--accent {
+      &-top {
+        border-top-style: solid;
+        border-top-width: 8px;
+      }
+  
+      &-bottom {
+        border-bottom-style: solid;
+        border-bottom-width: 8px;
+      }
+  
+      &-left {
+        border-left-style: solid;
+        border-left-width: 8px;
+      }
+  
+      &-right {
+        border-right-style: solid;
+        border-right-width: 8px;
+      }
     }
   }
 }

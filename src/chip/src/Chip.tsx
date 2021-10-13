@@ -38,7 +38,7 @@ export default defineComponent({
     color: {
       type: String as PropType<Color>,
       default: undefined,
-      validator: (value: string): boolean => {
+      validator: (value: Color): boolean => {
         return !!~colors.indexOf(value)
       }
     },

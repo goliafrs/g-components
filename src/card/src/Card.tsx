@@ -1,6 +1,6 @@
 import { PropType, StyleValue, defineComponent, h, reactive } from 'vue'
 
-import { Color, colors, numberToPxOrString } from '../../utils'
+import { Color, Position, colors, numberToPxOrString, positions } from '../../utils'
 
 export const name = 'g-card'
 
@@ -11,7 +11,7 @@ export default defineComponent({
     color: {
       type: String as PropType<Color>,
       default: undefined,
-      validator: (value: string): boolean => {
+      validator: (value: Color): boolean => {
         return !!~colors.indexOf(value)
       }
     },
@@ -32,31 +32,12 @@ export default defineComponent({
       type: Boolean,
       default: false
     },
-    transparent: {
-      type: Boolean,
-      default: false
-    },
 
     accent: {
-      type: Boolean,
-      default: false
-    },
-    accentColor: {
-      type: String as PropType<Color>,
+      type: String as PropType<Position>,
       default: undefined,
-      validator: (value: string): boolean => {
-        return !!~colors.indexOf(value)
-      }
-    },
-    accentSize: {
-      type: String,
-      default: 'medium'
-    },
-    accentPosition: {
-      type: String,
-      default: 'left',
-      validator: (value: string): boolean => {
-        return !!~[ 'left', 'right', 'top', 'bottom' ].indexOf(value)
+      validator: (value: Position): boolean => {
+        return !!~positions.indexOf(value)
       }
     },
 
@@ -96,11 +77,8 @@ export default defineComponent({
       [`${name}--outline`]: props.outline,
       [`${name}--hover`]: props.hover,
       [`${name}--rounded`]: props.rounded,
-      [`${name}--transparent`]: props.transparent,
 
-      [`${name}--accent-${props.accentColor}`]: !!props.accentColor,
-      [`${name}--accent-${props.accentSize}`]: !!props.accentSize,
-      [`${name}--accent-${props.accentPosition}`]: !!props.accentPosition
+      [`${name}--accent-${props.accent}`]: !!props.accent
     })
     const style: StyleValue = reactive({
       minHeight: numberToPxOrString(props.minHeight),
