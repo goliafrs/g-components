@@ -326,7 +326,10 @@ export default defineComponent({
         value = [ proxy.value[0] ]
       }
 
+      console.log(value)
+
       if (JSON.stringify(props.modelValue) !== JSON.stringify(value)) {
+        console.log('if', value)
         emit('update:modelValue', value)
       }
     })
@@ -398,19 +401,17 @@ export default defineComponent({
         const currentMs = today.getTime()
         const unixTime = getUnixTimeByDay(day)
 
-        const isActive = computed<boolean>((): boolean => {
-          const { isActiveDate, isLeftActiveEdge, isRightActiveEdge } = isActiveDay(unixTime)
+        const { isActiveDate, isLeftActiveEdge, isRightActiveEdge } = isActiveDay(unixTime)
 
-          return isActiveDate || isLeftActiveEdge || isRightActiveEdge || unixTime === currentMs || false
-        })
+        const isActive = isActiveDate || isLeftActiveEdge || isRightActiveEdge || unixTime === currentMs || false
 
         return <GButton
           class={`${name}__matrix-day`}
           label={day}
-          flat={!isActive.value}
-          depressed={isActive.value}
-          outline={unixTime === currentMs && !isActive.value}
-          color={isActive.value ? 'primary' : undefined}
+          flat={!isActive}
+          depressed={isActive}
+          outline={unixTime === currentMs && !isActiveDate}
+          color={isActive ? 'primary' : undefined}
           disabled={isDisabledDay(unixTime)}
           onClick={() => pickDateHandler(day)}
           onMouseover={() => hoveringDate.value = getUnixTimeByDay(day)}
