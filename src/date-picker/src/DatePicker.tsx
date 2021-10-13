@@ -385,9 +385,6 @@ export default defineComponent({
         const ms = getMSByDay(day)
 
         const { isActiveDate, isLeftActiveEdge, isRightActiveEdge } = isActiveDay(ms)
-        console.log('isActiveDate', isActiveDate)
-        console.log('isLeftActiveEdge', isLeftActiveEdge)
-        console.log('isRightActiveEdge', isRightActiveEdge)
 
         const isActive = isActiveDate || isLeftActiveEdge || isRightActiveEdge || ms === currentMs || false
 
