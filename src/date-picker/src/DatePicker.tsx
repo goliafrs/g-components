@@ -25,7 +25,7 @@ export default defineComponent({
 
   props: {
     modelValue: {
-      type: Array as PropType<(number | string)[]>,
+      type: Array as PropType<(string | number)[]>,
       default: () => []
     },
 
@@ -49,7 +49,7 @@ export default defineComponent({
 
     range: {
       type: Boolean,
-      default: true
+      default: false
     },
 
     filter: {
@@ -209,12 +209,6 @@ export default defineComponent({
           proxy.value = [ pickedDate ]
         }
       }
-    }
-    const convertDate = (date: string | number): number => {
-      const result = new Date(date)
-      result.setHours(0, 0, 0, 0)
-
-      return result.getTime()
     }
     const isActiveDay = (unixTime: number): boolean | any => {
       const isActiveDate = proxy.value.some((value: string | number) => {
@@ -469,8 +463,8 @@ export default defineComponent({
       })
     }
     const renderWeeks = () => {
-      return computedDate.value.days.map(week => {
-        return <tr>{renderWeek(week)}</tr>
+      return computedDate.value.days.map((week, index) => {
+        return <tr key={`${name}-${uid}-week-${index}`}>{renderWeek(week)}</tr>
       })
     }
     const renderDaysMatrix = () => {
@@ -510,12 +504,12 @@ export default defineComponent({
     }
     const renderQuarter = (quarter: Month[]) => {
       return quarter.map(month => {
-        return <td class={`${name}__matrix-month-cell`}>{renderMonth(month)}</td>
+        return <td class={`${name}__matrix-month-cell`} key={`${name}-${uid}-month-cell-${month.number}`}>{renderMonth(month)}</td>
       })
     }
     const renderQuarters = () => {
-      return computedDate.value.months.map(quarter => {
-        return <tr>{renderQuarter(quarter)}</tr>
+      return computedDate.value.months.map((quarter, index) => {
+        return <tr key={`${name}-${uid}-quarter-${index}`}>{renderQuarter(quarter)}</tr>
       })
     }
     const renderMonthsMatrix = () => {
@@ -542,10 +536,12 @@ export default defineComponent({
 
           label={year}
           active={date.year === year}
+
           onClick={() => {
             date.year = year
             state.value = 'months'
           }}
+
           key={`${name}-${uid}-year-${year}`}
         />
       })
