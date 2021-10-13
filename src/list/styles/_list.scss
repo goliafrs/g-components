@@ -2,7 +2,7 @@ $size: 48px;
 $size-dense: 40px;
 
 @mixin colors {
-  @each $name in $colors {
+  @each $name in $colorNames {
     &--#{$name} {
       color: var(--#{$name});
     }

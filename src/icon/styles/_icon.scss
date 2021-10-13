@@ -1,5 +1,5 @@
 @mixin colors {
-  @each $name in $colors {
+  @each $name in $colorNames {
     &--#{$name} {
       color: var(--#{$name});
     }

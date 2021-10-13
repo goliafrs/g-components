@@ -1,5 +1,5 @@
 @mixin colors {
-  @each $name in $colors {
+  @each $name in $colorNames {
     &--#{$name} {
       &:not(.g-avatar--outline) {
         background-color: var(--#{$name});
