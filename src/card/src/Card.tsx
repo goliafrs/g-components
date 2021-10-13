@@ -1,6 +1,6 @@
-import { StyleValue, defineComponent, h, reactive } from 'vue'
+import { PropType, StyleValue, defineComponent, h, reactive } from 'vue'
 
-import { numberToPxOrString } from '../../utils'
+import { Color, colors, numberToPxOrString } from '../../utils'
 
 export const name = 'g-card'
 
@@ -9,8 +9,11 @@ export default defineComponent({
 
   props: {
     color: {
-      type: String,
-      default: undefined
+      type: String as PropType<Color>,
+      default: undefined,
+      validator: (value: string): boolean => {
+        return !!~colors.indexOf(value)
+      }
     },
 
     flat: {
@@ -39,8 +42,11 @@ export default defineComponent({
       default: false
     },
     accentColor: {
-      type: String,
-      default: undefined
+      type: String as PropType<Color>,
+      default: undefined,
+      validator: (value: string): boolean => {
+        return !!~colors.indexOf(value)
+      }
     },
     accentSize: {
       type: String,

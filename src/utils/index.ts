@@ -1,4 +1,8 @@
+export type Color = 'primary' | 'secondary' | 'info' | 'warning' | 'error' | 'success' | 'accent' | 'white' | 'black' | 'grey' | 'gray'
+export const colors = [ 'primary', 'secondary', 'info', 'warning', 'error', 'success', 'accent', 'white', 'black', 'grey', 'gray' ]
+
 const REGEXP_IS_HEX = /^#?[0-9A-Fa-f]{3,6}$/
+
 export function isHEX(value: string): boolean {
   return REGEXP_IS_HEX.test(value)
 }

@@ -1,32 +1,10 @@
-import { StyleValue, defineComponent, h, reactive } from 'vue'
+import { PropType, StyleValue, defineComponent, h, reactive } from 'vue'
 
 import { GIcon } from 'g-components'
 
-import { numberToPxOrString } from '../../utils'
+import { Color, colors, numberToPxOrString } from '../../utils'
 
 export const name = 'g-avatar'
-
-export const colors = [
-  '#F44336',
-  '#E91E63',
-  '#9C27B0',
-  '#673AB7',
-  '#3F51B5',
-  '#2196F3',
-  '#03A9F4',
-  '#00BCD4',
-  '#009688',
-  '#4CAF50',
-  '#8BC34A',
-  '#CDDC39',
-  '#FFEB3B',
-  '#FFC107',
-  '#FF9800',
-  '#FF5722',
-  '#795548',
-  '#9E9E9E',
-  '#607D8B'
-]
 
 export default defineComponent({
   name,
@@ -65,9 +43,13 @@ export default defineComponent({
     },
 
     color: {
-      type: String,
-      default: undefined
+      type: String as PropType<Color>,
+      default: undefined,
+      validator: (value: string): boolean => {
+        return !!~colors.indexOf(value)
+      }
     },
+
     background: {
       type: String,
       default: undefined
@@ -92,7 +74,28 @@ export default defineComponent({
 
     let defaultBackground
     if (charCode) {
-      defaultBackground = colors[charCode % colors.length]
+      const defaultColors = [
+        '#F44336',
+        '#E91E63',
+        '#9C27B0',
+        '#673AB7',
+        '#3F51B5',
+        '#2196F3',
+        '#03A9F4',
+        '#00BCD4',
+        '#009688',
+        '#4CAF50',
+        '#8BC34A',
+        '#CDDC39',
+        '#FFEB3B',
+        '#FFC107',
+        '#FF9800',
+        '#FF5722',
+        '#795548',
+        '#9E9E9E',
+        '#607D8B'
+      ]
+      defaultBackground = defaultColors[charCode % defaultColors.length]
     }
 
     const classes = reactive({

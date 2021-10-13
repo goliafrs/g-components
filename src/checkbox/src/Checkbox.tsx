@@ -1,4 +1,6 @@
-import { computed, defineComponent, getCurrentInstance, h, reactive, ref, watch } from 'vue'
+import { PropType, defineComponent, getCurrentInstance, h, reactive, ref, watch } from 'vue'
+
+import { Color, colors } from '../../utils'
 
 export const name = 'g-checkbox'
 
@@ -15,9 +17,13 @@ export default defineComponent({
       type: String,
       default: undefined
     },
+
     color: {
-      type: String,
-      default: undefined
+      type: String as PropType<Color>,
+      default: undefined,
+      validator: (value: string): boolean => {
+        return !!~colors.indexOf(value)
+      }
     },
 
     trueValue: {

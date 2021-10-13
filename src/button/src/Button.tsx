@@ -1,6 +1,8 @@
-import { ComputedRef, PropType, computed, defineComponent, h, reactive } from 'vue'
+import { PropType, defineComponent, h, reactive } from 'vue'
 
 import { GIcon, GProgress } from 'g-components'
+
+import { Color, colors } from '../../utils'
 
 export const name = 'g-button'
 
@@ -14,8 +16,11 @@ export default defineComponent({
     },
 
     color: {
-      type: String,
-      default: undefined
+      type: String as PropType<Color>,
+      default: undefined,
+      validator: (value: string): boolean => {
+        return !!~colors.indexOf(value)
+      }
     },
 
     tiny: Boolean,

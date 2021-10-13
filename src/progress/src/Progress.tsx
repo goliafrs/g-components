@@ -1,6 +1,6 @@
-import { StyleValue, defineComponent, h, reactive } from 'vue'
+import { PropType, StyleValue, defineComponent, h, reactive } from 'vue'
 
-import { normalizedValue, numberToPxOrString } from '../../utils'
+import { Color, colors, normalizedValue, numberToPxOrString } from '../../utils'
 
 export const name = 'g-progress'
 
@@ -41,8 +41,11 @@ export default defineComponent({
     },
 
     color: {
-      type: String,
-      default: 'primary'
+      type: String as PropType<Color>,
+      default: undefined,
+      validator: (value: string): boolean => {
+        return !!~colors.indexOf(value)
+      }
     },
 
     indeterminate: {

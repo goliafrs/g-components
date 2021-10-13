@@ -1,5 +1,8 @@
-import { PropType, computed, defineComponent, getCurrentInstance, h, reactive, ref, watch } from 'vue'
+import { PropType, computed, defineComponent, h, reactive } from 'vue'
+
 import { GIcon, GProgress } from 'g-components'
+
+import { Color, colors } from '../../utils'
 
 export const name = 'g-chip'
 
@@ -33,9 +36,13 @@ export default defineComponent({
     large: Boolean,
 
     color: {
-      type: String,
-      default: undefined
+      type: String as PropType<Color>,
+      default: undefined,
+      validator: (value: string): boolean => {
+        return !!~colors.indexOf(value)
+      }
     },
+
     icon: {
       type: String,
       default: undefined

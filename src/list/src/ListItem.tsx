@@ -1,5 +1,8 @@
 import { PropType, defineComponent, h, ref } from 'vue'
+
 import { GIcon } from 'g-components'
+
+import { Color, colors } from '../../utils'
 
 export const name = 'g-list-item'
 
@@ -46,9 +49,13 @@ export default defineComponent({
     },
 
     color: {
-      type: String,
-      default: undefined
+      type: String as PropType<Color>,
+      default: undefined,
+      validator: (value: string): boolean => {
+        return !!~colors.indexOf(value)
+      }
     },
+
     icon: {
       type: String,
       default: undefined
