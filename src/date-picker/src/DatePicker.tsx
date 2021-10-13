@@ -63,8 +63,8 @@ export default defineComponent({
   setup(props, { emit }) {
     const uid = getCurrentInstance()?.uid
 
-    const datePicker = ref<HTMLElement>()
-    const yearsList = ref<HTMLElement>()
+    const rootRef = ref<HTMLElement>()
+    const yearsRef = ref<HTMLElement>()
 
     const date = ref<DateToday>({
       year: today.getFullYear(),
@@ -109,7 +109,7 @@ export default defineComponent({
 
       return result
     })
-    const months = computed(() => {
+    const months = computed((): Month[] => {
       const result = []
 
       for (let index = 0; index < 12; index++) {
@@ -120,7 +120,7 @@ export default defineComponent({
         })
       }
 
-      return chunk(result, 3)
+      return result
     })
     const years = computed((): number[] => {
       const result = []
@@ -150,10 +150,10 @@ export default defineComponent({
     const scrollYearsList = (): void => {
       if (state.value === 'years') {
         setTimeout(() => {
-          if (datePicker.value && yearsList.value) {
-            const activeYearElement: HTMLElement = yearsList.value.querySelector(`.${name}__years-list-item--active`) as HTMLElement
+          if (rootRef.value && yearsRef.value) {
+            const activeYearElement: HTMLElement = yearsRef.value.querySelector(`.${name}__years-list-item--active`) as HTMLElement
             if (activeYearElement) {
-              yearsList.value.scrollTop = activeYearElement.offsetTop - datePicker.value.offsetHeight / 2
+              yearsRef.value.scrollTop = activeYearElement.offsetTop - rootRef.value.offsetHeight / 2
             }
           }
         }, 100)
@@ -288,16 +288,16 @@ export default defineComponent({
         return false
       }
 
-      const currentDate = new Date(proxy.value[0])
+      const [ leftEdge, rightEdge ] = proxy.value
+      const leftActiveEdge = new Date(leftEdge).getFullYear()
 
       if (proxy.value.length < 2) {
-        return currentDate.getFullYear() === year
+        return leftActiveEdge === year
       }
 
-      const topBorder = currentDate
-      const bottomBorder = new Date(proxy.value[1])
+      const rightActiveEdge = new Date(rightEdge).getFullYear()
 
-      return topBorder.getFullYear() <= year && bottomBorder.getFullYear() >= year
+      return leftActiveEdge <= year && rightActiveEdge >= year
     }
 
     watch(() => props.modelValue, () => {
@@ -452,15 +452,13 @@ export default defineComponent({
         return <tr key={`${name}-${uid}-week-${index}`}>{renderWeek(week)}</tr>
       })
     }
-    const renderDaysMatrix = () => {
+    const renderDays = () => {
       if (state.value === 'days') {
-        return <div class={`${name}__holder`}>
-          <table class={`${name}__matrix`}>
-            <colgroup>{renderDaysOfWeek(true)}</colgroup>
-            <thead><tr>{renderDaysOfWeek(false)}</tr></thead>
-            <tbody>{renderWeeks()}</tbody>
-          </table>
-        </div>
+        return <table class={`${name}__matrix`}>
+          <colgroup>{renderDaysOfWeek(true)}</colgroup>
+          <thead><tr>{renderDaysOfWeek(false)}</tr></thead>
+          <tbody>{renderWeeks()}</tbody>
+        </table>
       }
     }
 
@@ -488,65 +486,46 @@ export default defineComponent({
         key={`${name}-${uid}-month-${month.number}`}
       />
     }
-    const renderQuarter = (quarter: Month[]) => {
-      return quarter.map(month => {
-        return <td class={`${name}__matrix-month-cell`} key={`${name}-${uid}-month-cell-${month.number}`}>{renderMonth(month)}</td>
-      })
-    }
-    const renderQuarters = () => {
-      return months.value.map((quarter, index) => {
-        return <tr key={`${name}-${uid}-quarter-${index}`}>{renderQuarter(quarter)}</tr>
-      })
-    }
-    const renderMonthsMatrix = () => {
+    const renderMonths = () => {
       if (state.value === 'months') {
-        return <div class={`${name}__holder`}>
-          <table class={`${name}__matrix`}>
-            <tbody>
-              {renderQuarters()}
-            </tbody>
-          </table>
+        return <div class={`${name}__months`}>
+          {months.value.map(month => renderMonth(month))}
         </div>
       }
     }
 
+    const renderYear = (year: number) => {
+      return <div
+        class={{
+          [`${name}__year`]: true,
+          [`${name}__year--active`]: year === date.value.year,
+          [`${name}__year--current`]: year === today.getFullYear(),
+          [`${name}__year--selected`]: isActiveYear(year)
+        }}
+
+        onClick={() => {
+          date.value.year = year
+          state.value = 'months'
+        }}
+
+        key={`${name}-${uid}-year-${year}`}
+      >
+
+      </div>
+    }
     const renderYears = () => {
-      return years.value.map(year => {
-        return <GListItem
-          class={{
-            [`${name}__years-list-item`]: true,
-            [`${name}__years-list-item--active`]: year === date.value.year,
-            [`${name}__years-list-item--current`]: year === today.getFullYear(),
-            [`${name}__years-list-item--selected`]: isActiveYear(year)
-          }}
-
-          label={year}
-          active={date.value.year === year}
-
-          onClick={() => {
-            date.value.year = year
-            state.value = 'months'
-          }}
-
-          key={`${name}-${uid}-year-${year}`}
-        />
-      })
-    }
-    const renderYearsList = () => {
       if (state.value === 'years') {
-        return <div class={`${name}__years-list`} ref={yearsList}>
-          <GList>
-            {renderYears()}
-          </GList>
+        return <div class={`${name}__years`} ref={yearsRef}>
+          {years.value.map(year => renderYear(year))}
         </div>
       }
     }
 
-    return () => <div class={`${name}`} ref={datePicker}>
+    return () => <div class={name} ref={rootRef}>
       {renderHeader()}
-      {renderDaysMatrix()}
-      {renderMonthsMatrix()}
-      {renderYearsList()}
+      {renderDays()}
+      {renderMonths()}
+      {renderYears()}
     </div>
   }
 })

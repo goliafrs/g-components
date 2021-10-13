@@ -67,11 +67,6 @@
       border-spacing: 0;
       width: 100%;
 
-      &-day,
-      &-month {
-        margin: 0;
-      }
-
       &-day {
         &-of-week {
           @include default-text-style(12px, 700);
@@ -180,43 +175,38 @@
           }
         }
       }
-
-      &-month {
-        min-width: unset;
-        width: 100%;
-
-        &-cell {
-          padding-left: 4px;
-          padding-right: 4px;
-          padding-top: 8px;
-          padding-bottom: 8px;
-        }
-      }
     }
 
-    &__years-list {
+    &__months {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      grid-gap: 8px;
+    }
+
+    &__years {
       @include scrollbar;
 
       overflow-y: auto;
       overflow-x: hidden;
-      width: 100%;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      grid-gap: 8px;
+    }
+    &__year {
+      &--current {
+        color: var(--primary) !important;
+      }
 
-      &-item {
-        &--current {
-          color: var(--primary) !important;
-        }
+      &--active {
+        color: var(--primary) !important;
+      }
 
-        &--active {
-          color: var(--primary) !important;
-        }
+      &--selected {
+        color: var(--white) !important;
+        background-color: var(--primary);
 
-        &--selected {
-          color: var(--white) !important;
-          background-color: var(--primary);
-
-          &:hover {
-            background-color: $primary-light !important;
-          }
+        &:hover {
+          background-color: $primary-light !important;
         }
       }
     }
