@@ -85,37 +85,39 @@ export default defineComponent({
   },
 
   setup(props, { slots }) {
-    const classes = ref({
-      [`${name}`]: true,
+    const classes = computed(() => {
+      return {
+        [`${name}`]: true,
 
-      [`${name}--tiny`]: props.tiny,
-      [`${name}--small`]: props.small,
-      [`${name}--large`]: props.large,
+        [`${name}--tiny`]: props.tiny,
+        [`${name}--small`]: props.small,
+        [`${name}--large`]: props.large,
 
-      [`${name}--fab`]: props.fab,
-      [`${name}--flat`]: props.flat,
-      [`${name}--block`]: props.block,
-      [`${name}--round`]: props.round ? true : !!props.icon && !props.label,
-      [`${name}--rounded`]: props.rounded,
-      [`${name}--outline`]: props.outline,
-      [`${name}--depressed`]: props.depressed,
-      [`${name}--marginless`]: props.marginless,
+        [`${name}--fab`]: props.fab,
+        [`${name}--flat`]: props.flat,
+        [`${name}--block`]: props.block,
+        [`${name}--round`]: props.round ? true : !!props.icon && !props.label,
+        [`${name}--rounded`]: props.rounded,
+        [`${name}--outline`]: props.outline,
+        [`${name}--depressed`]: props.depressed,
+        [`${name}--marginless`]: props.marginless,
 
-      [`${name}--toolbar`]: props.toolbar,
+        [`${name}--toolbar`]: props.toolbar,
 
-      [`${name}--fixed`]: props.fixed,
-      [`${name}--absolute`]: props.absolute,
+        [`${name}--fixed`]: props.fixed,
+        [`${name}--absolute`]: props.absolute,
 
-      [`${name}--top`]: props.top,
-      [`${name}--bottom`]: props.bottom,
-      [`${name}--left`]: props.left,
-      [`${name}--right`]: props.right,
+        [`${name}--top`]: props.top,
+        [`${name}--bottom`]: props.bottom,
+        [`${name}--left`]: props.left,
+        [`${name}--right`]: props.right,
 
-      [`${name}--disabled`]: props.disabled,
-      [`${name}--loading`]: props.loading,
+        [`${name}--disabled`]: props.disabled,
+        [`${name}--loading`]: props.loading,
 
-      [`${name}--${props.type}`]: !!props.type,
-      [`${name}--${props.color}`]: !!props.color
+        [`${name}--${props.type}`]: !!props.type,
+        [`${name}--${props.color}`]: !!props.color
+      }
     })
 
     const size = computed(() => props.tiny ? 14 : props.small ? 18 : props.large ? 26 : props.fab ? 30 : 22)
