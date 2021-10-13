@@ -399,10 +399,10 @@ export default defineComponent({
 
         return <GButton
           label={day}
-          flat={!isActiveDay(ms).isActiveDate}
-          depressed={isActiveDay(ms).isActiveDate}
+          flat={!isActive}
+          depressed={isActive}
           outline={ms === currentMs && !isActiveDate}
-          color={isActiveDate || ms === currentMs ? 'primary' : undefined}
+          color={isActive ? 'primary' : undefined}
           disabled={ms < min.value || ms > max.value}
           onClick={() => pickDateHandler(day)}
           onMouseover={() => hoverDate.value = ms}
