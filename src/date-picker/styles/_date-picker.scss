@@ -182,6 +182,7 @@
       grid-template-columns: repeat(3, 1fr);
       grid-gap: 8px;
     }
+
     &__month {
       min-width: unset;
     }
@@ -196,7 +197,10 @@
       grid-template-columns: repeat(3, 1fr);
       grid-gap: 8px;
     }
+
     &__year {
+      min-width: unset;
+
       &--current {
         color: var(--primary) !important;
       }

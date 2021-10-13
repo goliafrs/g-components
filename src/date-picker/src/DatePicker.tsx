@@ -495,23 +495,25 @@ export default defineComponent({
     }
 
     const renderYear = (year: number) => {
-      return <div
-        class={{
-          [`${name}__year`]: true,
-          [`${name}__year--active`]: year === date.value.year,
-          [`${name}__year--current`]: year === today.getFullYear(),
-          [`${name}__year--selected`]: isActiveYear(year)
-        }}
+      const isActive = isActiveYear(year) || year === date.value.year
+      const color = isActive ? 'primary' : undefined
 
+      return <GButton
+        class={`${name}__year`}
+        label={year}
+        flat={!isActive}
+        color={color}
+        outline={year === today.getFullYear() && !isActive}
+        block
+        rounded
+        depressed={isActive}
+        marginless
         onClick={() => {
           date.value.year = year
           state.value = 'months'
         }}
-
         key={`${name}-${uid}-year-${year}`}
-      >
-
-      </div>
+      />
     }
     const renderYears = () => {
       if (state.value === 'years') {
