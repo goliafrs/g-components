@@ -501,12 +501,12 @@ export default defineComponent({
       return <GButton
         class={`${name}__year`}
         label={year}
-        flat={!isActive}
         color={color}
-        outline={year === today.getFullYear() && !isActive}
+        flat={!isActive}
+        outline={!isActive && year === today.getFullYear()}
+        depressed={isActive}
         block
         rounded
-        depressed={isActive}
         marginless
         onClick={() => {
           date.value.year = year

@@ -1,6 +1,6 @@
 .g {
   &-date-picker {
-    @include absolute-height(326px);
+    @include absolute-height(36px + 8px + 282px);
     @include absolute-width(282px);
 
     padding: 8px;
@@ -189,7 +189,7 @@
 
     &__years {
       @include scrollbar;
-      @include absolute-height(326px);
+      @include absolute-height(326px - 36px - 8px);
 
       overflow-y: auto;
       overflow-x: hidden;
