@@ -398,17 +398,19 @@ export default defineComponent({
         const currentMs = today.getTime()
         const unixTime = getUnixTimeByDay(day)
 
-        const { isActiveDate, isLeftActiveEdge, isRightActiveEdge } = isActiveDay(unixTime)
+        const isActive = computed<boolean>((): boolean => {
+          const { isActiveDate, isLeftActiveEdge, isRightActiveEdge } = isActiveDay(unixTime)
 
-        const isActive = isActiveDate || isLeftActiveEdge || isRightActiveEdge || unixTime === currentMs || false
+          return isActiveDate || isLeftActiveEdge || isRightActiveEdge || unixTime === currentMs || false
+        })
 
         return <GButton
           class={`${name}__matrix-day`}
           label={day}
-          flat={!isActive}
-          depressed={isActive}
-          outline={unixTime === currentMs && !isActiveDate}
-          color={isActive ? 'primary' : undefined}
+          flat={!isActive.value}
+          depressed={isActive.value}
+          outline={unixTime === currentMs && !isActive.value}
+          color={isActive.value ? 'primary' : undefined}
           disabled={isDisabledDay(unixTime)}
           onClick={() => pickDateHandler(day)}
           onMouseover={() => hoveringDate.value = getUnixTimeByDay(day)}
@@ -427,20 +429,20 @@ export default defineComponent({
         let isLeftActiveHoverDate = false
         let isRightActiveHoverDate = false
 
-        const arrTimeForHover = []
+        const hoveringDates = []
 
         if (hoveringDate.value) {
-          arrTimeForHover.push(proxy.value[0])
-          arrTimeForHover.push(hoveringDate.value)
+          hoveringDates.push(proxy.value[0])
+          hoveringDates.push(hoveringDate.value)
         }
 
-        arrTimeForHover.sort()
+        hoveringDates.sort()
 
-        if (arrTimeForHover.length === 2 && proxy.value.length === 1) {
-          if (unixTime === arrTimeForHover[0]) {
+        if (hoveringDates.length === 2 && proxy.value.length === 1) {
+          if (unixTime === hoveringDates[0]) {
             isLeftActiveHoverDate = true
           }
-          if (unixTime === arrTimeForHover[1]) {
+          if (unixTime === hoveringDates[1]) {
             isRightActiveHoverDate = true
           }
         }
