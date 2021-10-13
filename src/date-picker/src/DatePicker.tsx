@@ -324,10 +324,7 @@ export default defineComponent({
         value = [ proxy.value[0] ]
       }
 
-      console.log(value)
-
       if (JSON.stringify(props.modelValue) !== JSON.stringify(value)) {
-        console.log('if', value)
         emit('update:modelValue', props.filter(value))
       }
     })
