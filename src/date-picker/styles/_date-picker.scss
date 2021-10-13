@@ -182,6 +182,9 @@
       grid-template-columns: repeat(3, 1fr);
       grid-gap: 8px;
     }
+    &__month {
+      min-width: none;
+    }
 
     &__years {
       @include scrollbar;

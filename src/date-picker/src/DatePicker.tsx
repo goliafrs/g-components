@@ -470,7 +470,7 @@ export default defineComponent({
       const color = isActive || currentYear && currentMonth ? 'primary' : undefined
 
       return <GButton
-        class={`${name}__matrix-month`}
+        class={`${name}__month`}
         label={month.short}
         flat={!isActive}
         color={color}
