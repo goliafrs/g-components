@@ -193,12 +193,12 @@ export default defineComponent({
         }
       }
     }
-    const getUnixTimeByDay = (day: number): number => {
+    const getMSByDay = (day: number): number => {
       return new Date(date.year, date.month, day).getTime()
     }
     const pickDateHandler = (day: number) => {
       if (day && !isNaN(day)) {
-        const pickedDate = getUnixTimeByDay(day)
+        const pickedDate = getMSByDay(day)
 
         date.day = day
 
@@ -210,12 +210,11 @@ export default defineComponent({
         }
       }
     }
-    const isActiveDay = (unixTime: number): boolean | any => {
-      console.log('isActiveDay', unixTime)
+    const isActiveDay = (ms: number): boolean | any => {
       const isActiveDate = proxy.value.some((value: string | number) => {
         if (value) {
           const timeToCompare = value
-          if (unixTime === timeToCompare) {
+          if (ms === timeToCompare) {
             return true
           }
         }
@@ -225,7 +224,7 @@ export default defineComponent({
 
       let isInRange = false
       if (proxy.value.length > 1) {
-        isInRange = unixTime < proxy.value[1] && unixTime > proxy.value[0]
+        isInRange = ms < proxy.value[1] && ms > proxy.value[0]
       }
 
       let isLeftActiveEdge = false
@@ -234,31 +233,54 @@ export default defineComponent({
       if (proxy.value.length === 2) {
         const leftEdge = proxy.value[0]
         const rightEdge = proxy.value[1]
-        if (leftEdge === unixTime) {
+        if (leftEdge === ms) {
           isLeftActiveEdge = true
         }
-        if (rightEdge === unixTime) {
+        if (rightEdge === ms) {
           isRightActiveEdge = true
         }
       }
 
-      return {
-        isActiveDate,
-        isInRange,
-        isLeftActiveEdge,
-        isRightActiveEdge
+      let isLeftActiveHoverDate = false
+      let isRightActiveHoverDate = false
+
+      const hoveringDates = []
+
+      if (hoveringDate.value) {
+        hoveringDates.push(proxy.value[0])
+        hoveringDates.push(hoveringDate.value)
       }
-    }
-    const isActiveHoverDay = (unixTime: number): boolean => {
+
+      hoveringDates.sort()
+
+      if (hoveringDates.length === 2 && proxy.value.length === 1) {
+        if (ms === hoveringDates[0]) {
+          isLeftActiveHoverDate = true
+        }
+        if (ms === hoveringDates[1]) {
+          isRightActiveHoverDate = true
+        }
+      }
+
+      let isActiveHoverDay = false
+
       if (hoveringDate.value && proxy.value.length === 1) {
         const value = new Date(proxy.value[0]).getTime()
-        const lt = unixTime < Math.max(value, hoveringDate.value)
-        const gt = unixTime > Math.min(value, hoveringDate.value)
+        const lt = ms < Math.max(value, hoveringDate.value)
+        const gt = ms > Math.min(value, hoveringDate.value)
 
-        return lt && gt
+        isActiveHoverDay = lt && gt
       }
 
-      return false
+      return {
+        isActiveDate,
+        isActiveHoverDay,
+        isInRange,
+        isLeftActiveEdge,
+        isRightActiveEdge,
+        isLeftActiveHoverDate,
+        isRightActiveHoverDate
+      }
     }
     const isActiveMonth = (year: number, month: number): boolean => {
       if (!proxy.value.length) {
@@ -298,8 +320,8 @@ export default defineComponent({
 
       return topBorder.getFullYear() <= year && bottomBorder.getFullYear() >= year
     }
-    const isDisabledDay = (unixTime: number): boolean => {
-      return unixTime < min.value || unixTime > max.value
+    const isDisabledDay = (ms: number): boolean => {
+      return ms < min.value || ms > max.value
     }
 
     watch(() => props.modelValue, () => {
@@ -395,24 +417,22 @@ export default defineComponent({
     const renderDay = (day: number | undefined) => {
       if (day) {
         const currentMs = today.getTime()
-        const unixTime = getUnixTimeByDay(day)
+        const ms = getMSByDay(day)
 
-        console.log('> renderDay', unixTime)
+        const { isActiveDate, isLeftActiveEdge, isRightActiveEdge } = isActiveDay(ms)
 
-        const { isActiveDate, isLeftActiveEdge, isRightActiveEdge } = isActiveDay(unixTime)
-
-        const isActive = isActiveDate || isLeftActiveEdge || isRightActiveEdge || unixTime === currentMs || false
+        const isActive = isActiveDate || isLeftActiveEdge || isRightActiveEdge || ms === currentMs || false
 
         return <GButton
           class={`${name}__matrix-day`}
           label={day}
           flat={!isActive}
           depressed={isActive}
-          outline={unixTime === currentMs && !isActiveDate}
+          outline={ms === currentMs && !isActiveDate}
           color={isActive ? 'primary' : undefined}
-          disabled={isDisabledDay(unixTime)}
+          disabled={isDisabledDay(ms)}
           onClick={() => pickDateHandler(day)}
-          onMouseover={() => hoveringDate.value = getUnixTimeByDay(day)}
+          onMouseover={() => hoveringDate.value = getMSByDay(day)}
           onMouseout={() => hoveringDate.value = 0}
           key={`${name}-${uid}-day-${day}`}
           round
@@ -421,30 +441,9 @@ export default defineComponent({
     }
     const renderWeek = (week: (number | undefined)[]) => {
       return week.map(day => {
-        const unixTime = getUnixTimeByDay(day || 0)
+        const ms = getMSByDay(day || 0)
 
-        const { isInRange, isLeftActiveEdge, isRightActiveEdge } = isActiveDay(unixTime)
-
-        let isLeftActiveHoverDate = false
-        let isRightActiveHoverDate = false
-
-        const hoveringDates = []
-
-        if (hoveringDate.value) {
-          hoveringDates.push(proxy.value[0])
-          hoveringDates.push(hoveringDate.value)
-        }
-
-        hoveringDates.sort()
-
-        if (hoveringDates.length === 2 && proxy.value.length === 1) {
-          if (unixTime === hoveringDates[0]) {
-            isLeftActiveHoverDate = true
-          }
-          if (unixTime === hoveringDates[1]) {
-            isRightActiveHoverDate = true
-          }
-        }
+        const { isActiveHoverDay, isInRange, isLeftActiveEdge, isRightActiveEdge, isLeftActiveHoverDate, isRightActiveHoverDate } = isActiveDay(ms)
 
         return <td
           class={{
@@ -452,7 +451,7 @@ export default defineComponent({
             [`${name}__matrix-day-cell--active`]: day && isInRange,
             [`${name}__matrix-day-cell--active-left`]: day && isLeftActiveEdge,
             [`${name}__matrix-day-cell--active-right`]: day && isRightActiveEdge,
-            [`${name}__matrix-day-cell--active-hover`]: day && isActiveHoverDay(unixTime) && props.range,
+            [`${name}__matrix-day-cell--active-hover`]: day && isActiveHoverDay && props.range,
             [`${name}__matrix-day-cell--active-hover-left`]: day && isLeftActiveHoverDate && !isLeftActiveEdge && props.range,
             [`${name}__matrix-day-cell--active-hover-right`]: day && isRightActiveHoverDate && !isRightActiveEdge && props.range
           }}
