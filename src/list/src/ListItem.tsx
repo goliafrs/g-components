@@ -13,7 +13,7 @@ export interface ListItem {
   hovered: boolean,
   link: boolean,
   dense: boolean,
-  color: string,
+  color: Color,
   icon: string,
   to: any
 }
