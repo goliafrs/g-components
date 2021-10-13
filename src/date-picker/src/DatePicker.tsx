@@ -443,7 +443,14 @@ export default defineComponent({
       return week.map(day => {
         const ms = getMSByDay(day || 0)
 
-        const { isActiveHoverDay, isInRange, isLeftActiveEdge, isRightActiveEdge, isLeftActiveHoverDate, isRightActiveHoverDate } = isActiveDay(ms)
+        const {
+          isInRange,
+          isActiveHoverDay,
+          isLeftActiveEdge,
+          isRightActiveEdge,
+          isLeftActiveHoverDate,
+          isRightActiveHoverDate
+        } = isActiveDay(ms)
 
         return <td
           class={{
