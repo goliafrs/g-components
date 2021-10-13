@@ -316,9 +316,7 @@ export default defineComponent({
         proxy.value = [ proxy.value[0] ]
       }
     })
-    watch(() => proxy, () => {
-      proxy.value = props.filter(proxy.value)
-
+    watch(() => proxy.value, () => {
       let value
       if (props.range) {
         value = proxy.value
@@ -330,7 +328,7 @@ export default defineComponent({
 
       if (JSON.stringify(props.modelValue) !== JSON.stringify(value)) {
         console.log('if', value)
-        emit('update:modelValue', value)
+        emit('update:modelValue', props.filter(value))
       }
     })
     watch(() => state, scrollYearsList)
