@@ -1,5 +1,5 @@
 @mixin colors {
-  @each $name in $colorNames {
+  @each $name, $color in $colorNames {
     &--#{$name} {
       color: var(--#{$name});
 
@@ -20,13 +20,13 @@
 
         &:hover {
           &::before {
-            background-color: rgba(var(--#{$name}), 0.12);
+            background-color: rgba($color, 0.12);
           }
         }
 
         &:active {
           &::before {
-            background-color: rgba(var(--#{$name}), 0.24);
+            background-color: rgba($color, 0.24);
           }
         }
       }
