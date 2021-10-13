@@ -1,4 +1,4 @@
-import { PropType, computed, defineComponent, h, reactive } from 'vue'
+import { PropType, computed, defineComponent, h, ref } from 'vue'
 
 import { GIcon, GProgress } from 'g-components'
 
@@ -85,7 +85,7 @@ export default defineComponent({
   },
 
   setup(props, { slots }) {
-    const classes = reactive({
+    const classes = ref({
       [`${name}`]: true,
 
       [`${name}--tiny`]: props.tiny,
@@ -154,7 +154,7 @@ export default defineComponent({
       name={props.name}
       type={props.type}
 
-      class={classes}
+      class={classes.value}
 
       onClick={props.onClick}
       onMouseover={props.onMouseover}
