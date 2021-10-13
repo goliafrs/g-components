@@ -71,10 +71,30 @@ export default defineComponent({
       month: today.getMonth(),
       day: today.getDate()
     })
-    const hoverDate = ref(0)
+
     const state = ref<'days' | 'months' | 'years'>('days')
     const proxy = ref(props.modelValue)
+    const hoverDay = ref(0)
 
+    const days = computed(() => {
+      const result = []
+
+      const dayOfFirstDate = new Date(date.value.year, date.value.month, 1).getDay()
+      const dayAmount = new Date(date.value.year, date.value.month + 1, 0).getDate()
+
+      const diff = dayOfFirstDate - 1
+      const prepend = diff < 0 ? 7 + diff : diff
+
+      for (let index = 0; index < prepend; index++) {
+        result.push(undefined)
+      }
+
+      for (let index = 1; index <= dayAmount; index++) {
+        result.push(index)
+      }
+
+      return chunk(result, 7)
+    })
     const daysOfWeek = computed((): string[] => {
       const result = []
 
@@ -89,7 +109,7 @@ export default defineComponent({
 
       return result
     })
-    const months = computed((): Month[] => {
+    const months = computed(() => {
       const result = []
 
       for (let index = 0; index < 12; index++) {
@@ -100,7 +120,7 @@ export default defineComponent({
         })
       }
 
-      return result
+      return chunk(result, 3)
     })
     const years = computed((): number[] => {
       const result = []
@@ -125,32 +145,6 @@ export default defineComponent({
       }
 
       return undefined
-    })
-
-    const computedDate = computed(() => {
-      const currentDate = new Date(date.value.year, date.value.month, date.value.day)
-      const dayOfFirstDate = new Date(date.value.year, date.value.month, 1).getDay()
-      const dayAmount = new Date(date.value.year, date.value.month + 1, 0).getDate()
-      const daysMatrix = []
-
-      const diff = dayOfFirstDate - 1
-      const prepend = diff < 0 ? 7 + diff : diff
-
-      for (let index = 0; index < prepend; index++) {
-        daysMatrix.push(undefined)
-      }
-
-      for (let index = 1; index <= dayAmount; index++) {
-        daysMatrix.push(index)
-      }
-
-      return {
-        year: currentDate.getFullYear(),
-        month: currentDate.toLocaleString(props.localeTag, { month: 'long' }),
-        day: currentDate.toLocaleString(props.localeTag, { day: 'numeric' }),
-        days: chunk(daysMatrix, 7),
-        months: chunk(months.value, 3)
-      }
     })
 
     const scrollYearsList = (): void => {
@@ -227,11 +221,11 @@ export default defineComponent({
         isRightActiveEdge = ms === rightEdge
       }
 
-      const hoverDates = [ leftEdge, hoverDate.value ]
-      hoverDates.sort()
+      const hoverDays = [ leftEdge, hoverDay.value ]
+      hoverDays.sort()
 
-      if (hoverDates.length === 2 && proxy.value.length === 1) {
-        const [ leftHoveringEdge, rightHoveringEdge ] = hoverDates
+      if (hoverDays.length === 2 && proxy.value.length === 1) {
+        const [ leftHoveringEdge, rightHoveringEdge ] = hoverDays
 
         isLeftActiveHoverDate = ms === leftHoveringEdge
         isRightActiveHoverDate = ms === rightHoveringEdge
@@ -239,10 +233,10 @@ export default defineComponent({
 
       let isActiveHoverDay = false
 
-      if (hoverDate.value && proxy.value.length === 1) {
+      if (hoverDay.value && proxy.value.length === 1) {
         const value = new Date(proxy.value[0]).getTime()
-        const lt = ms < Math.max(value, hoverDate.value)
-        const gt = ms > Math.min(value, hoverDate.value)
+        const lt = ms < Math.max(value, hoverDay.value)
+        const gt = ms > Math.min(value, hoverDay.value)
 
         isActiveHoverDay = lt && gt
       }
@@ -354,15 +348,17 @@ export default defineComponent({
     })
 
     const renderTitle = () => {
+      const currentDate = new Date(date.value.year, date.value.month, date.value.day)
+
       return <div class={`${name}__title`}>
         <span class={`${name}__title-item ${name}__title-item--day`} onClick={() => state.value = 'days'}>
-          {computedDate.value.day}
+          {currentDate.toLocaleString(props.localeTag, { day: 'numeric' })}
         </span>
         <span class={`${name}__title-item ${name}__title-item--month`} onClick={() => state.value = 'months'}>
-          {computedDate.value.month}
+          {currentDate.toLocaleString(props.localeTag, { month: 'long' })}
         </span>
         <span class={`${name}__title-item ${name}__title-item--year`} onClick={() => state.value = 'years'}>
-          {computedDate.value.year}
+          {date.value.year}
         </span>
       </div>
     }
@@ -405,8 +401,8 @@ export default defineComponent({
           color={isActive ? 'primary' : undefined}
           disabled={ms < min.value || ms > max.value}
           onClick={() => pickDateHandler(day)}
-          onMouseover={() => hoverDate.value = ms}
-          onMouseout={() => hoverDate.value = 0}
+          onMouseover={() => hoverDay.value = ms}
+          onMouseout={() => hoverDay.value = 0}
           key={`${name}-${uid}-day-${day}`}
           round
           marginless
@@ -444,7 +440,7 @@ export default defineComponent({
       })
     }
     const renderWeeks = () => {
-      return computedDate.value.days.map((week, index) => {
+      return days.value.map((week, index) => {
         return <tr key={`${name}-${uid}-week-${index}`}>{renderWeek(week)}</tr>
       })
     }
@@ -490,7 +486,7 @@ export default defineComponent({
       })
     }
     const renderQuarters = () => {
-      return computedDate.value.months.map((quarter, index) => {
+      return months.value.map((quarter, index) => {
         return <tr key={`${name}-${uid}-quarter-${index}`}>{renderQuarter(quarter)}</tr>
       })
     }
