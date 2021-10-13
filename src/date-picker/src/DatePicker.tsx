@@ -211,6 +211,7 @@ export default defineComponent({
       }
     }
     const isActiveDay = (unixTime: number): boolean | any => {
+      console.log('isActiveDay', unixTime)
       const isActiveDate = proxy.value.some((value: string | number) => {
         if (value) {
           const timeToCompare = value
@@ -395,6 +396,8 @@ export default defineComponent({
       if (day) {
         const currentMs = today.getTime()
         const unixTime = getUnixTimeByDay(day)
+
+        console.log('> renderDay', unixTime)
 
         const { isActiveDate, isLeftActiveEdge, isRightActiveEdge } = isActiveDay(unixTime)
 
