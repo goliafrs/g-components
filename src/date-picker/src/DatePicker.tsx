@@ -215,13 +215,17 @@ export default defineComponent({
 
       const [ leftEdge, rightEdge ] = proxy.value
 
-      const isInRange = ms < rightEdge && ms > leftEdge
-
-      const isLeftActiveEdge = ms === leftEdge
-      const isRightActiveEdge = ms === rightEdge
-
+      let isInRange = false
+      let isLeftActiveEdge = false
+      let isRightActiveEdge = false
       let isLeftActiveHoverDate = false
       let isRightActiveHoverDate = false
+
+      if (proxy.value.length > 1) {
+        isInRange = ms < rightEdge && ms > leftEdge
+        isLeftActiveEdge = ms === leftEdge
+        isRightActiveEdge = ms === rightEdge
+      }
 
       const hoveringDates = [ leftEdge, hoveringDate.value ]
       hoveringDates.sort()
