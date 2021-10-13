@@ -1,4 +1,4 @@
-import { PropType, defineComponent, h, reactive } from 'vue'
+import { PropType, computed, defineComponent, h, reactive } from 'vue'
 
 import { GIcon, GProgress } from 'g-components'
 
@@ -118,19 +118,19 @@ export default defineComponent({
       [`${name}--${props.color}`]: !!props.color
     })
 
-    const size: number = props.tiny ? 14 : props.small ? 18 : props.large ? 26 : props.fab ? 30 : 22
+    const size = computed(() => props.tiny ? 14 : props.small ? 18 : props.large ? 26 : props.fab ? 30 : 22)
 
     const renderLoading = () => {
       if (props.loading) {
         return <div class={`${name}__loading`}>
-          <GProgress indeterminate size={24}></GProgress>
+          <GProgress indeterminate size={size.value + 2}></GProgress>
         </div>
       }
     }
     const renderIcon = () => {
       if (props.icon) {
         return <div class={`${name}__icon`}>
-          <GIcon value={props.icon} size={size} />
+          <GIcon value={props.icon} size={size.value} />
         </div>
       }
     }
