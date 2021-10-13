@@ -170,8 +170,10 @@ export default defineComponent({
           default:
             if (date.value.month <= 0) {
               date.value.year--
+              date.value.month = 11
+            } else {
+              date.value.month--
             }
-            date.value.month--
             date.value.day = 1
             break
         }
@@ -186,8 +188,10 @@ export default defineComponent({
           default:
             if (date.value.month > 11) {
               date.value.year++
+              date.value.month = 0
+            } else {
+              date.value.month++
             }
-            date.value.month++
             date.value.day = 1
             break
         }
