@@ -75,9 +75,6 @@ export default defineComponent({
     const state = ref<'days' | 'months' | 'years'>('days')
     const proxy = ref(props.modelValue)
 
-    const ms = ref(0)
-    const day = ref(0)
-
     const daysOfWeek = computed((): string[] => {
       const result = []
 
@@ -153,70 +150,6 @@ export default defineComponent({
         day: currentDate.toLocaleString(props.localeTag, { day: 'numeric' }),
         days: chunk(daysMatrix, 7),
         months: chunk(months.value, 3)
-      }
-    })
-
-    const active = computed(() => {
-      const isActiveDate = proxy.value.some((value: string | number) => ms.value === value)
-
-      let isInRange = false
-      if (proxy.value.length > 1) {
-        isInRange = ms.value < proxy.value[1] && ms.value > proxy.value[0]
-      }
-
-      let isLeftActiveEdge = false
-      let isRightActiveEdge = false
-
-      if (proxy.value.length === 2) {
-        const leftEdge = proxy.value[0]
-        const rightEdge = proxy.value[1]
-        if (leftEdge === ms.value) {
-          isLeftActiveEdge = true
-        }
-        if (rightEdge === ms.value) {
-          isRightActiveEdge = true
-        }
-      }
-
-      let isLeftActiveHoverDate = false
-      let isRightActiveHoverDate = false
-
-      const hoveringDates = []
-
-      if (hoveringDate.value) {
-        hoveringDates.push(proxy.value[0])
-        hoveringDates.push(hoveringDate.value)
-      }
-
-      hoveringDates.sort()
-
-      if (hoveringDates.length === 2 && proxy.value.length === 1) {
-        if (ms.value === hoveringDates[0]) {
-          isLeftActiveHoverDate = true
-        }
-        if (ms.value === hoveringDates[1]) {
-          isRightActiveHoverDate = true
-        }
-      }
-
-      let isActiveHoverDay = false
-
-      if (hoveringDate.value && proxy.value.length === 1) {
-        const value = new Date(proxy.value[0]).getTime()
-        const lt = ms.value < Math.max(value, hoveringDate.value)
-        const gt = ms.value > Math.min(value, hoveringDate.value)
-
-        isActiveHoverDay = lt && gt
-      }
-
-      return {
-        isActiveDate,
-        isActiveHoverDay,
-        isInRange,
-        isLeftActiveEdge,
-        isRightActiveEdge,
-        isLeftActiveHoverDate,
-        isRightActiveHoverDate
       }
     })
 
@@ -340,9 +273,9 @@ export default defineComponent({
       }
 
       return {
+        isInRange,
         isActiveDate,
         isActiveHoverDay,
-        isInRange,
         isLeftActiveEdge,
         isRightActiveEdge,
         isLeftActiveHoverDate,
@@ -484,27 +417,23 @@ export default defineComponent({
     const renderDay = (day: number | undefined) => {
       if (day) {
         const currentMs = today.getTime()
-        const milliseconds = getMSByDay(day)
+        const ms = getMSByDay(day)
 
-        const isActive = active.value.isActiveDate || active.value.isLeftActiveEdge || active.value.isRightActiveEdge || milliseconds === currentMs || false
+        const { isActiveDate, isLeftActiveEdge, isRightActiveEdge } = isActiveDay(ms)
+
+        const isActive = isActiveDate || isLeftActiveEdge || isRightActiveEdge || ms === currentMs || false
 
         return <GButton
           class={`${name}__matrix-day`}
           label={day}
           flat={!isActive}
           depressed={isActive}
-          outline={milliseconds === currentMs && !active.value.isActiveDate}
+          outline={ms === currentMs && !isActiveDate}
           color={isActive ? 'primary' : undefined}
-          disabled={isDisabledDay(milliseconds)}
+          disabled={isDisabledDay(ms)}
           onClick={() => pickDateHandler(day)}
-          onMouseover={() => {
-            hoveringDate.value = milliseconds
-            ms.value = milliseconds
-          }}
-          onMouseout={() => {
-            hoveringDate.value = 0
-            ms.value = 0
-          }}
+          onMouseover={() => hoveringDate.value = getMSByDay(day)}
+          onMouseout={() => hoveringDate.value = 0}
           key={`${name}-${uid}-day-${day}`}
           round
         />
@@ -512,17 +441,26 @@ export default defineComponent({
     }
     const renderWeek = (week: (number | undefined)[]) => {
       return week.map(day => {
-        const milliseconds = getMSByDay(day || 0)
+        const ms = getMSByDay(day || 0)
+
+        const {
+          isInRange,
+          isActiveHoverDay,
+          isLeftActiveEdge,
+          isRightActiveEdge,
+          isLeftActiveHoverDate,
+          isRightActiveHoverDate
+        } = isActiveDay(ms)
 
         return <td
           class={{
             [`${name}__matrix-day-cell`]: true,
-            [`${name}__matrix-day-cell--active`]: day && active.value.isInRange,
-            [`${name}__matrix-day-cell--active-left`]: day && active.value.isLeftActiveEdge,
-            [`${name}__matrix-day-cell--active-right`]: day && active.value.isRightActiveEdge,
-            [`${name}__matrix-day-cell--active-hover`]: day && active.value.isActiveHoverDay && props.range,
-            [`${name}__matrix-day-cell--active-hover-left`]: day && active.value.isLeftActiveHoverDate && !active.value.isLeftActiveEdge && props.range,
-            [`${name}__matrix-day-cell--active-hover-right`]: day && active.value.isRightActiveHoverDate && !active.value.isRightActiveEdge && props.range
+            [`${name}__matrix-day-cell--active`]: day && isInRange,
+            [`${name}__matrix-day-cell--active-left`]: day && isLeftActiveEdge,
+            [`${name}__matrix-day-cell--active-right`]: day && isRightActiveEdge,
+            [`${name}__matrix-day-cell--active-hover`]: day && isActiveHoverDay && props.range,
+            [`${name}__matrix-day-cell--active-hover-left`]: day && isLeftActiveHoverDate && !isLeftActiveEdge && props.range,
+            [`${name}__matrix-day-cell--active-hover-right`]: day && isRightActiveHoverDate && !isRightActiveEdge && props.range
           }}
 
           key={`${name}-${uid}-day-cell-${day}`}
