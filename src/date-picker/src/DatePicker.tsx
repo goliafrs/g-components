@@ -186,7 +186,7 @@ export default defineComponent({
           case 'months':
           case 'days':
           default:
-            if (date.value.month > 11) {
+            if (date.value.month >= 11) {
               date.value.year++
               date.value.month = 0
             } else {
