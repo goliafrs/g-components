@@ -90,6 +90,8 @@ export default defineComponent({
     const classes = reactive({
       [`${name}`]: true,
 
+      [`${name}--${props.color}`]: !!props.color,
+
       [`${name}--flat`]: props.flat,
       [`${name}--outline`]: props.outline,
       [`${name}--hover`]: props.hover,
