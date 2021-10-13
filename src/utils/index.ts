@@ -1,5 +1,5 @@
-export type Color = 'primary' | 'secondary' | 'info' | 'warning' | 'error' | 'success' | 'accent' | 'white' | 'black' | 'grey' | 'gray'
-export const colors = [ 'primary', 'secondary', 'info', 'warning', 'error', 'success', 'accent', 'white', 'black', 'grey', 'gray' ]
+export type Color = 'primary' | 'secondary' | 'info' | 'warning' | 'error' | 'success' | 'accent' | 'white' | 'black' | 'grey' | 'gray' | 'transparent'
+export const colors = [ 'primary', 'secondary', 'info', 'warning', 'error', 'success', 'accent', 'white', 'black', 'grey', 'gray', 'transparent' ]
 
 const REGEXP_IS_HEX = /^#?[0-9A-Fa-f]{3,6}$/
 
