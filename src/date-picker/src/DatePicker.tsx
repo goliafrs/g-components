@@ -220,13 +220,18 @@ export default defineComponent({
       const isLeftActiveEdge = ms === leftEdge
       const isRightActiveEdge = ms === rightEdge
 
+      let isLeftActiveHoverDate = false
+      let isRightActiveHoverDate = false
+
       const hoveringDates = [ leftEdge, hoveringDate.value ]
       hoveringDates.sort()
 
-      const [ leftHoveringEdge, rightHoveringEdge ] = hoveringDates
+      if (hoveringDates.length === 2 && proxy.value.length === 1) {
+        const [ leftHoveringEdge, rightHoveringEdge ] = hoveringDates
 
-      const isLeftActiveHoverDate = ms === leftHoveringEdge
-      const isRightActiveHoverDate = ms === rightHoveringEdge
+        isLeftActiveHoverDate = ms === leftHoveringEdge
+        isRightActiveHoverDate = ms === rightHoveringEdge
+      }
 
       let isActiveHoverDay = false
 
