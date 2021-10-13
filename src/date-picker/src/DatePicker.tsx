@@ -147,6 +147,7 @@ export default defineComponent({
       return undefined
     })
 
+    // FIXME: не работает, подправить под новые классы
     const scrollYearsList = (): void => {
       if (state.value === 'years') {
         setTimeout(() => {
@@ -496,14 +497,15 @@ export default defineComponent({
 
     const renderYear = (year: number) => {
       const isActive = isActiveYear(year) || year === date.value.year
-      const color = isActive ? 'primary' : undefined
+      const currentYear = year === today.getFullYear()
+      const color = isActive || currentYear ? 'primary' : undefined
 
       return <GButton
         class={`${name}__year`}
         label={year}
         color={color}
         flat={!isActive}
-        outline={!isActive && year === today.getFullYear()}
+        outline={currentYear}
         depressed={isActive}
         block
         rounded
