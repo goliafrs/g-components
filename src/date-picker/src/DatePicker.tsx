@@ -71,7 +71,7 @@ export default defineComponent({
       month: today.getMonth(),
       day: today.getDate()
     })
-    const hoveringDate = ref(0)
+    const hoverDate = ref(0)
     const state = ref<'days' | 'months' | 'years'>('days')
     const proxy = ref(props.modelValue)
 
@@ -227,11 +227,11 @@ export default defineComponent({
         isRightActiveEdge = ms === rightEdge
       }
 
-      const hoveringDates = [ leftEdge, hoveringDate.value ]
-      hoveringDates.sort()
+      const hoverDates = [ leftEdge, hoverDate.value ]
+      hoverDates.sort()
 
-      if (hoveringDates.length === 2 && proxy.value.length === 1) {
-        const [ leftHoveringEdge, rightHoveringEdge ] = hoveringDates
+      if (hoverDates.length === 2 && proxy.value.length === 1) {
+        const [ leftHoveringEdge, rightHoveringEdge ] = hoverDates
 
         isLeftActiveHoverDate = ms === leftHoveringEdge
         isRightActiveHoverDate = ms === rightHoveringEdge
@@ -239,10 +239,10 @@ export default defineComponent({
 
       let isActiveHoverDay = false
 
-      if (hoveringDate.value && proxy.value.length === 1) {
+      if (hoverDate.value && proxy.value.length === 1) {
         const value = new Date(proxy.value[0]).getTime()
-        const lt = ms < Math.max(value, hoveringDate.value)
-        const gt = ms > Math.min(value, hoveringDate.value)
+        const lt = ms < Math.max(value, hoverDate.value)
+        const gt = ms > Math.min(value, hoverDate.value)
 
         isActiveHoverDay = lt && gt
       }
@@ -308,7 +308,7 @@ export default defineComponent({
       }, [])
 
       if (data.length > 1 && data[0] === data[1]) {
-        data.pop
+        data.pop()
       }
 
       proxy.value.splice(0, proxy.value.length, ...data)
@@ -399,14 +399,14 @@ export default defineComponent({
 
         return <GButton
           label={day}
-          flat={!isActive}
-          depressed={isActive}
+          flat={!isActiveDate}
+          depressed={isActiveDate}
           outline={ms === currentMs && !isActiveDate}
-          color={isActive ? 'primary' : undefined}
+          color={isActiveDate ? 'primary' : undefined}
           disabled={ms < min.value || ms > max.value}
           onClick={() => pickDateHandler(day)}
-          onMouseover={() => hoveringDate.value = ms}
-          onMouseout={() => hoveringDate.value = 0}
+          onMouseover={() => hoverDate.value = ms}
+          onMouseout={() => hoverDate.value = 0}
           key={`${name}-${uid}-day-${day}`}
           round
           marginless
