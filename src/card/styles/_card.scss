@@ -1,5 +1,5 @@
 @mixin colors {
-  @each $name in $colors {
+  @each $name, $color in $colors {
     &--#{$name} {
       background-color: rgba(var(--#{$name}), 0.2);
     }
