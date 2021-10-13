@@ -325,7 +325,7 @@ export default defineComponent({
     }
 
     watch(() => props.modelValue, () => {
-      proxy.value = props.modelValue.reduce<number[]>((result, value) => {
+      const data = props.modelValue.reduce<number[]>((result, value) => {
         const date = new Date(value)
         if (date instanceof Date) {
           date.setHours(0, 0, 0, 0)
@@ -335,9 +335,11 @@ export default defineComponent({
         return result
       }, [])
 
-      if (proxy.value.length && proxy.value[0] === proxy.value[1]) {
-        proxy.value = [ proxy.value[0] ]
+      if (data.length > 1 && data[0] === data[1]) {
+        data.pop
       }
+
+      proxy.value.splice(0, proxy.value.length, ...data)
     })
     watch(() => proxy.value, () => {
       let value
