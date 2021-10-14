@@ -1,5 +1,5 @@
 @mixin colors {
-  @each $name in $colors {
+  @each $name in $colorNames {
     &--#{$name} {
       &.g-checkbox--checked {
         &>.g-checkbox__holder {
