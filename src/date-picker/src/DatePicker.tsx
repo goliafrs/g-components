@@ -152,7 +152,7 @@ export default defineComponent({
       if (state.value === 'years') {
         setTimeout(() => {
           if (rootRef.value && yearsRef.value) {
-            const activeYearElement: HTMLElement = yearsRef.value.querySelector(`.${name}__years-list-item--active`) as HTMLElement
+            const activeYearElement: HTMLElement = yearsRef.value.querySelector(`.${name}__years--active`) as HTMLElement
             if (activeYearElement) {
               yearsRef.value.scrollTop = activeYearElement.offsetTop - rootRef.value.offsetHeight / 2
             }
@@ -501,19 +501,26 @@ export default defineComponent({
       const color = isActive || currentYear ? 'primary' : undefined
 
       return <GButton
-        class={`${name}__year`}
+        class={{
+          [`${name}__year`]: true,
+          [`${name}__year--active`]: isActive
+        }}
+
         label={year}
         color={color}
         flat={!isActive}
         outline={currentYear}
         depressed={isActive}
+
         block
         rounded
         marginless
+
         onClick={() => {
           date.value.year = year
           state.value = 'months'
         }}
+
         key={`${name}-${uid}-year-${year}`}
       />
     }
