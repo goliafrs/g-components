@@ -47,15 +47,8 @@ export default defineComponent({
     const uid = `${name}_${getCurrentInstance()?.uid}`
 
     const checked = ref(false)
+    const proxy = ref(props.modelValue)
 
-    const proxy = computed({
-      get: () => {
-        return props.modelValue
-      },
-      set: value => {
-        proxy.value = value
-      }
-    })
     const classes = computed(() => {
       return {
         [`${name}`]: true,
