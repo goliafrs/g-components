@@ -2,11 +2,9 @@
   @each $name in $colorNames {
     &--#{$name} {
       &.g-checkbox--checked {
-        &>.g-checkbox__holder {
-          &>.g-checkbox__background {
-            border-color: var(--#{$name});
-            background-color: var(--#{$name});
-          }
+        &>.g-checkbox__square {
+          border-color: var(--#{$name});
+          background-color: var(--#{$name});
         }
       }
     }
@@ -16,29 +14,22 @@
 .g {
   &-checkbox {
     @include colors;
-    @include absolute-height(48px);
 
     display: inline-flex;
     align-items: center;
     align-self: flex-start;
     user-select: none;
+    cursor: pointer;
 
-    &__holder {
-      @include absolute-height(48px);
-      @include absolute-width(48px);
-
-      cursor: pointer;
-      user-select: none;
-      position: relative;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+    &+.g-checkbox {
+      margin-left: 16px;
     }
 
-    &__background {
+    &__square {
       @include absolute-height(18px);
       @include absolute-width(18px);
 
+      margin-right: 12px;
       border-width: 2px;
       border-style: solid;
       border-color: $black-54;
@@ -77,26 +68,24 @@
     }
 
     &__label {
-      @include default-text-style;
-
-      padding-right: 16px;
+      font-size: 16px;
+      font-weight: 400;
+      line-height: 17px;
       color: $black-84;
       cursor: pointer;
       user-select: none;
     }
 
     &--checked {
-      &>.g-checkbox__holder {
-        &>.g-checkbox__background {
-          border-color: var(--primary);
-          background-color: var(--primary);
+      &>.g-checkbox__square {
+        border-color: var(--primary);
+        background-color: var(--primary);
 
-          &>.g-checkbox__check-mark {
-            opacity: 1;
+        &>.g-checkbox__check-mark {
+          opacity: 1;
 
-            &>.g-checkbox__check-mark__path {
-              stroke-dashoffset: 0;
-            }
+          &>.g-checkbox__check-mark__path {
+            stroke-dashoffset: 0;
           }
         }
       }
@@ -108,18 +97,16 @@
         user-select: none;
       }
 
-      &>.g-checkbox__holder {
-        &>.g-checkbox__background {
-          border-color: var(--grey);
-          background-color: transparent;
+      &>.g-checkbox__square {
+        border-color: var(--grey);
+        background-color: transparent;
 
-          &>.g-checkbox__check-mark {
-            fill: var(--grey);
-            opacity: 1;
+        &>.g-checkbox__check-mark {
+          fill: var(--grey);
+          opacity: 1;
 
-            &>.g-checkbox__check-mark__path {
-              stroke: var(--grey);
-            }
+          &>.g-checkbox__check-mark__path {
+            stroke: var(--grey);
           }
         }
       }

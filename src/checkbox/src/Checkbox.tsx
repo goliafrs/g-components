@@ -82,12 +82,10 @@ export default defineComponent({
       return <input type='checkbox' name={uid} value={proxy.value} hidden />
     }
     const renderContent = () => {
-      return <div class={`${name}__holder`}>
-        <div class={`${name}__background`}>
-          <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' class={`${name}__check-mark`}>
-            <path d='M1.73 12.91 8.1 19.28 22.79 4.59' class={`${name}__check-mark__path`}></path>
-          </svg>
-        </div>
+      return <div class={`${name}__square`}>
+        <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' class={`${name}__check-mark`}>
+          <path d='M1.73 12.91 8.1 19.28 22.79 4.59' class={`${name}__check-mark__path`}></path>
+        </svg>
       </div>
     }
     const renderLabel = () => {

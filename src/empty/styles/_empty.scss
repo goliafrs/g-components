@@ -1,0 +1,20 @@
+.g {
+  &-empty {
+    color: $black-12;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    flex: 1;
+
+    &__title {
+      @include default-text-style(13px);
+      
+      text-align: center;
+    }
+
+    &:not(.g-empty--padless) {
+      padding: 48px;
+    }
+  }
+}

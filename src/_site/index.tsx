@@ -1,11 +1,12 @@
 import { defineComponent, h, ref } from 'vue'
-import { GAvatar, GButton, GCard, GCheckbox, GChip, GDatePicker, GDialog, GIcon, GProgress } from '../'
+import { GAvatar, GButton, GCard, GCheckbox, GChip, GDatePicker, GDialog, GDivider, GEmpty, GIcon, GProgress } from '../'
 
 export default defineComponent({
   name: 'Home',
 
   setup() {
     const booleanValue = ref(false)
+    const modal = ref(false)
     const arrayNumberValue = ref([ 1633640400000 ])
     const arrayNumbersValue = ref([ 1633640400000, 1634936400000 ])
 
@@ -29,6 +30,7 @@ export default defineComponent({
       </div>
       <div class=''>
         <GCheckbox v-model={booleanValue.value}>GCheckbox</GCheckbox>
+        <GCheckbox v-model={booleanValue.value} color='success'>GCheckbox</GCheckbox>
       </div>
       <div class=''>
         <GIcon value='edit' color='primary'></GIcon>
@@ -57,7 +59,17 @@ export default defineComponent({
         </GCard>
       </div>
       <div>
-        <GDialog v-model={booleanValue.value} maxWidth={400} rounded><div class='pa-3'>test</div></GDialog>
+        <GButton onClick={() => modal.value = !modal.value} label='Modal'></GButton>
+        <GDialog v-model={modal.value} maxWidth={400} rounded><div class='pa-3'>test</div></GDialog>
+      </div>
+      <div>
+        <GDivider></GDivider>
+        <GDivider color='primary' class='mt-3'></GDivider>
+        <GDivider color='error' style='dashed' class='mt-3'></GDivider>
+        <GDivider color='success' style='dotted' class='mt-3'></GDivider>
+      </div>
+      <div>
+        <GEmpty />
       </div>
     </div>
   }
