@@ -1,6 +1,6 @@
 import { PropType, defineComponent, h, ref } from 'vue'
 
-import { GIcon } from 'g-components'
+import { GIcon } from '../../'
 
 import { Color, colors } from '../../utils'
 

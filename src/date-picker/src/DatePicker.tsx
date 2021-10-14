@@ -1,7 +1,7 @@
 import { chunk } from 'lodash'
 
 import { PropType, computed, defineComponent, getCurrentInstance, h, onMounted, ref, watch } from 'vue'
-import { GButton } from 'g-components'
+import { GButton } from '../../'
 
 export const name = 'g-date-picker'
 

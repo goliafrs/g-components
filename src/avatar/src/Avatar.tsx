@@ -1,6 +1,6 @@
-import { CSSProperties, PropType, StyleValue, computed, defineComponent, h, reactive } from 'vue'
+import { CSSProperties, PropType, StyleValue, computed, defineComponent, h } from 'vue'
 
-import { GIcon } from 'g-components'
+import { GIcon } from '../../'
 
 import { Color, colors, numberToPxOrString } from '../../utils'
 
