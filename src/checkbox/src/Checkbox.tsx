@@ -49,6 +49,10 @@ export default defineComponent({
     const checked = ref(false)
     const proxy = ref(props.modelValue)
 
+    watch(() => props.modelValue, () => {
+      proxy.value = props.modelValue
+    })
+
     const classes = computed(() => {
       return {
         [`${name}`]: true,
