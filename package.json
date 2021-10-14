@@ -2,14 +2,15 @@
   "name": "g-components",
   "version": "1.0.0",
   "description": "Vue 3 component library.",
-  "main": "dist/cjs/index.js",
+  "main": "src/index.ts",
   "module": "dist/esm/index.js",
   "scripts": {
     "clean": "rm -rf dist",
     "sass": "npx sass src/_styles/main.scss dist/styles/main.css --no-source-map",
     "tail": "npx tailwindcss --input dist/styles/main.css --output dist/styles/main.css",
     "build": "npm run clean && npm run sass && tsc -b --force tsconfig.esm.json && tsc -b --force tsconfig.cjs.json",
-    "prepare": "npm run build"
+    "prepare": "npm run build",
+    "deps": "rm -rf node_modules package-lock.json && npm i"
   },
   "repository": {
     "type": "git",
@@ -24,16 +25,16 @@
   "devDependencies": {
     "@babel/types": "^7.15.6",
     "@types/lodash": "^4.14.175",
-    "@typescript-eslint/eslint-plugin": "^4.31.1",
-    "@typescript-eslint/parser": "^4.31.1",
+    "@typescript-eslint/eslint-plugin": "^5.0.0",
+    "@typescript-eslint/parser": "^5.0.0",
     "autoprefixer": "^10.3.7",
-    "eslint": "^7.32.0",
-    "eslint-plugin-vue": "^7.18.0",
+    "eslint": "^8.0.1",
+    "eslint-plugin-vue": "^7.19.1",
     "lodash": "^4.17.21",
     "postcss": "^8.3.9",
-    "sass": "^1.42.1",
+    "sass": "^1.43.2",
     "tailwindcss": "^2.2.16",
-    "typescript": "^4.4.3",
+    "typescript": "^4.4.4",
     "vue": "^3.2.12",
     "vue-eslint-parser": "^7.11.0"
   }
