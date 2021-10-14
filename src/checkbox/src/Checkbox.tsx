@@ -58,7 +58,7 @@ export default defineComponent({
       return {
         [`${name}`]: true,
 
-        [`${name}--checked`]: checked,
+        [`${name}--checked`]: checked.value,
         [`${name}--disabled`]: props.disabled,
 
         [`${name}--${props.color}`]: !!props.color
