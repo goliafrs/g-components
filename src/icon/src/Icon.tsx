@@ -1,4 +1,4 @@
-import { defineComponent, h, reactive } from 'vue'
+import { computed, defineComponent, h } from 'vue'
 
 export const name = 'g-icon'
 
@@ -24,12 +24,14 @@ export default defineComponent({
   },
 
   setup(props, { slots }) {
-    const classes = reactive({
-      [`${name}`]: true,
+    const classes = computed(() => {
+      return {
+        [`${name}`]: true,
 
-      [`${name}--${props.color}`]: !!props.color,
+        [`${name}--${props.color}`]: !!props.color,
 
-      [`fz-${props.size}`]: true
+        [`fz-${props.size}`]: true
+      }
     })
 
     return () => <i class={classes}>{slots.default ? slots.default() : props.value}</i>

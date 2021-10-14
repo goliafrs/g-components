@@ -1,4 +1,4 @@
-import { PropType, StyleValue, defineComponent, h, reactive } from 'vue'
+import { CSSProperties, PropType, computed, defineComponent, h } from 'vue'
 
 import { Color, colors, normalizedValue, numberToPxOrString } from '../../utils'
 
@@ -59,24 +59,28 @@ export default defineComponent({
   },
 
   setup(props) {
-    const classes = reactive({
-      [`${name}`]: true,
+    const classes = computed(() => {
+      return {
+        [`${name}`]: true,
 
-      [`${name}-${props.type}`]: true,
-      [`${name}-${props.type}--indeterminate`]: props.indeterminate,
+        [`${name}-${props.type}`]: true,
+        [`${name}-${props.type}--indeterminate`]: props.indeterminate,
 
-      [`${name}--${props.color}`]: !!props.color
+        [`${name}--${props.color}`]: !!props.color
+      }
     })
 
-    const style: StyleValue = reactive({})
+    const style = computed<CSSProperties>(() => {
+      return {} as CSSProperties
+    })
     if (props.type === 'circular') {
-      style.minHeight = numberToPxOrString(props.size)
-      style.height = numberToPxOrString(props.size)
-      style.minWidth = numberToPxOrString(props.size)
-      style.width = numberToPxOrString(props.size)
+      style.value.minHeight = numberToPxOrString(props.size)
+      style.value.height = numberToPxOrString(props.size)
+      style.value.minWidth = numberToPxOrString(props.size)
+      style.value.width = numberToPxOrString(props.size)
     } else {
-      style.minHeight = numberToPxOrString(props.height)
-      style.height = numberToPxOrString(props.height)
+      style.value.minHeight = numberToPxOrString(props.height)
+      style.value.height = numberToPxOrString(props.height)
     }
 
     const renderCircular = () => {
@@ -90,12 +94,15 @@ export default defineComponent({
         return <svg xmlns='http://www.w3.org/2000/svg' viewBox={viewBox} style={{ transform: `rotate(${Number(props.rotate)}deg)` }}>
           <circle
             fill='transparent'
+
+            r={radius}
             cx={viewBoxSizeDouble}
             cy={viewBoxSizeDouble}
-            r={radius}
+
             stroke-width={Number(props.width) / +props.size * viewBoxSizeDouble}
             stroke-dasharray={Math.round(circumference * 1000) / 1000}
             stroke-dashoffset={(100 - normalizedValue(props.value || 0)) / 100 * circumference + 'px'}
+
             class={`${name}-circular__circle`}
           ></circle>
         </svg>
@@ -125,8 +132,8 @@ export default defineComponent({
       aria-valuemax={100}
       aria-valuenow={props.indeterminate ? undefined : props.value}
 
-      class={classes}
-      style={style}
+      class={classes.value}
+      style={style.value}
     >
       {renderCircular()}
       {renderLinear()}

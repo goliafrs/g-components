@@ -1,4 +1,4 @@
-import { PropType, computed, defineComponent, h, reactive } from 'vue'
+import { PropType, computed, defineComponent, h } from 'vue'
 
 import { GIcon, GProgress } from 'g-components'
 
@@ -68,26 +68,28 @@ export default defineComponent({
   },
 
   setup(props) {
-    const classes = reactive({
-      [`${name}`]: true,
+    const classes = computed(() => {
+      return {
+        [`${name}`]: true,
 
-      [`${name}--tiny`]: props.tiny,
-      [`${name}--small`]: props.small,
-      [`${name}--large`]: props.large,
+        [`${name}--tiny`]: props.tiny,
+        [`${name}--small`]: props.small,
+        [`${name}--large`]: props.large,
 
-      [`${name}--circle`]: props.circle,
-      [`${name}--outline`]: props.outline,
+        [`${name}--circle`]: props.circle,
+        [`${name}--outline`]: props.outline,
 
-      [`${name}--icon`]: props.icon,
+        [`${name}--icon`]: props.icon,
 
-      [`${name}--cancelable`]: props.cancelable,
+        [`${name}--cancelable`]: props.cancelable,
 
-      [`${name}--link`]: props.link || !!props.onClick,
+        [`${name}--link`]: props.link || !!props.onClick,
 
-      [`${name}--loading`]: props.loading,
-      [`${name}--disabled`]: props.disabled,
+        [`${name}--loading`]: props.loading,
+        [`${name}--disabled`]: props.disabled,
 
-      [`${name}--${props.color}`]: !!props.color
+        [`${name}--${props.color}`]: !!props.color
+      }
     })
 
     const size = computed(() => props.tiny ? 14 : props.small ? 18 : props.large ? 26 : 22)
@@ -122,7 +124,7 @@ export default defineComponent({
       }
     }
 
-    return () => <div class={classes} onClick={props.onClick}>
+    return () => <div class={classes.value} onClick={props.onClick}>
       {renderLoading()}
       {renderIcon()}
       {renderContent()}
