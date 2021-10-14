@@ -34,6 +34,6 @@ export default defineComponent({
       }
     })
 
-    return () => <i class={classes}>{slots.default ? slots.default() : props.value}</i>
+    return () => <i class={classes.value}>{slots.default ? slots.default() : props.value}</i>
   }
 })
