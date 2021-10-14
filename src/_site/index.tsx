@@ -1,5 +1,5 @@
 import { defineComponent, h, ref } from 'vue'
-import { GAvatar, GButton, GCard, GCheckbox, GChip, GDatePicker, GDialog, GDivider, GEmpty, GIcon, GProgress } from '../'
+import { GAvatar, GButton, GCard, GCheckbox, GChip, GDatePicker, GDialog, GDivider, GEmpty, GIcon, GPanel, GPanels, GProgress } from '../'
 
 export default defineComponent({
   name: 'Home',
@@ -70,6 +70,12 @@ export default defineComponent({
       </div>
       <div>
         <GEmpty />
+      </div>
+      <div>
+        <GPanels>
+          <GPanel v-slots={{ header: ({ expanded }) => <div>panel header {expanded}</div> }}>panel 1</GPanel>
+          <GPanel v-slots={{ header: ({ expanded }) => <div>panel header {expanded}</div> }}>panel 2</GPanel>
+        </GPanels>
       </div>
     </div>
   }
