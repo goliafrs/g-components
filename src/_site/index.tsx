@@ -11,37 +11,37 @@ export default defineComponent({
     const arrayNumbersValue = ref([ 1633640400000, 1634936400000 ])
 
     return () => <div class='grid pa-3'>
-      <div class=''>
+      <div>
         <GAvatar title='avatar' color='primary'></GAvatar>
         <GAvatar title='avatar' color='error' rounded class='ml-3'></GAvatar>
         <GAvatar title='avatar' color='success' round class='ml-3'></GAvatar>
         <GAvatar title='avatar' color='secondary' round outline class='ml-3'></GAvatar>
       </div>
-      <div class=''>
+      <div>
         <GButton color='primary'>GButton</GButton>
         <GButton color='error' rounded>GButton</GButton>
         <GButton color='success' rounded outline>GButton</GButton>
       </div>
-      <div class=''>
+      <div>
         <GCard class='pa-3' width={300}>GCard</GCard>
         <GCard class='pa-3 ml-3' rounded width={300}>GCard</GCard>
         <GCard class='pa-3 ml-3' rounded outline width={300}>GCard</GCard>
         <GCard class='pa-3 ml-3' rounded flat color='primary' width={300}>GCard</GCard>
       </div>
-      <div class=''>
+      <div>
         <GCheckbox v-model={booleanValue.value}>GCheckbox</GCheckbox>
         <GCheckbox v-model={booleanValue.value} color='success'>GCheckbox</GCheckbox>
       </div>
-      <div class=''>
+      <div>
         <GIcon value='edit' color='primary'></GIcon>
         <GIcon value='add' color='error' class='ml-3'></GIcon>
         <GIcon value='person' color='success' class='ml-3'></GIcon>
       </div>
-      <div class=''>
+      <div>
         <GProgress indeterminate></GProgress>
         <GProgress value={25} class='ml-3'></GProgress>
       </div>
-      <div class=''>
+      <div>
         <GProgress indeterminate type='linear'></GProgress>
       </div>
       <div class='faic'>
@@ -50,7 +50,7 @@ export default defineComponent({
         <GChip label='GChip' color='success' icon='done'></GChip>
         <GChip label='GChip' color='success' icon='done' loading></GChip>
       </div>
-      <div class=''>
+      <div>
         <GCard width={282} rounded>
           <GDatePicker v-model={arrayNumberValue.value}></GDatePicker>
         </GCard>
