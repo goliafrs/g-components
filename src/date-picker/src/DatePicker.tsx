@@ -153,6 +153,7 @@ export default defineComponent({
         setTimeout(() => {
           if (rootRef.value && yearsRef.value) {
             const activeYearElement: HTMLElement = yearsRef.value.querySelector(`.${name}__years--active`) as HTMLElement
+            console.log(yearsRef.value.scrollTop, activeYearElement.offsetTop, rootRef.value.offsetHeight)
             if (activeYearElement) {
               yearsRef.value.scrollTop = activeYearElement.offsetTop - rootRef.value.offsetHeight / 2
             }
