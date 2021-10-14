@@ -1,6 +1,6 @@
-import { CSSProperties, PropType, StyleValue, computed, defineComponent, h, reactive } from 'vue'
+import { CSSProperties, PropType, computed, defineComponent, h, reactive } from 'vue'
 
-import { Color, Position, colors, numberToPxOrString, positions } from '../../utils'
+import { Color, Direction, colors, directions, numberToPxOrString } from '../../utils'
 
 export const name = 'g-card'
 
@@ -34,10 +34,10 @@ export default defineComponent({
     },
 
     accent: {
-      type: String as PropType<Position>,
+      type: String as PropType<Direction>,
       default: undefined,
-      validator: (value: Position): boolean => {
-        return !!~positions.indexOf(value)
+      validator: (value: Direction): boolean => {
+        return !!~directions.indexOf(value)
       }
     },
 

@@ -1,5 +1,5 @@
 import { defineComponent, h, ref } from 'vue'
-import { GAvatar, GButton, GCard, GCheckbox, GChip, GDatePicker, GIcon, GProgress } from '../'
+import { GAvatar, GButton, GCard, GCheckbox, GChip, GDatePicker, GDialog, GIcon, GProgress } from '../'
 
 export default defineComponent({
   name: 'Home',
@@ -55,6 +55,9 @@ export default defineComponent({
         <GCard width={282} rounded class='ml-3'>
           <GDatePicker v-model={arrayNumbersValue.value} range></GDatePicker>
         </GCard>
+      </div>
+      <div>
+        <GDialog v-model={booleanValue.value} maxWidth={400} rounded><div class='pa-3'>test</div></GDialog>
       </div>
     </div>
   }
