@@ -49,9 +49,10 @@ export default defineComponent({
     const checked = ref(false)
     const proxy = ref(props.modelValue)
 
-    watch(() => props.modelValue, () => {
-      proxy.value = props.modelValue
-    })
+    watch(
+      () => props.modelValue,
+      () => proxy.value = props.modelValue
+    )
 
     const classes = computed(() => {
       return {
@@ -78,7 +79,7 @@ export default defineComponent({
     }
 
     const renderInput = () => {
-      return <input type='checkbox' name={uid} hidden />
+      return <input type='checkbox' name={uid} value={proxy.value} hidden />
     }
     const renderContent = () => {
       return <div class={`${name}__holder`}>
