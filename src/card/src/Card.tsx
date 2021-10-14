@@ -93,7 +93,7 @@ export default defineComponent({
       }
     })
 
-    return () => <div class={classes} style={style.value}>
+    return () => <div class={classes.value} style={style.value}>
       {slots.default ? slots.default() : null}
     </div>
   }

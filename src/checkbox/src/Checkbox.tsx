@@ -100,7 +100,7 @@ export default defineComponent({
       }
     }
 
-    return () => <div role='checkbox' aria-checked={proxy.value} class={classes} onClick={clickHandler}>
+    return () => <div role='checkbox' aria-checked={proxy.value} class={classes.value} onClick={clickHandler}>
       {renderInput()}
       {renderContent()}
       {renderLabel()}

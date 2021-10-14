@@ -137,7 +137,7 @@ export default defineComponent({
       </div>
     }
 
-    return () => <div class={classes} style={style.value}>
+    return () => <div class={classes.value} style={style.value}>
       {renderContent()}
     </div>
   }
