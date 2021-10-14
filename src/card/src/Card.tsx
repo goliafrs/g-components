@@ -1,4 +1,4 @@
-import { PropType, StyleValue, defineComponent, h, reactive } from 'vue'
+import { CSSProperties, PropType, StyleValue, computed, defineComponent, h, reactive } from 'vue'
 
 import { Color, Position, colors, numberToPxOrString, positions } from '../../utils'
 
@@ -68,28 +68,32 @@ export default defineComponent({
   },
 
   setup(props, { slots }) {
-    const classes = reactive({
-      [`${name}`]: true,
+    const classes = computed(() => {
+      return {
+        [`${name}`]: true,
 
-      [`${name}--${props.color}`]: !!props.color,
+        [`${name}--${props.color}`]: !!props.color,
 
-      [`${name}--flat`]: props.flat,
-      [`${name}--outline`]: props.outline,
-      [`${name}--hover`]: props.hover,
-      [`${name}--rounded`]: props.rounded,
+        [`${name}--flat`]: props.flat,
+        [`${name}--outline`]: props.outline,
+        [`${name}--hover`]: props.hover,
+        [`${name}--rounded`]: props.rounded,
 
-      [`${name}--accent-${props.accent}`]: !!props.accent
+        [`${name}--accent-${props.accent}`]: !!props.accent
+      }
     })
-    const style: StyleValue = reactive({
-      minHeight: numberToPxOrString(props.minHeight),
-      maxHeight: numberToPxOrString(props.maxHeight),
-      height: numberToPxOrString(props.height),
-      minWidth: numberToPxOrString(props.minWidth),
-      maxWidth: numberToPxOrString(props.maxWidth),
-      width: numberToPxOrString(props.width)
+    const style = computed<CSSProperties>(() => {
+      return {
+        minHeight: numberToPxOrString(props.minHeight),
+        maxHeight: numberToPxOrString(props.maxHeight),
+        height: numberToPxOrString(props.height),
+        minWidth: numberToPxOrString(props.minWidth),
+        maxWidth: numberToPxOrString(props.maxWidth),
+        width: numberToPxOrString(props.width)
+      }
     })
 
-    return () => <div class={classes} style={style}>
+    return () => <div class={classes} style={style.value}>
       {slots.default ? slots.default() : null}
     </div>
   }

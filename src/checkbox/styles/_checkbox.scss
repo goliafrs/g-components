@@ -1,5 +1,21 @@
+@mixin colors {
+  @each $name in $colors {
+    &--#{$name} {
+      &.g-checkbox--checked {
+        &>.g-checkbox__holder {
+          &>.g-checkbox__background {
+            border-color: var(--#{$name});
+            background-color: var(--#{$name});
+          }
+        }
+      }
+    }
+  }
+}
+
 .g {
   &-checkbox {
+    @include colors;
     @include absolute-height(48px);
 
     display: inline-flex;

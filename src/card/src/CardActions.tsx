@@ -13,13 +13,10 @@ export default defineComponent({
   },
 
   setup(props, { slots }) {
-    const classes = {
+    return () => <div class={{
       [`${name}`]: true,
-
       [`${name}--dense`]: props.dense
-    }
-
-    return () => <div class={classes}>
+    }}>
       {slots.default ? slots.default() : null}
     </div>
   }

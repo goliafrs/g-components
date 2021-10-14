@@ -1,4 +1,4 @@
-import { PropType, StyleValue, defineComponent, h, reactive } from 'vue'
+import { CSSProperties, PropType, StyleValue, computed, defineComponent, h, reactive } from 'vue'
 
 import { GIcon } from 'g-components'
 
@@ -72,7 +72,7 @@ export default defineComponent({
       charCode = parseInt(firstChar.charCodeAt(0) + '')
     }
 
-    let defaultBackground
+    let defaultBackground: string
     if (charCode) {
       const defaultColors = [
         '#F44336',
@@ -98,31 +98,29 @@ export default defineComponent({
       defaultBackground = defaultColors[charCode % defaultColors.length]
     }
 
-    const classes = reactive({
-      [`${name}`]: true,
+    const classes = computed(() => {
+      return {
+        [`${name}`]: true,
 
-      [`${name}--round`]: props.round,
-      [`${name}--rounded`]: props.rounded,
-      [`${name}--outline`]: props.outline,
+        [`${name}--round`]: props.round,
+        [`${name}--rounded`]: props.rounded,
+        [`${name}--outline`]: props.outline,
 
-      [`${name}--${props.color}`]: !!props.color
-    })
-    const style: StyleValue = reactive({
-      minHeight: numberToPxOrString(props.size),
-      maxHeight: numberToPxOrString(props.size),
-      height: numberToPxOrString(props.size),
-      minWidth: numberToPxOrString(props.size),
-      maxWidth: numberToPxOrString(props.size),
-      width: numberToPxOrString(props.size)
-    })
-    if (!props.color) {
-      const background = props.background || defaultBackground
-      if (props.outline) {
-        style.borderColor = background
-      } else {
-        style.backgroundColor = background
+        [`${name}--${props.color}`]: !!props.color
       }
-    }
+    })
+    const style = computed<CSSProperties>((): CSSProperties => {
+      return {
+        borderColor: !props.color && props.outline ? props.background || defaultBackground : undefined,
+        backgroundColor: !props.color ? props.background || defaultBackground : undefined,
+        minHeight: numberToPxOrString(props.size),
+        maxHeight: numberToPxOrString(props.size),
+        height: numberToPxOrString(props.size),
+        minWidth: numberToPxOrString(props.size),
+        maxWidth: numberToPxOrString(props.size),
+        width: numberToPxOrString(props.size)
+      }
+    })
 
     const renderContent = () => {
       if (props.src) {
@@ -131,10 +129,15 @@ export default defineComponent({
         return <GIcon value={props.icon} color={props.color} size={props.fontSize} />
       }
 
-      return <div class={`${name}__text`} style={{ fontSize: numberToPxOrString(props.fontSize) }}>{slots.default ? slots.default() : firstChar}</div>
+      return <div
+        class={`${name}__text`}
+        style={{ fontSize: numberToPxOrString(props.fontSize) }}
+      >
+        {slots.default ? slots.default() : firstChar}
+      </div>
     }
 
-    return () => <div class={classes} style={style}>
+    return () => <div class={classes} style={style.value}>
       {renderContent()}
     </div>
   }

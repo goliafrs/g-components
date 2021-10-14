@@ -1,4 +1,4 @@
-import { PropType, defineComponent, getCurrentInstance, h, reactive, ref, watch } from 'vue'
+import { PropType, computed, defineComponent, getCurrentInstance, h, reactive, ref, watch } from 'vue'
 
 import { Color, colors } from '../../utils'
 
@@ -46,18 +46,25 @@ export default defineComponent({
   setup(props, { slots, emit }) {
     const uid = `${name}_${getCurrentInstance()?.uid}`
 
-    const proxy = ref(props.modelValue)
     const checked = ref(false)
 
-    watch(() => props.modelValue, () => {
-      proxy.value = props.modelValue
+    const proxy = computed({
+      get: () => {
+        return props.modelValue
+      },
+      set: value => {
+        proxy.value = value
+      }
     })
+    const classes = computed(() => {
+      return {
+        [`${name}`]: true,
 
-    const classes = reactive({
-      [`${name}`]: true,
+        [`${name}--checked`]: checked,
+        [`${name}--disabled`]: props.disabled,
 
-      [`${name}--checked`]: checked,
-      [`${name}--disabled`]: props.disabled
+        [`${name}--${props.color}`]: !!props.color
+      }
     })
 
     const clickHandler = () => {
@@ -74,9 +81,8 @@ export default defineComponent({
     }
 
     const renderInput = () => {
-      return <input type='checkbox' hidden name={uid} />
+      return <input type='checkbox' name={uid} hidden />
     }
-    // TODO: добавить генерацию цветов на основании свойства props.color
     const renderContent = () => {
       return <div class={`${name}__holder`}>
         <div class={`${name}__background`}>
@@ -88,7 +94,9 @@ export default defineComponent({
     }
     const renderLabel = () => {
       if (slots.default || props.label) {
-        return <label for={uid} class={`${name}__label`}>{slots.default ? slots.default() : props.label}</label>
+        return <label for={uid} class={`${name}__label`}>
+          {slots.default ? slots.default() : props.label}
+        </label>
       }
     }
 

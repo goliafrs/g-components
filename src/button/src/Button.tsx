@@ -138,7 +138,9 @@ export default defineComponent({
     }
     const renderLabel = () => {
       if (slots.default || props.label) {
-        return <div class={`${name}__content`}>{slots.default ? slots.default() : props.label}</div>
+        return <div class={`${name}__content`}>
+          {slots.default ? slots.default() : props.label}
+        </div>
       }
     }
     const renderDialog = () => {
