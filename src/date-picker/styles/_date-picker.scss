@@ -189,7 +189,7 @@
 
     &__years {
       @include scrollbar;
-      @include absolute-height(282px - 8px);
+      @include absolute-height(282px - 8px - 8px);
 
       overflow-y: auto;
       overflow-x: hidden;
