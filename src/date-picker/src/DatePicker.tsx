@@ -1,6 +1,6 @@
 import { chunk } from 'lodash'
 
-import { PropType, computed, defineComponent, getCurrentInstance, h, onMounted, ref, watch } from 'vue'
+import { PropType, computed, defineComponent, getCurrentInstance, h, nextTick, onMounted, reactive, ref, watch } from 'vue'
 import { GButton } from '../../'
 
 export const name = 'g-date-picker'
@@ -66,7 +66,7 @@ export default defineComponent({
     const rootRef = ref<HTMLElement>()
     const yearsRef = ref<HTMLElement>()
 
-    const date = ref<DateToday>({
+    const date = reactive<DateToday>({
       year: today.getFullYear(),
       month: today.getMonth(),
       day: today.getDate()
@@ -79,8 +79,8 @@ export default defineComponent({
     const days = computed(() => {
       const result = []
 
-      const dayOfFirstDate = new Date(date.value.year, date.value.month, 1).getDay()
-      const dayAmount = new Date(date.value.year, date.value.month + 1, 0).getDate()
+      const dayOfFirstDate = new Date(date.year, date.month, 1).getDay()
+      const dayAmount = new Date(date.year, date.month + 1, 0).getDate()
 
       const diff = dayOfFirstDate - 1
       const prepend = diff < 0 ? 7 + diff : diff
@@ -125,7 +125,7 @@ export default defineComponent({
     const years = computed((): number[] => {
       const result = []
 
-      for (let year = date.value.year + props.yearsFill; year >= date.value.year - props.yearsFill; year--) {
+      for (let year = date.year + props.yearsFill; year >= date.year - props.yearsFill; year--) {
         result.push(year)
       }
 
@@ -147,73 +147,59 @@ export default defineComponent({
       return undefined
     })
 
-    // FIXME: не работает, подправить под новые классы
     const scrollYearsList = (): void => {
       if (state.value === 'years') {
-        setTimeout(() => {
+        nextTick(() => {
           if (rootRef.value && yearsRef.value) {
-            const activeYearElement: HTMLElement = yearsRef.value.querySelector(`.${name}__years--active`) as HTMLElement
-            console.log(yearsRef.value.scrollTop, activeYearElement.offsetTop, rootRef.value.offsetHeight)
+            const activeYearElement: HTMLElement = yearsRef.value.querySelector(`.${name}__year--active`) as HTMLElement
             if (activeYearElement) {
               yearsRef.value.scrollTop = activeYearElement.offsetTop - rootRef.value.offsetHeight / 2
             }
           }
-        }, 100)
+        })
       }
     }
     const arrowClickHandler = (direction = -1): void => {
       if (direction < 0) {
         switch (state.value) {
           case 'years':
-            date.value.year--
+            date.year--
             break
           case 'months':
           case 'days':
           default:
-            if (date.value.month <= 0) {
-              date.value.year--
-              date.value.month = 11
-            } else {
-              date.value.month--
-            }
-            date.value.day = 1
+            date.month--
+            date.day = 1
             break
         }
       }
       if (direction > 0) {
         switch (state.value) {
           case 'years':
-            date.value.year++
+            date.year++
             break
           case 'months':
           case 'days':
           default:
-            if (date.value.month >= 11) {
-              date.value.year++
-              date.value.month = 0
-            } else {
-              date.value.month++
-            }
-            date.value.day = 1
+            date.month++
+            date.day = 1
             break
         }
       }
     }
     const getMSByDay = (day: number): number => {
-      return new Date(date.value.year, date.value.month, day).getTime()
+      return new Date(date.year, date.month, day).getTime()
     }
     const pickDateHandler = (day: number) => {
-      if (day && !isNaN(day)) {
-        const pickedDate = getMSByDay(day)
+      date.day = day
 
-        date.value.day = day
+      const ms = getMSByDay(day)
 
-        if (props.range && proxy.value.length < 2 && pickedDate !== proxy.value[0]) {
-          proxy.value.push(pickedDate)
-          proxy.value.sort()
-        } else if (!props.range || proxy.value.length === 2) {
-          proxy.value = [ pickedDate ]
-        }
+      if (props.range && proxy.value.length < 2 && ms !== proxy.value[0]) {
+        proxy.value.push(ms)
+        proxy.value.sort()
+      } else if (!props.range || proxy.value.length === 2) {
+        proxy.value = [ ms ]
       }
     }
     const isActiveDay = (ms: number): boolean | any => {
@@ -331,20 +317,21 @@ export default defineComponent({
         emit('update:modelValue', props.filter(value))
       }
     })
-    watch(() => state, scrollYearsList)
-    watch(() => date, (oldData, newData) => {
-      if (oldData.value.year !== newData.value.year) {
-        scrollYearsList()
+    watch(() => state.value, scrollYearsList)
+    watch(() => date.month, () => {
+      if (date.month < 0) {
+        date.year--
+        date.month = 11
+        date.day = 1
+      } else if (date.month > 11) {
+        date.year++
+        date.month = 0
+        date.day = 1
       }
-
-      if (date.value.month < 0) {
-        date.value.year--
-        date.value.month = 11
-        date.value.day = 1
-      } else if (date.value.month > 11) {
-        date.value.year++
-        date.value.month = 0
-        date.value.day = 1
+    })
+    watch(() => date.year, (oldYear, newYear) => {
+      if (oldYear !== newYear) {
+        scrollYearsList()
       }
     })
 
@@ -352,15 +339,15 @@ export default defineComponent({
       if (proxy.value[0]) {
         const value = new Date(proxy.value[0])
         if (value instanceof Date) {
-          date.value.year = value.getFullYear()
-          date.value.month = value.getMonth()
-          date.value.day = value.getDate()
+          date.year = value.getFullYear()
+          date.month = value.getMonth()
+          date.day = value.getDate()
         }
       }
     })
 
     const renderTitle = () => {
-      const currentDate = new Date(date.value.year, date.value.month, date.value.day)
+      const currentDate = new Date(date.year, date.month, date.day)
 
       return <div class={`${name}__title`}>
         <span class={`${name}__title-item ${name}__title-item--day`} onClick={() => state.value = 'days'}>
@@ -370,7 +357,7 @@ export default defineComponent({
           {currentDate.toLocaleString(props.localeTag, { month: 'long' })}
         </span>
         <span class={`${name}__title-item ${name}__title-item--year`} onClick={() => state.value = 'years'}>
-          {date.value.year}
+          {date.year}
         </span>
       </div>
     }
@@ -465,8 +452,8 @@ export default defineComponent({
     }
 
     const renderMonth = (month: Month) => {
-      const isActive = isActiveMonth(date.value.year, month.number)
-      const currentYear = today.getFullYear() === date.value.year
+      const isActive = isActiveMonth(date.year, month.number)
+      const currentYear = today.getFullYear() === date.year
       const currentMonth = today.getMonth() === month.number
       const outline = !isActive && currentYear && currentMonth
       const color = isActive || currentYear && currentMonth ? 'primary' : undefined
@@ -482,8 +469,10 @@ export default defineComponent({
         depressed
         marginless
         onClick={() => {
-          date.value.month = month.number
+          date.month = month.number
           state.value = 'days'
+
+          pickDateHandler(date.day)
         }}
         key={`${name}-${uid}-month-${month.number}`}
       />
@@ -497,8 +486,8 @@ export default defineComponent({
     }
 
     const renderYear = (year: number) => {
-      const isActive = isActiveYear(year) || year === date.value.year
-      const currentYear = year === today.getFullYear()
+      const isActive = isActiveYear(year) || year === date.year
+      const currentYear = year === today.getFullYear() && !isActive
       const color = isActive || currentYear ? 'primary' : undefined
 
       return <GButton
@@ -518,8 +507,10 @@ export default defineComponent({
         marginless
 
         onClick={() => {
-          date.value.year = year
+          date.year = year
           state.value = 'months'
+
+          pickDateHandler(date.day)
         }}
 
         key={`${name}-${uid}-year-${year}`}

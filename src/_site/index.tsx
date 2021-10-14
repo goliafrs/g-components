@@ -1,4 +1,4 @@
-import { defineComponent, h, reactive, ref } from 'vue'
+import { defineComponent, h, ref } from 'vue'
 import { GAvatar, GButton, GCard, GCheckbox, GChip, GDatePicker, GIcon, GProgress } from '../'
 
 export default defineComponent({
@@ -6,8 +6,8 @@ export default defineComponent({
 
   setup() {
     const booleanValue = ref(false)
-    const arrayNumberValue = reactive([ 1633640400000 ])
-    const arrayNumbersValue = reactive([ 1633640400000, 1634936400000 ])
+    const arrayNumberValue = ref([ 1633640400000 ])
+    const arrayNumbersValue = ref([ 1633640400000, 1634936400000 ])
 
     return () => <div class='grid pa-3'>
       <div class=''>
@@ -50,10 +50,10 @@ export default defineComponent({
       </div>
       <div class=''>
         <GCard width={282} rounded>
-          <GDatePicker v-model={arrayNumberValue}></GDatePicker>
+          <GDatePicker v-model={arrayNumberValue.value}></GDatePicker>
         </GCard>
         <GCard width={282} rounded class='ml-3'>
-          <GDatePicker v-model={arrayNumbersValue} range></GDatePicker>
+          <GDatePicker v-model={arrayNumbersValue.value} range></GDatePicker>
         </GCard>
       </div>
     </div>
