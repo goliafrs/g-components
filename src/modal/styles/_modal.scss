@@ -1,5 +1,5 @@
 .g {
-  &-dialog {
+  &-modal {
     position: fixed;
     top: 0;
     bottom: 0;
@@ -10,39 +10,9 @@
     justify-content: center;
 
     &--rounded {
-      & .g-dialog__holder {
+      & .g-modal__holder {
         border-radius: 16px;
         overflow: hidden;
-      }
-    }
-
-    &--overflow {
-      & .g-dialog__holder {
-        overflow: hidden;
-      }
-    }
-
-    &--scroll {
-      & .g-dialog__body {
-        overflow-y: scroll;
-      }
-    }
-
-    &__align {
-      &--top {
-        align-items: flex-start;
-      }
-
-      &--bottom {
-        align-items: flex-end;
-      }
-
-      &--left {
-        justify-content: flex-start;
-      }
-
-      &--right {
-        justify-content: flex-end;
       }
     }
 
@@ -83,28 +53,27 @@
       flex: 1;
     }
 
-    &__close-button {
-      position: absolute;
-      right: 48px;
-      top: 48px;
+    &__actions {
+      display: flex;
+      justify-content: flex-end;
     }
   }
 }
 
-.show-dialog-enter-active,
-.show-dialog-leave-active {
+.show-modal-enter-active,
+.show-modal-leave-active {
   transition: opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 
-  & .g-dialog__holder {
+  & .g-modal__holder {
     transition: opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1), transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   }
 }
 
-.show-dialog-enter-from,
-.show-dialog-leave-to {
+.show-modal-enter-from,
+.show-modal-leave-to {
   opacity: 0;
 
-  & .g-dialog__holder {
+  & .g-modal__holder {
     transform: scale(0, 0);
     opacity: 0;
   }

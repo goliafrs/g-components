@@ -1,0 +1,17 @@
+.g {
+  &-spoiler {
+    @include default-text-style(13px);
+
+    display: inline-flex;
+    flex-direction: column;
+
+    &__title {
+      cursor: pointer;
+      user-select: none;
+
+      &:hover {
+        color: var(--primary);
+      }
+    }
+  }
+}

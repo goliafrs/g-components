@@ -1,7 +1,8 @@
 import { defineComponent, h, ref } from 'vue'
-import { GAvatar, GButton, GCard, GCardActions, GCheckbox, GChip, GDatePicker, GDialog, GDivider, GEmpty, GIcon, GList, GPanel, GPanelGroup, GProgress } from '../'
+import { GAvatar, GButton, GCard, GCardActions, GCheckbox, GChip, GDatePicker, GDialog, GDivider, GEmpty, GIcon, GList, GPanel, GPanelGroup, GProgress, GSpoiler } from '../'
 
 import { ListItem } from '../list/src/ListItem'
+import { GModal } from '../modal'
 import { componentNames, icons } from '../utils'
 
 export default defineComponent({
@@ -11,6 +12,7 @@ export default defineComponent({
     const name = ref(window.localStorage.getItem('name'))
     const booleanValue = ref(false)
     const dialog = ref(false)
+    const modal = ref(false)
     const arrayNumberValue = ref([ 1633640400000 ])
     const arrayNumbersValue = ref([ 1633640400000 ])
     const arrayNumbersValues = ref([ 1633640400000, 1634936400000 ])
@@ -132,6 +134,14 @@ export default defineComponent({
             ]}></GList>
           </div>
         }
+        case 'modal': {
+          return <div>
+            <GButton onClick={() => modal.value = !modal.value} label='show modal' rounded marginless></GButton>
+            <GModal v-model={modal.value} rounded>
+              <div class='pa-3'>Modal content.</div>
+            </GModal>
+          </div>
+        }
         case 'panel-group': {
           return <div>
             <GPanelGroup>
@@ -161,6 +171,11 @@ export default defineComponent({
             </div>
           </div>
         }
+        case 'spoiler': {
+          return <div>
+            <GSpoiler title='spoiler' text='text'></GSpoiler>
+          </div>
+        }
       }
     }
 
@@ -174,7 +189,7 @@ export default defineComponent({
       }}>{renderList()}</div>
       <div class='pt-3 pb-3 pr-3' style={{ paddingLeft: '316px' }}>
         <h2
-          class='ma-0 pa-3 w--100 bgc--white'
+          class='ma-0 py-3 w--100 bgc--white'
           style={{
             position: 'fixed',
             top: 0,

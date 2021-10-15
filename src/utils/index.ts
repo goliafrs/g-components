@@ -1,10 +1,10 @@
 export type Color = 'primary' | 'secondary' | 'info' | 'warning' | 'error' | 'success' | 'accent' | 'white' | 'black' | 'grey' | 'gray' | 'transparent'
 export type Direction = 'top' | 'bottom' | 'left' | 'right'
-export type ComponentName = 'avatar' | 'button' | 'card' | 'checkbox' | 'chip' | 'date-picker' | 'dialog' | 'divider' | 'empty' | 'icon' | 'list' | 'panel-group' | 'panel' | 'progress'
+export type ComponentName = 'avatar' | 'button' | 'card' | 'checkbox' | 'chip' | 'date-picker' | 'dialog' | 'divider' | 'empty' | 'icon' | 'list' | 'modal' | 'panel-group' | 'panel' | 'progress' | 'spoiler'
 
 export const colors: Color[] = [ 'primary', 'secondary', 'info', 'warning', 'error', 'success', 'accent', 'white', 'black', 'grey', 'gray', 'transparent' ]
 export const directions: Direction[] = [ 'top', 'bottom', 'left', 'right' ]
-export const componentNames = [ 'avatar', 'button', 'card', 'checkbox', 'chip', 'date-picker', 'dialog', 'divider', 'empty', 'icon', 'list', 'panel-group', 'panel', 'progress' ]
+export const componentNames = [ 'avatar', 'button', 'card', 'checkbox', 'chip', 'date-picker', 'dialog', 'divider', 'empty', 'icon', 'list', 'modal', 'panel-group', 'panel', 'progress', 'spoiler' ]
 
 const REGEXP_IS_HEX = /^#?[0-9A-Fa-f]{3,6}$/
 

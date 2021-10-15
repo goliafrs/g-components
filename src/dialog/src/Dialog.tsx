@@ -1,4 +1,4 @@
-import { PropType, computed, defineComponent, h, onBeforeUnmount, onMounted, ref, watch } from 'vue'
+import { PropType, Transition, computed, defineComponent, h, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 
 import { Color, colors, numberToPxOrString } from '../../utils'
 
@@ -201,31 +201,26 @@ export default defineComponent({
       return <div class={`${name}__overlay`} onClick={() => hide()}></div>
     }
     const renderContent = () => {
-      return <div
-        v-show={proxy.value}
+      if (proxy.value) {
+        return <div
+          class={{
+            [`${name}`]: true,
 
-        class={{
-          [`${name}`]: true,
+            [`${name}--scroll`]: props.scroll,
+            [`${name}--rounded`]: props.rounded,
+            [`${name}--overflow`]: props.overflow,
 
-          [`${name}--scroll`]: props.scroll,
-          [`${name}--rounded`]: props.rounded,
-          [`${name}--overflow`]: props.overflow,
+            [`${name}__align--${props.align}`]: true
+          }}
 
-          [`${name}__align--${props.align}`]: true,
-
-          'show-dialog': true
-        }}
-
-        style={{ zIndex: props.zIndex }}
-      >
-        {renderHolder()}
-        {renderOverlay()}
-      </div>
+          style={{ zIndex: props.zIndex }}
+        >
+          {renderHolder()}
+          {renderOverlay()}
+        </div>
+      }
     }
 
-    // FIXME: [Vue warn]: Failed to resolve component: transition
-    return () => <transition>
-      {renderContent()}
-    </transition>
+    return () => <Transition name='show-dialog'>{renderContent()}</Transition>
   }
 })
