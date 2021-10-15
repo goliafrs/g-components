@@ -4,14 +4,19 @@ import { Color, colors } from '../../utils'
 
 export const name = 'g-icon'
 
+export interface Icon {
+  value?: string,
+  size?: number,
+  color?: Color
+}
+
 export default defineComponent({
   name,
 
   props: {
     value: {
       type: String,
-      default: undefined,
-      required: true
+      default: undefined
     },
 
     size: {

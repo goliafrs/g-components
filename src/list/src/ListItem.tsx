@@ -8,14 +8,14 @@ export const name = 'g-list-item'
 
 export interface ListItem {
   label: string | number | undefined,
-  active: boolean,
-  disabled: boolean,
-  hovered: boolean,
-  link: boolean,
-  dense: boolean,
-  color: Color,
-  icon: string,
-  to: any
+  active?: boolean,
+  disabled?: boolean,
+  hovered?: boolean,
+  link?: boolean,
+  dense?: boolean,
+  color?: Color,
+  icon?: string,
+  onClick?: (event: MouseEvent) => void
 }
 
 export default defineComponent({
@@ -41,11 +41,11 @@ export default defineComponent({
     },
     link: {
       type: Boolean,
-      default: true
+      default: false
     },
     dense: {
       type: Boolean,
-      default: true
+      default: false
     },
 
     color: {
@@ -61,23 +61,13 @@ export default defineComponent({
       default: undefined
     },
 
-    to: {
-      type: [ Object, String ],
-      default: () => undefined
-    },
-
     onClick: {
       type: Function as PropType<(event: MouseEvent) => void>,
-      default: () => undefined
+      default: undefined
     }
   },
 
   setup(props, { slots }) {
-    const component = ref('div')
-    if (props.to) {
-      component.value = 'router-link'
-    }
-
     const renderIcon = () => {
       if (props.icon) {
         return <div class={`${name}__holder`}>
@@ -93,13 +83,15 @@ export default defineComponent({
       }
     }
 
-    return () => <component
+    // TODO: реализовать возможность использовать любой тэг через свойство
+    return () => <div
       role='listitem'
 
       class={{
         [`${name}`]: true,
 
-        [`${name}--link`]: props.link,
+        [`${name}--link`]: props.link || props.onClick,
+        [`${name}--dense`]: props.dense,
         [`${name}--active`]: props.active,
         [`${name}--hovered`]: props.hovered,
         [`${name}--disabled`]: props.disabled,
@@ -107,12 +99,10 @@ export default defineComponent({
         [`${name}--${props.color}`]: !!props.color
       }}
 
-      to={props.to}
-
       onClick={props.onClick}
     >
       {renderIcon()}
       {renderContent()}
-    </component>
+    </div>
   }
 })

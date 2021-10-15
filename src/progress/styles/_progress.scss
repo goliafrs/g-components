@@ -19,19 +19,6 @@
       overflow: hidden;
       width: 100%;
 
-      &__bar {
-        position: absolute;
-        top: 0;
-        bottom: 0;
-
-        &--determinate {
-          background-color: currentColor;
-          transition-property: width;
-          transition-duration: 1s;
-          transition-timing-function: linear;
-        }
-      }
-
       &--indeterminate {
         &>.g-progress-linear__bar {
           width: 100%;
@@ -55,6 +42,29 @@
             animation-delay: 1.15s;
           }
         }
+      }
+
+      &__bar {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+
+        &--determinate {
+          background-color: currentColor;
+          transition-property: width;
+          transition-duration: 1s;
+          transition-timing-function: linear;
+        }
+      }
+
+      &>.g-progress__info {
+        @include absolute-height(20px);
+        @include absolute-width(30px);
+
+        margin-top: -10px;
+        margin-left: -15px;
+        background-color: #fff;
+        border-radius: 16px;
       }
     }
 
@@ -100,17 +110,20 @@
     }
 
     &__info {
-      @include default-text-style(13px);
+      @include absolute-height(16px);
+      @include absolute-width(16px);
 
-      color: currentColor;
+      margin-top: -8px;
+      margin-left: -8px;
+      font-size: 13px;
+      font-weight: 400;
+      line-height: 16px;
       overflow: hidden;
       white-space: nowrap;
       text-overflow: ellipsis;
       position: absolute;
-      top: 0;
-      bottom: 0;
-      left: 0;
-      right: 0;
+      top: 50%;
+      left: 50%;
       display: flex;
       align-items: center;
       justify-content: center;

@@ -1,0 +1,56 @@
+.g {
+  &-panel {
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+
+    &+.g-panel {
+      border-top: 1px solid $black-12;
+    }
+
+    &__header {
+      @include default-text-style(13px);
+
+      padding: 8px;
+      background-color: var(--white);
+      position: relative;
+      user-select: none;
+
+      &:hover {
+        background-color: $black-06;
+      }
+
+      &:active {
+        background-color: $black-12;
+      }
+    }
+
+    &__body {
+      padding: 8px;
+      background-color: var(--white);
+    }
+
+    &-group {
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+  
+      &:not(.g-panel-group--flat):not(.g-panel-group--outline) {
+        @include g-elevation(2);
+      }
+  
+      &--rounded {
+        border-radius: 16px;
+        overflow: hidden;
+      }
+  
+      &--outline {
+        background-color: transparent;
+        box-shadow: none;
+        border-width: 1px;
+        border-style: solid;
+        border-color: $black-12;
+      }
+    }
+  }
+}

@@ -63,7 +63,7 @@ export default defineComponent({
 
     onClick: {
       type: Function as PropType<(event: MouseEvent) => void>,
-      default: () => undefined
+      default: undefined
     }
   },
 

@@ -120,7 +120,7 @@ export default defineComponent({
       }
     }
     const renderInfo = () => {
-      if (props.info) {
+      if (props.info && !props.indeterminate) {
         return <div class={`${name}__info`}>{props.value}</div>
       }
     }

@@ -9,6 +9,8 @@
 }
 
 body {
+  @include scrollbar;
+  
   margin: 0;
   font-family: $font-family;
   line-height: normal;
