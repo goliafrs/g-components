@@ -1,4 +1,4 @@
-import { defineComponent, getCurrentInstance, h, ref } from 'vue'
+import { Transition, defineComponent, getCurrentInstance, h, ref } from 'vue'
 
 export const name = 'g-spoiler'
 
@@ -38,7 +38,7 @@ export default defineComponent({
       if (props.title && props.text || slots.default) {
         return <div class={name} key={`${name}-${uid}`}>
           {renderHeader()}
-          {renderBody()}
+          <Transition name='fade'>{renderBody()}</Transition>
         </div>
       }
     }
