@@ -29,7 +29,7 @@ export default defineComponent({
       default: () => []
     },
 
-    localeTag: {
+    locale: {
       type: String,
       default: 'en'
     },
@@ -103,7 +103,7 @@ export default defineComponent({
       const firstDay = new Date(currentDate.setDate(currentDate.getDate() - day + (day === 0 ? -6 : 1)))
 
       for (let i = 0; i < 7; i++) {
-        result.push(firstDay.toLocaleString(props.localeTag, { weekday: 'narrow' }))
+        result.push(firstDay.toLocaleString(props.locale, { weekday: 'narrow' }))
         firstDay.setDate(firstDay.getDate() + 1)
       }
 
@@ -114,8 +114,8 @@ export default defineComponent({
 
       for (let index = 0; index < 12; index++) {
         result.push({
-          full: new Date(0, index).toLocaleString(props.localeTag, { month: 'long' }),
-          short: new Date(0, index).toLocaleString(props.localeTag, { month: 'short' }).substring(0, 3),
+          full: new Date(0, index).toLocaleString(props.locale, { month: 'long' }),
+          short: new Date(0, index).toLocaleString(props.locale, { month: 'short' }).substring(0, 3),
           number: index
         })
       }
@@ -346,19 +346,29 @@ export default defineComponent({
       }
     })
 
-    const renderTitle = () => {
-      const currentDate = new Date(date.year, date.month, date.day)
+    const renderDates = () => {
+      const result = []
 
+      for (let index = 0; index < (props.range ? 2 : 1); index++) {
+        const value = proxy.value[index]
+        if (value) {
+          result.push(<div>
+            {new Date(value).toLocaleString(props.locale, {
+              day: 'numeric',
+              month: 'numeric',
+              year: 'numeric'
+            })}
+          </div>)
+        } else {
+          result.push(<div class='text--grey'>---</div>)
+        }
+      }
+
+      return result
+    }
+    const renderTitle = () => {
       return <div class={`${name}__title`}>
-        <span class={`${name}__title-item ${name}__title-item--day`} onClick={() => state.value = 'days'}>
-          {currentDate.toLocaleString(props.localeTag, { day: 'numeric' })}
-        </span>
-        <span class={`${name}__title-item ${name}__title-item--month`} onClick={() => state.value = 'months'}>
-          {currentDate.toLocaleString(props.localeTag, { month: 'long' })}
-        </span>
-        <span class={`${name}__title-item ${name}__title-item--year`} onClick={() => state.value = 'years'}>
-          {date.year}
-        </span>
+        {renderDates()}
       </div>
     }
     const renderArrow = (direction = -1) => {
@@ -374,13 +384,22 @@ export default defineComponent({
       </div>
     }
 
-    const renderDaysOfWeek = (cols: boolean) => {
-      return daysOfWeek.value.map(day => {
-        if (cols) {
-          return <col class={`${name}__matrix-col ${name}__matrix-col--${day}`} />
-        }
+    const renderInfo = () => {
+      const month = new Date(date.year, date.month).toLocaleString(props.locale, { month: 'long' })
 
-        return <th class={`${name}__matrix-day-of-week`}>{day}</th>
+      return <div class={`${name}__info`}>
+        <div>
+          <span onClick={() => state.value = 'months'}>{month}</span>
+        </div>
+        <div>
+          <span onClick={() => state.value = 'years'}>{date.year}</span>
+        </div>
+      </div>
+    }
+
+    const renderDaysOfWeek = () => {
+      return daysOfWeek.value.map(day => {
+        return <th class={`${name}__day-of-week`}>{day}</th>
       })
     }
     const renderDay = (day: number | undefined) => {
@@ -423,13 +442,13 @@ export default defineComponent({
 
         return <td
           class={{
-            [`${name}__matrix-day-cell`]: true,
-            [`${name}__matrix-day-cell--active`]: day && isInRange,
-            [`${name}__matrix-day-cell--active-left`]: day && isLeftActiveEdge,
-            [`${name}__matrix-day-cell--active-right`]: day && isRightActiveEdge,
-            [`${name}__matrix-day-cell--active-hover`]: day && isActiveHoverDay && props.range,
-            [`${name}__matrix-day-cell--active-hover-left`]: day && isLeftActiveHoverDate && !isLeftActiveEdge && props.range,
-            [`${name}__matrix-day-cell--active-hover-right`]: day && isRightActiveHoverDate && !isRightActiveEdge && props.range
+            [`${name}__day-cell`]: true,
+            [`${name}__day-cell--active`]: day && isInRange,
+            [`${name}__day-cell--active-left`]: day && isLeftActiveEdge,
+            [`${name}__day-cell--active-right`]: day && isRightActiveEdge,
+            [`${name}__day-cell--active-hover`]: day && isActiveHoverDay && props.range,
+            [`${name}__day-cell--active-hover-left`]: day && isLeftActiveHoverDate && !isLeftActiveEdge && props.range,
+            [`${name}__day-cell--active-hover-right`]: day && isRightActiveHoverDate && !isRightActiveEdge && props.range
           }}
         >
           {renderDay(day)}
@@ -443,9 +462,8 @@ export default defineComponent({
     }
     const renderDays = () => {
       if (state.value === 'days') {
-        return <table class={`${name}__matrix`}>
-          <colgroup>{renderDaysOfWeek(true)}</colgroup>
-          <thead><tr>{renderDaysOfWeek(false)}</tr></thead>
+        return <table class={`${name}__days`}>
+          <thead><tr>{renderDaysOfWeek()}</tr></thead>
           <tbody>{renderWeeks()}</tbody>
         </table>
       }
@@ -524,8 +542,15 @@ export default defineComponent({
       }
     }
 
-    return () => <div class={name} ref={rootRef}>
+    return () => <div
+      class={{
+        [name]: true,
+        [`${name}--range`]: props.range
+      }}
+      ref={rootRef}
+    >
       {renderHeader()}
+      {renderInfo()}
       {renderDays()}
       {renderMonths()}
       {renderYears()}

@@ -12,7 +12,8 @@ export default defineComponent({
     const booleanValue = ref(false)
     const dialog = ref(false)
     const arrayNumberValue = ref([ 1633640400000 ])
-    const arrayNumbersValue = ref([ 1633640400000, 1634936400000 ])
+    const arrayNumbersValue = ref([ 1633640400000 ])
+    const arrayNumbersValues = ref([ 1633640400000, 1634936400000 ])
 
     const renderIcons = () => {
       return icons.map(icon => {
@@ -78,7 +79,10 @@ export default defineComponent({
               <GDatePicker v-model={arrayNumberValue.value}></GDatePicker>
             </GCard>
             <GCard width={282} rounded class='ml-3'>
-              <GDatePicker v-model={arrayNumbersValue.value} range></GDatePicker>
+              <GDatePicker v-model={arrayNumbersValue.value} range locale='ru'></GDatePicker>
+            </GCard>
+            <GCard width={282} rounded class='ml-3'>
+              <GDatePicker v-model={arrayNumbersValues.value} range locale='ru'></GDatePicker>
             </GCard>
           </div>
         }

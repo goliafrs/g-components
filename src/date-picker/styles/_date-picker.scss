@@ -1,6 +1,6 @@
 .g {
   &-date-picker {
-    @include absolute-height(36px + 8px + 282px);
+    @include absolute-height(36px + 8px + 8px + 18px + 282px);
     @include absolute-width(282px);
 
     padding: 8px;
@@ -11,6 +11,15 @@
     position: relative;
     overflow: hidden;
 
+    &--range {
+      & .g-date-picker__title {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        column-gap: 16px;
+        text-align: center;
+      }
+    }
+
     &__header {
       @include absolute-height(36px);
 
@@ -20,82 +29,116 @@
     }
 
     &__title {
+      @include default-text-style(14px, 700);
+
       display: flex;
       align-items: center;
       justify-content: center;
       flex: 1;
       white-space: nowrap;
       user-select: none;
+    }
 
-      &-item {
-        @include default-text-style(14px, 700);
+    &__info {
+      @include default-text-style(12px, 700);
+      @include absolute-height(18px);
 
-        margin-left: 2px;
-        margin-right: 2px;
-        text-align: center;
-        text-transform: capitalize;
-        cursor: pointer;
+      color: var(--grey);
+      text-transform: capitalize;
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      align-items: center;
 
-        &--day {
+      & > div {
+        padding-left: 8px;
+        padding-right: 8px;
+
+        & > span {
+          cursor: pointer;
+
+          &:hover {
+            color: var(--primary);
+          }
+        }
+
+        &:last-child {
           text-align: right;
-          width: 25%;
-        }
-
-        &--month {
-          text-align: center;
-          width: 50%;
-        }
-
-        &--year {
-          text-align: left;
-          width: 25%;
-        }
-
-        &:hover {
-          color: var(--primary);
         }
       }
     }
 
-    &__holder {
-      height: 100%;
-      width: 100%;
-    }
-
-    &__matrix {
+    &__days {
       border-collapse: collapse;
       border-spacing: 0;
       width: 100%;
+    }
+    &__day {
+      &-of-week {
+        @include default-text-style(12px, 700);
+        @include absolute-height(38px);
+        @include absolute-width(38px);
 
-      &-day {
-        &-of-week {
-          @include default-text-style(12px, 700);
-          @include absolute-height(38px);
-          @include absolute-width(38px);
+        cursor: default;
+        color: $black-36;
+        text-align: center;
+        user-select: none;
+        vertical-align: middle;
+      }
 
-          cursor: default;
-          color: $black-36;
-          text-align: center;
-          user-select: none;
-          vertical-align: middle;
+      &-cell {
+        text-align: center;
+        user-select: none;
+        position: relative;
+
+        &::before {
+          margin-top: -18px;
+          content: '';
+          background-color: rgba($primary, 0.2);
+          position: absolute;
+          top: 50%;
+          height: 36px;
         }
 
-        &-cell {
-          text-align: center;
-          user-select: none;
-          position: relative;
-
+        &--active {
           &::before {
-            margin-top: -18px;
-            content: '';
-            background-color: rgba($primary, 0.2);
-            position: absolute;
-            top: 50%;
-            height: 36px;
+            left: 0;
+            width: 100%;
           }
 
-          &--active {
+          &-left,
+          &-right {
             &::before {
+              width: 18px;
+            }
+          }
+
+          &-left {
+            &.g-date-picker__day-cell--active-right {
+              &::before {
+                display: none;
+              }
+            }
+
+            &::before {
+              right: 0;
+            }
+          }
+
+          &-right {
+            &.g-date-picker__day-cell--active-left {
+              &::before {
+                display: none;
+              }
+            }
+
+            &::before {
+              left: 0;
+            }
+          }
+
+          &-hover {
+            &::before {
+              background-color: $black-06;
               left: 0;
               width: 100%;
             }
@@ -103,73 +146,34 @@
             &-left,
             &-right {
               &::before {
-                width: 18px;
+                background-color: $black-06;
+                width: 36px;
               }
             }
 
             &-left {
-              &.g-date-picker__matrix-day-cell--active-right {
+              &.g-date-picker__day-cell--active-hover-right {
                 &::before {
-                  display: none;
+                  border-radius: 50%;
                 }
               }
 
               &::before {
+                border-radius: 50% 0 0 50%;
                 right: 0;
               }
             }
 
             &-right {
-              &.g-date-picker__matrix-day-cell--active-left {
+              &.g-date-picker__day-cell--active-hover-left {
                 &::before {
-                  display: none;
+                  border-radius: 50%;
                 }
               }
 
               &::before {
+                border-radius: 0 50% 50% 0;
                 left: 0;
-              }
-            }
-
-            &-hover {
-              &::before {
-                background-color: $black-06;
-                left: 0;
-                width: 100%;
-              }
-
-              &-left,
-              &-right {
-                &::before {
-                  background-color: $black-06;
-                  width: 36px;
-                }
-              }
-
-              &-left {
-                &.g-date-picker__matrix-day-cell--active-hover-right {
-                  &::before {
-                    border-radius: 50%;
-                  }
-                }
-
-                &::before {
-                  border-radius: 50% 0 0 50%;
-                  right: 0;
-                }
-              }
-
-              &-right {
-                &.g-date-picker__matrix-day-cell--active-hover-left {
-                  &::before {
-                    border-radius: 50%;
-                  }
-                }
-
-                &::before {
-                  border-radius: 0 50% 50% 0;
-                  left: 0;
-                }
               }
             }
           }
@@ -191,6 +195,7 @@
       @include scrollbar;
       @include absolute-height(282px - 8px - 8px);
 
+      padding-right: 8px;
       overflow-y: auto;
       overflow-x: hidden;
       display: grid;
@@ -200,23 +205,6 @@
 
     &__year {
       min-width: unset;
-
-      &--current {
-        color: var(--primary) !important;
-      }
-
-      &--active {
-        color: var(--primary) !important;
-      }
-
-      &--selected {
-        color: var(--white) !important;
-        background-color: var(--primary);
-
-        &:hover {
-          background-color: $primary-light !important;
-        }
-      }
     }
   }
 }
