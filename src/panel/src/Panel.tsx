@@ -1,4 +1,5 @@
-import { computed, defineComponent, getCurrentInstance, h, nextTick, onMounted, ref } from 'vue'
+import { computed, defineComponent, getCurrentInstance, h, inject, nextTick, onMounted, ref } from 'vue'
+import { expandedPanelsInjection } from './PanelGroup'
 
 export const name = 'g-panel'
 
@@ -10,23 +11,23 @@ export default defineComponent({
     expandOnMounted: Boolean
   },
 
-  emits: [ 'mounted', 'toggle' ],
-
   setup(props, { emit, slots, expose }) {
     const uid = getCurrentInstance()?.uid
 
-    const expanded = ref(false)
+    const rootRef = ref(`${name}-${uid}`)
 
-    const payload = computed(() => {
-      return {
-        expanded: expanded.value,
-        toggle
+    const injectExpanded = inject(expandedPanelsInjection)
+
+    const expanded = computed<boolean>(() => {
+      if (injectExpanded) {
+        return !!~injectExpanded.expandedPanels.value.findIndex(panel => panel === rootRef.value)
       }
+
+      return false
     })
 
     const toggle = () => {
-      expanded.value = !expanded.value
-      emit('toggle', payload.value)
+      injectExpanded?.togglePanel(rootRef.value, expanded.value)
     }
     const headerOnClickHandler = () => {
       if (!props.preventClick) {
@@ -38,32 +39,22 @@ export default defineComponent({
       if (props.expandOnMounted) {
         toggle()
       }
-
-      nextTick(() => {
-        emit('mounted', payload.value)
-      })
     })
 
     const renderHeader = () => {
       return <div class={`${name}__header`} onClick={headerOnClickHandler}>
-        {slots.header ? slots.header(payload.value) : undefined}
+        {slots.header ? slots.header({ toggle }) : undefined}
       </div>
     }
     const renderBody = () => {
       if (expanded.value) {
         return <div class={`${name}__body`}>
-          {slots.default ? slots.default(payload.value) : undefined}
+          {slots.default ? slots.default({ toggle }) : undefined}
         </div>
       }
     }
 
-    expose({ toggle })
-
-    return () => <div
-      class={name}
-
-      key={`${name}-${uid}`}
-    >
+    return () => <div class={name} key={`${name}-${uid}`} ref={rootRef.value}>
       {renderHeader()}
       {renderBody()}
     </div>

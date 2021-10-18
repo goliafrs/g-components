@@ -144,9 +144,11 @@ export default defineComponent({
         }
         case 'panel-group': {
           return <div>
-            <GPanelGroup>
+            <GPanelGroup accordion>
               <GPanel v-slots={{ header: ({ expanded }) => <div>panel header {expanded}</div> }}>panel 1</GPanel>
               <GPanel v-slots={{ header: ({ expanded }) => <div>panel header {expanded}</div> }}>panel 2</GPanel>
+              <GPanel v-slots={{ header: ({ expanded }) => <div>panel header {expanded}</div> }}>panel 3</GPanel>
+              <GPanel v-slots={{ header: ({ expanded }) => <div>panel header {expanded}</div> }}>panel 4</GPanel>
             </GPanelGroup>
           </div>
         }

@@ -1,6 +1,13 @@
-import { VNode, VNodeChild, defineComponent, getCurrentInstance, h, nextTick, onMounted, onUpdated, ref } from 'vue'
+import { ComponentPublicInstance, DefineComponent, InjectionKey, PropType, Ref, VNode, VNodeChild, defineComponent, getCurrentInstance, h, nextTick, onMounted, onUpdated, provide, reactive, ref } from 'vue'
 
 export const name = 'g-panel-group'
+
+export interface ExpandedPanelsInjection {
+  expandedPanels: Ref<(string | number)[]>,
+  togglePanel: (panelRef: string | number, expanded: boolean) => void
+}
+
+export const expandedPanelsInjection: InjectionKey<ExpandedPanelsInjection> = Symbol('expanded')
 
 export default defineComponent({
   name,
@@ -8,35 +15,43 @@ export default defineComponent({
   props: {
     flat: Boolean,
     outline: Boolean,
-    rounded: Boolean
+    rounded: Boolean,
+    accordion: Boolean,
+
+    defaultExpanded: {
+      type: Array as PropType<(string | number)[]>,
+      default: () => []
+    }
   },
 
   setup(props, { slots }) {
-    const instance = getCurrentInstance()
-    const events = ref()
+    const expandedPanels = ref(props.defaultExpanded)
 
-    const getPanel = (element: VNode) => {
-      if (element.type && element.type.name === 'g-panel') {
-        return element
-      }
-    }
-    const toggle = () => {
-      console.log('instance', instance)
-      if (slots.default) {
-        for (const node of slots.default()) {
-          const panel = getPanel(node)
-          console.log('getPanel', panel)
-          console.log('getPanel toggle', panel.toggle)
-          console.log('node', node)
-          console.log('node type', node.type)
-          const child = ref(node)
-          console.log(child.value)
+    const togglePanel = (panelRef: string | number, expanded: boolean): void => {
+      console.log(panelRef, expanded)
+      if (props.accordion) {
+        if (expanded) {
+          expandedPanels.value.push(panelRef)
+        } else {
+          expandedPanels.value.slice()
+        }
+      } else {
+        const activePanels = expandedPanels.value.slice()
+        const index = activePanels.findIndex(panel => panelRef === panel)
+        if (!index) {
+          activePanels.splice(index, 1)
+          expandedPanels.value.push(...activePanels)
+        } else {
+          activePanels.push(panelRef)
+          expandedPanels.value.push(...activePanels)
         }
       }
     }
 
-    onMounted(() => nextTick(toggle))
-    onUpdated(() => nextTick(toggle))
+    provide(expandedPanelsInjection, {
+      expandedPanels,
+      togglePanel
+    })
 
     return () => <div
       class={{
