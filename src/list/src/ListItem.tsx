@@ -2,21 +2,11 @@ import { PropType, defineComponent, h, ref } from 'vue'
 
 import { GIcon } from '../../'
 
-import { Color, colors } from '../../utils'
+import { colors } from '../../utils'
+import { icons } from '../../utils/icons'
+import { Color, Icon } from '../../utils/interface'
 
 export const name = 'g-list-item'
-
-export interface ListItem {
-  label: string | number | undefined,
-  active?: boolean,
-  disabled?: boolean,
-  hovered?: boolean,
-  link?: boolean,
-  dense?: boolean,
-  color?: Color,
-  icon?: string,
-  onClick?: (event: MouseEvent) => void
-}
 
 export default defineComponent({
   name,
@@ -57,8 +47,11 @@ export default defineComponent({
     },
 
     icon: {
-      type: String,
-      default: undefined
+      type: String as PropType<Icon>,
+      default: undefined,
+      validator: (value: Icon): boolean => {
+        return !!~icons.indexOf(value)
+      }
     },
 
     onClick: {

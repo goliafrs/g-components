@@ -1,6 +1,7 @@
 import { PropType, defineComponent, h } from 'vue'
 
-import { Color, colors } from '../../utils'
+import { colors } from '../../utils'
+import { Color } from '../../utils/interface'
 
 export const name = 'g-divider'
 

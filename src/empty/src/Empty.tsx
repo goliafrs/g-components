@@ -2,7 +2,9 @@ import { PropType, defineComponent, h } from 'vue'
 
 import { GIcon } from '../../'
 
-import { Color, colors } from '../../utils'
+import { colors } from '../../utils'
+import { icons } from '../../utils/icons'
+import { Color, Icon } from '../../utils/interface'
 
 export const name = 'g-empty'
 
@@ -11,8 +13,11 @@ export default defineComponent({
 
   props: {
     icon: {
-      type: String,
-      default: 'search_off'
+      type: String as PropType<Icon>,
+      default: 'search_off',
+      validator: (value: Icon): boolean => {
+        return !!~icons.indexOf(value)
+      }
     },
 
     title: {

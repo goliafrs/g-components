@@ -1,21 +1,16 @@
 import { PropType, defineComponent, h } from 'vue'
 
-import { Color, colors } from '../../utils'
+import { colors } from '../../utils'
+import { Color, Icon } from '../../utils/interface'
 
 export const name = 'g-icon'
-
-export interface Icon {
-  value?: string,
-  size?: number,
-  color?: Color
-}
 
 export default defineComponent({
   name,
 
   props: {
     value: {
-      type: String,
+      type: String as PropType<Icon>,
       default: undefined
     },
 

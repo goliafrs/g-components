@@ -1,9 +1,11 @@
 import { defineComponent, h, ref } from 'vue'
 import { GAvatar, GButton, GCard, GCardActions, GCheckbox, GChip, GDatePicker, GDialog, GDivider, GEmpty, GIcon, GList, GPanel, GPanelGroup, GProgress, GSpoiler } from '../'
+import { ButtonProps } from '../button/interface'
 
-import { ListItem } from '../list/src/ListItem'
 import { GModal } from '../modal'
-import { componentNames, icons } from '../utils'
+import { componentNames } from '../utils'
+import { icons } from '../utils/icons'
+import { ComponentName, Icon } from '../utils/interface'
 
 export default defineComponent({
   name: 'Home',
@@ -18,15 +20,21 @@ export default defineComponent({
     const arrayNumbersValues = ref([ 1633640400000, 1634936400000 ])
 
     const renderIcons = () => {
-      return icons.map(icon => {
+      return icons.map((icon: Icon) => {
         return <span class='pa-2'><GIcon value={icon}></GIcon></span>
       })
     }
     const renderList = () => {
-      const items = componentNames.map((componentName: string): ListItem => {
+      const items = componentNames.map((componentName: ComponentName): ButtonProps => {
+        const isActive = name.value === componentName
+
         return {
           label: componentName,
-          active: name.value === componentName,
+          color: isActive ? 'primary' : undefined,
+          depressed: isActive,
+          flat: !isActive,
+          size: 'small',
+          rounded: true,
           onClick: () => {
             name.value = componentName
             window.localStorage.setItem('name', componentName)
@@ -34,7 +42,10 @@ export default defineComponent({
         }
       })
 
-      return <GList items={items}></GList>
+      return <div
+        class='grid grid-gap--8 fjcc'
+        style={{ gridTemplateColumns: 'repeat(auto-fill, minmax(88px, 100px))' }}
+      >{items.map(props => <GButton {...props} />)}</div>
     }
     const renderComponents = () => {
       switch (name.value) {
@@ -90,7 +101,7 @@ export default defineComponent({
         }
         case 'dialog': {
           return <div>
-            <GButton onClick={() => dialog.value = !dialog.value} label='show dialog' rounded marginless></GButton>
+            <GButton onClick={() => dialog.value = !dialog.value} label='show dialog' rounded />
             <GDialog
               v-model={dialog.value}
               v-slots={{
@@ -136,7 +147,7 @@ export default defineComponent({
         }
         case 'modal': {
           return <div>
-            <GButton onClick={() => modal.value = !modal.value} label='show modal' rounded marginless></GButton>
+            <GButton onClick={() => modal.value = !modal.value} label='show modal' rounded></GButton>
             <GModal v-model={modal.value} rounded>
               <div class='pa-3'>Modal content.</div>
             </GModal>
@@ -181,24 +192,18 @@ export default defineComponent({
       }
     }
 
-    return () => <div>
-      <div style={{
-        position: 'fixed',
-        top: 0,
-        left: 0,
-        height: '100%',
-        width: '300px'
-      }}>{renderList()}</div>
-      <div class='pt-3 pb-3 pr-3' style={{ paddingLeft: '316px' }}>
-        <h2
-          class='ma-0 py-3 w--100 bgc--white'
-          style={{
-            position: 'fixed',
-            top: 0,
-            left: '316px'
-          }}
-        >{name.value}</h2>
-        <div style={{ paddingTop: '61px' }}>{renderComponents()}</div>
+    return () => <div class='grid grid-cols-1'>
+      <div class='pa-2'>{renderList()}</div>
+      <div class='grid grid-cols-1 pa-2'>
+        <div
+          class='grid faic'
+          style={{ gridTemplateColumns: '1fr 200px 1fr' }}
+        >
+          <GDivider></GDivider>
+          <div class='fz-24 text--grey' style={{ textAlign: 'center' }}>{name.value}</div>
+          <GDivider></GDivider>
+        </div>
+        {renderComponents()}
       </div>
     </div>
   }

@@ -1,4 +1,4 @@
-import { computed, defineComponent, getCurrentInstance, h, inject, nextTick, onMounted, ref } from 'vue'
+import { computed, defineComponent, getCurrentInstance, h, inject, onMounted, ref } from 'vue'
 import { expandedPanelsInjection } from './PanelGroup'
 
 export const name = 'g-panel'
@@ -11,7 +11,7 @@ export default defineComponent({
     expandOnMounted: Boolean
   },
 
-  setup(props, { emit, slots, expose }) {
+  setup(props, { slots }) {
     const uid = getCurrentInstance()?.uid
 
     const rootRef = ref(`${name}-${uid}`)

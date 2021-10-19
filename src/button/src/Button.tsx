@@ -1,8 +1,12 @@
-import { PropType, computed, defineComponent, h, ref } from 'vue'
+import { PropType, computed, defineComponent, h } from 'vue'
 
 import { GIcon, GProgress } from '../../'
 
-import { Color, colors } from '../../utils'
+import { colors, directions, positions } from '../../utils'
+import { icons } from '../../utils/icons'
+import { Color, Direction, Icon, Position } from '../../utils/interface'
+import { ButtonSize, ButtonType } from '../interface'
+import { buttonSizes, buttonTypes } from '../utils'
 
 export const name = 'g-button'
 
@@ -22,10 +26,41 @@ export default defineComponent({
         return !!~colors.indexOf(value)
       }
     },
-
-    tiny: Boolean,
-    small: Boolean,
-    large: Boolean,
+    type: {
+      type: String as PropType<ButtonType>,
+      default: undefined,
+      validator: (value: ButtonType): boolean => {
+        return !!~buttonTypes.indexOf(value)
+      }
+    },
+    size: {
+      type: String as PropType<ButtonSize>,
+      default: undefined,
+      validator: (value: ButtonSize): boolean => {
+        return !!~buttonSizes.indexOf(value)
+      }
+    },
+    icon: {
+      type: String as PropType<Icon>,
+      default: undefined,
+      validator: (value: Icon): boolean => {
+        return !!~icons.indexOf(value)
+      }
+    },
+    position: {
+      type: String as PropType<Position>,
+      default: undefined,
+      validator: (value: Position): boolean => {
+        return !!~positions.indexOf(value)
+      }
+    },
+    direction: {
+      type: String as PropType<Direction>,
+      default: undefined,
+      validator: (value: Direction): boolean => {
+        return !!~directions.indexOf(value)
+      }
+    },
 
     fab: Boolean,
     flat: Boolean,
@@ -35,20 +70,6 @@ export default defineComponent({
     toolbar: Boolean,
     outline: Boolean,
     depressed: Boolean,
-    marginless: Boolean,
-
-    icon: {
-      type: String,
-      default: undefined
-    },
-
-    fixed: Boolean,
-    absolute: Boolean,
-
-    top: Boolean,
-    bottom: Boolean,
-    left: Boolean,
-    right: Boolean,
 
     loading: Boolean,
 
@@ -58,11 +79,6 @@ export default defineComponent({
     name: {
       type: String,
       default: undefined
-    },
-
-    type: {
-      type: String as PropType<'button' | 'submit' | 'reset'>,
-      default: 'button'
     },
 
     tabindex: {
@@ -89,38 +105,40 @@ export default defineComponent({
       return {
         [`${name}`]: true,
 
-        [`${name}--tiny`]: props.tiny,
-        [`${name}--small`]: props.small,
-        [`${name}--large`]: props.large,
-
         [`${name}--fab`]: props.fab,
         [`${name}--flat`]: props.flat,
         [`${name}--block`]: props.block,
         [`${name}--round`]: props.round ? true : !!props.icon && !props.label,
         [`${name}--rounded`]: props.rounded,
+        [`${name}--toolbar`]: props.toolbar,
         [`${name}--outline`]: props.outline,
         [`${name}--depressed`]: props.depressed,
-        [`${name}--marginless`]: props.marginless,
 
-        [`${name}--toolbar`]: props.toolbar,
-
-        [`${name}--fixed`]: props.fixed,
-        [`${name}--absolute`]: props.absolute,
-
-        [`${name}--top`]: props.top,
-        [`${name}--bottom`]: props.bottom,
-        [`${name}--left`]: props.left,
-        [`${name}--right`]: props.right,
-
-        [`${name}--disabled`]: props.disabled,
         [`${name}--loading`]: props.loading,
+        [`${name}--disabled`]: props.disabled,
 
         [`${name}--${props.type}`]: !!props.type,
-        [`${name}--${props.color}`]: !!props.color
+        [`${name}--${props.color}`]: !!props.color,
+        [`${name}--${props.size}`]: !!props.size,
+        [`${name}--${props.position}`]: !!props.position,
+        [`${name}--${props.direction}`]: !!props.direction
       }
     })
 
-    const size = computed(() => props.tiny ? 14 : props.small ? 18 : props.large ? 26 : props.fab ? 30 : 22)
+    const size = computed<number>(() => {
+      if (props.fab) {
+        return 30
+      }
+
+      switch (props.size) {
+        case 'tiny': { return 14 }
+        case 'small': { return 18 }
+        case 'large': { return 26 }
+        case 'giant': { return 30 }
+        case 'medium':
+        default: { return 22 }
+      }
+    })
 
     const renderLoading = () => {
       if (props.loading) {

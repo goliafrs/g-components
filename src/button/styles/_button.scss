@@ -36,10 +36,6 @@
 
 .g {
   &-button {
-    margin-top: 6px;
-    margin-bottom: 6px;
-    margin-left: 8px;
-    margin-right: 8px;
     padding-top: 0;
     padding-bottom: 0;
     padding-left: 16px;
@@ -107,10 +103,6 @@
       justify-content: center;
     }
 
-    &+.g-button {
-      margin-left: 0;
-    }
-
     &::before {
       content: '';
       border-radius: 2px;
@@ -126,10 +118,6 @@
     @include colors;
 
     &--fab {
-      margin-top: 0;
-      margin-bottom: 0;
-      margin-left: 0;
-      margin-right: 0;
       border-radius: 50%;
 
       @include absolute-height(56px);
@@ -268,10 +256,6 @@
     }
 
     &--toolbar {
-      margin-top: 0;
-      margin-bottom: 0;
-      margin-left: 0;
-      margin-right: 0;
       background-color: transparent;
       box-shadow: none;
       border: none;
@@ -318,10 +302,6 @@
 
     &--right {
       right: 0;
-    }
-
-    &--marginless {
-      margin: 0;
     }
 
     &--disabled {

@@ -6,6 +6,8 @@ import { defineConfig } from 'vite'
 export default defineConfig({
   root: './src/_site',
 
+  server: { port: 80 },
+
   plugins: [
     vue(),
     jsx()

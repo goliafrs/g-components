@@ -1,7 +1,7 @@
 import { defineComponent, h } from 'vue'
 
 import { GListItem } from '..'
-import { ListItem } from './ListItem'
+import { ListItemProps } from '../interface'
 
 export const name = 'g-list'
 
@@ -35,7 +35,7 @@ export default defineComponent({
   setup(props, { slots }) {
     const renderContent = () => {
       if (Array.isArray(props.items) && props.items.length) {
-        return props.items.map((item: ListItem) => {
+        return props.items.map((item: ListItemProps) => {
           return slots.item ? slots.item(item) : <GListItem {...item} />
         })
       }

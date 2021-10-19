@@ -1,4 +1,6 @@
-export const icons = [
+import { Icon } from './interface'
+
+export const icons: Icon[] = [
   '10k',
   '10mp',
   '11mp',
@@ -1865,5 +1867,3 @@ export const icons = [
   'zoom_out',
   'zoom_out_map'
 ]
-
-export default { icons }

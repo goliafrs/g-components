@@ -1,6 +1,7 @@
 import { CSSProperties, PropType, computed, defineComponent, h } from 'vue'
 
-import { Color, colors, normalizedValue, numberToPxOrString } from '../../utils'
+import { colors, normalizedValue, numberToPxOrString } from '../../utils'
+import { Color } from '../../utils/interface'
 
 export const name = 'g-progress'
 

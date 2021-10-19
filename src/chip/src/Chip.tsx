@@ -2,7 +2,9 @@ import { PropType, computed, defineComponent, h } from 'vue'
 
 import { GIcon, GProgress } from '../../'
 
-import { Color, colors } from '../../utils'
+import { colors } from '../../utils'
+import { icons } from '../../utils/icons'
+import { Color, Icon } from '../../utils/interface'
 
 export const name = 'g-chip'
 
@@ -42,10 +44,12 @@ export default defineComponent({
         return !!~colors.indexOf(value)
       }
     },
-
     icon: {
-      type: String,
-      default: undefined
+      type: String as PropType<Icon>,
+      default: undefined,
+      validator: (value: Icon): boolean => {
+        return !!~icons.indexOf(value)
+      }
     },
 
     loading: Boolean,
@@ -53,8 +57,11 @@ export default defineComponent({
 
     cancelable: Boolean,
     cancelIcon: {
-      type: String,
-      default: 'clear'
+      type: String as PropType<Icon>,
+      default: 'clear',
+      validator: (value: Icon): boolean => {
+        return !!~icons.indexOf(value)
+      }
     },
     cancelCallback: {
       type: Function as PropType<(event: MouseEvent) => void>,

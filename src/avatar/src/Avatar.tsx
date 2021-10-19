@@ -2,7 +2,9 @@ import { CSSProperties, PropType, StyleValue, computed, defineComponent, h } fro
 
 import { GIcon } from '../../'
 
-import { Color, colors, numberToPxOrString } from '../../utils'
+import { colors, numberToPxOrString } from '../../utils'
+import { icons } from '../../utils/icons'
+import { Color, Icon } from '../../utils/interface'
 
 export const name = 'g-avatar'
 
@@ -19,9 +21,20 @@ export default defineComponent({
       type: String,
       default: undefined
     },
+
+    color: {
+      type: String as PropType<Color>,
+      default: undefined,
+      validator: (value: Color): boolean => {
+        return !!~colors.indexOf(value)
+      }
+    },
     icon: {
-      type: String,
-      default: undefined
+      type: String as PropType<Icon>,
+      default: undefined,
+      validator: (value: Icon): boolean => {
+        return !!~icons.indexOf(value)
+      }
     },
 
     size: {
@@ -40,14 +53,6 @@ export default defineComponent({
     outline: {
       type: Boolean,
       default: false
-    },
-
-    color: {
-      type: String as PropType<Color>,
-      default: undefined,
-      validator: (value: Color): boolean => {
-        return !!~colors.indexOf(value)
-      }
     },
 
     background: {

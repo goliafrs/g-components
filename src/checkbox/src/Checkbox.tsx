@@ -1,6 +1,7 @@
 import { PropType, computed, defineComponent, getCurrentInstance, h, reactive, ref, watch } from 'vue'
 
-import { Color, colors } from '../../utils'
+import { colors } from '../../utils'
+import { Color } from '../../utils/interface'
 
 export const name = 'g-checkbox'
 
