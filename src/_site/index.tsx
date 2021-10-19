@@ -1,5 +1,5 @@
 import { defineComponent, h, ref } from 'vue'
-import { GAvatar, GButton, GCard, GCardActions, GCheckbox, GChip, GDatePicker, GDialog, GDivider, GEmpty, GFooter, GIcon, GList, GPanel, GPanelGroup, GProgress, GSpoiler } from '../'
+import { GAvatar, GButton, GCard, GCardActions, GCheckbox, GChip, GDatePicker, GDialog, GDivider, GEmpty, GFooter, GForm, GIcon, GList, GPanel, GPanelGroup, GProgress, GSpoiler } from '../'
 import { ButtonProps } from '../button/interface'
 
 import { GModal } from '../modal'
@@ -143,6 +143,11 @@ export default defineComponent({
             <GFooter color='error'>GFooter error</GFooter>
             <GFooter color='success'>GFooter success</GFooter>
             <GFooter fixed dense>GFooter fixed dense</GFooter>
+          </div>
+        }
+        case 'form': {
+          return <div>
+            <GForm>GFooter</GForm>
           </div>
         }
         case 'icon': {

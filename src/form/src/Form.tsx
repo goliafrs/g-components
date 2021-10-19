@@ -1,7 +1,4 @@
-import { PropType, defineComponent, h } from 'vue'
-
-import { colors } from '../../utils'
-import { Color } from '../../utils/interface'
+import { FormHTMLAttributes, PropType, defineComponent, h, onBeforeUnmount, onMounted, ref } from 'vue'
 
 export const name = 'g-footer'
 
@@ -9,30 +6,70 @@ export default defineComponent({
   name,
 
   props: {
-    color: {
-      type: String as PropType<Color>,
-      default: undefined,
-      validator: (value: Color): boolean => {
-        return !!~colors.indexOf(value)
-      }
+    action: {
+      type: String as PropType<FormHTMLAttributes['action']>,
+      default: undefined
+    },
+    acceptcharset: {
+      type: String as PropType<FormHTMLAttributes['acceptcharset']>,
+      default: undefined
+    },
+    autocomplete: {
+      type: String as PropType<FormHTMLAttributes['autocomplete']>,
+      default: undefined
+    },
+    enctype: {
+      type: String as PropType<FormHTMLAttributes['enctype']>,
+      default: 'application/x-www-form-urlencoded'
+    },
+    method: {
+      type: String as PropType<FormHTMLAttributes['method']>,
+      default: undefined
+    },
+    name: {
+      type: String as PropType<FormHTMLAttributes['name']>,
+      default: undefined
+    },
+    target: {
+      type: String as PropType<FormHTMLAttributes['target']>,
+      default: '_self'
     },
 
-    dense: Boolean,
-    fixed: Boolean
+    novalidate: {
+      type: Boolean as PropType<FormHTMLAttributes['novalidate']>,
+      default: true
+    }
   },
 
-  setup(props, { slots }) {
-    return () => <div
-      class={{
-        [name]: true,
+  emits: [ 'validation' ],
 
-        [`${name}--dense`]: props.dense,
-        [`${name}--fixed`]: props.fixed,
+  setup(props, { slots, emit }) {
+    const rootRef = ref<HTMLFormElement>()
 
-        [`${name}--${props.color}`]: !!props.color
-      }}
+    const checkFormValidity = () => {
+      emit('validation', rootRef.value?.checkValidity())
+    }
+
+    onMounted(() => {
+      rootRef.value?.addEventListener('valuechange', checkFormValidity)
+    })
+    onBeforeUnmount(() => {
+      rootRef.value?.removeEventListener('valuechange', checkFormValidity)
+    })
+
+    return () => <form
+      action={props.action}
+      acceptcharset={props.acceptcharset}
+      autocomplete={props.autocomplete}
+      enctype={props.enctype}
+      method={props.method}
+      name={props.name}
+      target={props.target}
+      novalidate={props.novalidate}
+
+      ref={rootRef}
     >
       {slots.default ? slots.default() : undefined}
-    </div>
+    </form>
   }
 })
