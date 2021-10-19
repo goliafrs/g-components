@@ -50,18 +50,26 @@ export default defineComponent({
     const renderComponents = () => {
       switch (name.value) {
         case 'avatar': {
-          return <div>
+          return <div
+            class='grid grid-gap--8'
+            style={{ gridTemplateColumns: 'repeat(auto-fill, 48px)' }}
+          >
             <GAvatar title='avatar' color='primary'></GAvatar>
-            <GAvatar title='avatar' color='error' rounded class='ml-3'></GAvatar>
-            <GAvatar title='avatar' color='success' round class='ml-3'></GAvatar>
-            <GAvatar title='avatar' color='secondary' round outline class='ml-3'></GAvatar>
+            <GAvatar title='avatar' color='error' rounded></GAvatar>
+            <GAvatar title='avatar' color='success' round></GAvatar>
+            <GAvatar title='avatar' color='secondary' round outline></GAvatar>
           </div>
         }
         case 'button': {
-          return <div>
-            <GButton color='primary'>GButton</GButton>
-            <GButton color='error' rounded>GButton</GButton>
-            <GButton color='success' rounded outline>GButton</GButton>
+          return <div
+            class='grid grid-gap--8'
+            style={{ gridTemplateColumns: 'repeat(auto-fill, minmax(100px, 150px))' }}
+          >
+            <GButton color='primary'>normal</GButton>
+            <GButton color='error' rounded>rounded</GButton>
+            <GButton color='success' rounded depressed>depressed</GButton>
+            <GButton color='accent' rounded outline>outline</GButton>
+            <GButton color='black' rounded flat>flat</GButton>
           </div>
         }
         case 'card': {
@@ -156,16 +164,25 @@ export default defineComponent({
         case 'panel-group': {
           return <div>
             <GPanelGroup accordion>
-              <GPanel v-slots={{ header: ({ expanded }) => <div>panel header {expanded}</div> }}>panel 1</GPanel>
-              <GPanel v-slots={{ header: ({ expanded }) => <div>panel header {expanded}</div> }}>panel 2</GPanel>
-              <GPanel v-slots={{ header: ({ expanded }) => <div>panel header {expanded}</div> }}>panel 3</GPanel>
-              <GPanel v-slots={{ header: ({ expanded }) => <div>panel header {expanded}</div> }}>panel 4</GPanel>
+              {
+                [ 1, 2, 3, 4 ].map(item => {
+                  const slots = { header: () => <div>panel header {item}</div> }
+
+                  return <GPanel v-slots={slots}>panel body {item}</GPanel>
+                })
+              }
+            </GPanelGroup>
+            <GPanelGroup class='mt-3'>
+              <GPanel v-slots={{ header: () => <div>panel header</div> }}>panel 1</GPanel>
+              <GPanel v-slots={{ header: () => <div>panel header</div> }}>panel 2</GPanel>
+              <GPanel v-slots={{ header: () => <div>panel header</div> }}>panel 3</GPanel>
+              <GPanel v-slots={{ header: () => <div>panel header</div> }}>panel 4</GPanel>
             </GPanelGroup>
           </div>
         }
         case 'panel': {
           return <div>
-            <GPanel v-slots={{ header: ({ expanded }) => <div>panel header {expanded}</div> }}>panel 1</GPanel>
+            <GPanel v-slots={{ header: () => <div>panel header</div> }}>panel 1</GPanel>
           </div>
         }
         case 'progress': {

@@ -1,5 +1,6 @@
 import { computed, defineComponent, getCurrentInstance, h, inject, onMounted, ref } from 'vue'
-import { expandedPanelsInjection } from './PanelGroup'
+
+import { panelGroupInjection } from '../utils'
 
 export const name = 'g-panel'
 
@@ -16,19 +17,17 @@ export default defineComponent({
 
     const rootRef = ref(`${name}-${uid}`)
 
-    const injectExpanded = inject(expandedPanelsInjection)
+    const injection = inject(panelGroupInjection)
 
     const expanded = computed<boolean>(() => {
-      if (injectExpanded) {
-        return !!~injectExpanded.expandedPanels.value.findIndex(panel => panel === rootRef.value)
+      if (injection) {
+        return !!~injection.expandedPanels.value.findIndex(panel => panel === rootRef.value)
       }
 
       return false
     })
 
-    const toggle = () => {
-      injectExpanded?.togglePanel(rootRef.value, expanded.value)
-    }
+    const toggle = () => injection?.togglePanel(rootRef.value, expanded.value)
     const headerOnClickHandler = () => {
       if (!props.preventClick) {
         toggle()
@@ -43,13 +42,13 @@ export default defineComponent({
 
     const renderHeader = () => {
       return <div class={`${name}__header`} onClick={headerOnClickHandler}>
-        {slots.header ? slots.header({ toggle }) : undefined}
+        {slots.header ? slots.header() : undefined}
       </div>
     }
     const renderBody = () => {
       if (expanded.value) {
         return <div class={`${name}__body`}>
-          {slots.default ? slots.default({ toggle }) : undefined}
+          {slots.default ? slots.default() : undefined}
         </div>
       }
     }

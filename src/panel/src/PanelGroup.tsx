@@ -1,13 +1,8 @@
-import { ComponentPublicInstance, DefineComponent, InjectionKey, PropType, Ref, VNode, VNodeChild, defineComponent, getCurrentInstance, h, nextTick, onMounted, onUpdated, provide, reactive, ref } from 'vue'
+import { PropType, defineComponent, h, provide, ref } from 'vue'
+
+import { panelGroupInjection } from '../utils'
 
 export const name = 'g-panel-group'
-
-export interface ExpandedPanelsInjection {
-  expandedPanels: Ref<(string | number)[]>,
-  togglePanel: (panelRef: string | number, expanded: boolean) => void
-}
-
-export const expandedPanelsInjection: InjectionKey<ExpandedPanelsInjection> = Symbol('expanded')
 
 export default defineComponent({
   name,
@@ -28,27 +23,22 @@ export default defineComponent({
     const expandedPanels = ref(props.defaultExpanded)
 
     const togglePanel = (panelRef: string | number, expanded: boolean): void => {
-      console.log(panelRef, expanded)
       if (props.accordion) {
-        if (expanded) {
+        expandedPanels.value = expandedPanels.value.splice(0, -1)
+        if (!expanded) {
           expandedPanels.value.push(panelRef)
-        } else {
-          expandedPanels.value.slice()
         }
       } else {
-        const activePanels = expandedPanels.value.slice()
-        const index = activePanels.findIndex(panel => panelRef === panel)
-        if (!index) {
-          activePanels.splice(index, 1)
-          expandedPanels.value.push(...activePanels)
+        const index = expandedPanels.value.findIndex(panel => panelRef === panel)
+        if (~index) {
+          expandedPanels.value.splice(index, 1)
         } else {
-          activePanels.push(panelRef)
-          expandedPanels.value.push(...activePanels)
+          expandedPanels.value.push(panelRef)
         }
       }
     }
 
-    provide(expandedPanelsInjection, {
+    provide(panelGroupInjection, {
       expandedPanels,
       togglePanel
     })
