@@ -1,5 +1,5 @@
-import { PropType, Transition, defineComponent, h, onMounted, ref, watch } from 'vue'
-import { GButton, GCardActions } from '../..'
+import { PropType, Transition, computed, defineComponent, h } from 'vue'
+import { GButton, GCardActions, GOverlay } from '../..'
 
 import { colors, numberToPxOrString } from '../../utils'
 import { Color } from '../../utils/interface'
@@ -10,11 +10,6 @@ export default defineComponent({
   name,
 
   props: {
-    rootElement: {
-      type: null,
-      default: '#app'
-    },
-
     modelValue: {
       type: Boolean,
       default: false
@@ -96,42 +91,9 @@ export default defineComponent({
   emits: [ 'update:modelValue' ],
 
   setup(props, { emit, slots }) {
-    const rootElement = ref<HTMLElement>(document.querySelector(props.rootElement))
-    const rootRef = ref<HTMLElement>()
-    const proxy = ref(props.modelValue)
-
-    const show = () => {
-      proxy.value = true
-    }
-    const hide = () => {
-      proxy.value = false
-    }
-    const toggle = () => {
-      proxy.value ? hide() : show()
-      emit('update:modelValue', proxy.value)
-    }
-    const setOverflow = () => {
-      if (proxy.value) {
-        document.body.style.overflow = 'hidden'
-      } else {
-        document.body.style.overflow = ''
-      }
-    }
-
-    watch(
-      () => props.modelValue,
-      () => {
-        proxy.value = props.modelValue
-        setOverflow()
-      }
-    )
-
-    onMounted(() => {
-      if (rootRef.value) {
-        if (rootElement.value) {
-          rootElement.value.insertBefore(rootRef.value, null)
-        }
-      }
+    const proxy = computed<boolean>({
+      get: () => props.modelValue,
+      set: (value: boolean) => emit('update:modelValue', value)
     })
 
     const renderHeader = () => {
@@ -151,14 +113,14 @@ export default defineComponent({
           color={props.positiveColor}
           flat
           rounded
-          onClick={(event: MouseEvent) => props.positiveCallback ? props.positiveCallback(event) : toggle()}
+          onClick={(event: MouseEvent) => props.positiveCallback ? props.positiveCallback(event) : proxy.value = !proxy.value}
         />
         <GButton
           label={props.negativeLabel}
           color={props.negativeColor}
           flat
           rounded
-          onClick={(event: MouseEvent) => props.negativeCallback ? props.negativeCallback(event) : toggle()}
+          onClick={(event: MouseEvent) => props.negativeCallback ? props.negativeCallback(event) : proxy.value = !proxy.value}
         />
       </GCardActions>
     }
@@ -185,9 +147,6 @@ export default defineComponent({
         {renderFooter()}
       </div>
     }
-    const renderOverlay = () => {
-      return <div class={`${name}__overlay`}></div>
-    }
     const renderContent = () => {
       if (proxy.value) {
         return <div
@@ -197,7 +156,8 @@ export default defineComponent({
           }}
         >
           {renderHolder()}
-          {renderOverlay()}
+
+          <GOverlay v-model={proxy.value} />
         </div>
       }
     }

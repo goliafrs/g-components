@@ -16,18 +16,6 @@
       }
     }
 
-    &__overlay {
-      background-color: $black-36;
-      position: absolute;
-      top: 0;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      height: 100%;
-      width: 100%;
-      z-index: 1;
-    }
-
     &__holder {
       @include g-elevation(24);
 

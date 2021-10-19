@@ -10,11 +10,6 @@ export default defineComponent({
   name,
 
   props: {
-    rootElement: {
-      type: null,
-      default: '#app'
-    },
-
     modelValue: {
       type: Boolean,
       default: false
@@ -146,6 +141,8 @@ export default defineComponent({
 
             [`${name}--${props.direction}`]: !!props.direction
           }}
+
+          style={{ zIndex: props.zIndex }}
         >
           {renderHolder()}
 
