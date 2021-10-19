@@ -17,7 +17,7 @@ export default defineComponent({
 
     const rootRef = ref(`${name}-${uid}`)
 
-    const injection = inject(panelGroupInjection)
+    const injection = inject(panelGroupInjection, undefined)
 
     const expanded = computed<boolean>(() => {
       if (injection) {
@@ -26,8 +26,15 @@ export default defineComponent({
 
       return false
     })
+    const localExpanded = ref(false)
 
-    const toggle = () => injection?.togglePanel(rootRef.value, expanded.value)
+    const toggle = () => {
+      if (injection) {
+        injection.togglePanel(rootRef.value, expanded.value)
+      } else {
+        localExpanded.value = !localExpanded.value
+      }
+    }
     const headerOnClickHandler = () => {
       if (!props.preventClick) {
         toggle()
@@ -46,7 +53,7 @@ export default defineComponent({
       </div>
     }
     const renderBody = () => {
-      if (expanded.value) {
+      if (expanded.value || localExpanded.value) {
         return <div class={`${name}__body`}>
           {slots.default ? slots.default() : undefined}
         </div>
