@@ -1,0 +1,26 @@
+.g {
+  &-overlay {
+    background-color: $black-36;
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    width: 100%;
+  }
+}
+
+.show-overlay-enter-active,
+.show-overlay-leave-active {
+  transition: opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1), transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.show-overlay-enter-from,
+.show-overlay-leave-to {
+  transform: scale(0, 0);
+  opacity: 0;
+}

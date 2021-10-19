@@ -2,6 +2,7 @@ import { chunk } from 'lodash'
 
 import { PropType, computed, defineComponent, getCurrentInstance, h, nextTick, onMounted, reactive, ref, watch } from 'vue'
 import { GButton } from '../../'
+import { Icon } from '../../utils/interface'
 
 export const name = 'g-date-picker'
 
@@ -73,9 +74,30 @@ export default defineComponent({
     })
 
     const state = ref<'days' | 'months' | 'years'>('days')
-    const proxy = ref(props.modelValue)
     const hoverDay = ref(0)
 
+    const proxy = computed<number[]>({
+      get: () => {
+        const data = props.modelValue.reduce<number[]>((result, value) => {
+          const date = new Date(value)
+          if (date instanceof Date) {
+            date.setHours(0, 0, 0, 0)
+            result.push(date.getTime())
+          }
+
+          return result
+        }, [])
+
+        if (data.length > 1 && data[0] === data[1]) {
+          data.pop()
+        }
+
+        return data
+      },
+      set: (value: number[]) => {
+        emit('update:modelValue', props.filter(props.range ? value : [ value[0] ]))
+      }
+    })
     const days = computed(() => {
       const result = []
 
@@ -288,35 +310,6 @@ export default defineComponent({
       return leftActiveEdge <= year && rightActiveEdge >= year
     }
 
-    watch(() => props.modelValue, () => {
-      const data = props.modelValue.reduce<number[]>((result, value) => {
-        const date = new Date(value)
-        if (date instanceof Date) {
-          date.setHours(0, 0, 0, 0)
-          result.push(date.getTime())
-        }
-
-        return result
-      }, [])
-
-      if (data.length > 1 && data[0] === data[1]) {
-        data.pop()
-      }
-
-      proxy.value.splice(0, proxy.value.length, ...data)
-    })
-    watch(() => proxy.value, () => {
-      let value
-      if (props.range) {
-        value = proxy.value
-      } else {
-        value = [ proxy.value[0] ]
-      }
-
-      if (JSON.stringify(props.modelValue) !== JSON.stringify(value)) {
-        emit('update:modelValue', props.filter(value))
-      }
-    })
     watch(() => state.value, scrollYearsList)
     watch(() => date.month, () => {
       if (date.month < 0) {
@@ -372,9 +365,9 @@ export default defineComponent({
       </div>
     }
     const renderArrow = (direction = -1) => {
-      const icon: string = direction < 0 ? 'keyboard_arrow_left' : 'keyboard_arrow_right'
+      const icon: Icon = direction < 0 ? 'keyboard_arrow_left' : 'keyboard_arrow_right'
 
-      return <GButton flat marginless icon={icon} onClick={() => arrowClickHandler(direction)} />
+      return <GButton flat icon={icon} onClick={() => arrowClickHandler(direction)} />
     }
     const renderHeader = () => {
       return <div class={`${name}__header`}>
@@ -418,12 +411,14 @@ export default defineComponent({
           outline={ms === currentMs && !isActiveDate}
           color={isActive ? 'primary' : undefined}
           disabled={ms < min.value || ms > max.value}
+
+          round
+
           onClick={() => pickDateHandler(day)}
           onMouseover={() => hoverDay.value = ms}
           onMouseout={() => hoverDay.value = 0}
+
           key={`${name}-${uid}-day-${day}`}
-          round
-          marginless
         />
       }
     }
@@ -478,20 +473,23 @@ export default defineComponent({
 
       return <GButton
         class={`${name}__month`}
+
         label={month.short}
         flat={!isActive}
         color={color}
         outline={outline}
+
         block
         rounded
         depressed
-        marginless
+
         onClick={() => {
           date.month = month.number
           state.value = 'days'
 
           pickDateHandler(date.day)
         }}
+
         key={`${name}-${uid}-month-${month.number}`}
       />
     }
@@ -522,7 +520,6 @@ export default defineComponent({
 
         block
         rounded
-        marginless
 
         onClick={() => {
           date.year = year

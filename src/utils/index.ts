@@ -2,8 +2,8 @@ import { Color, ComponentName, Direction, Position } from './interface'
 import { icons } from './icons'
 
 export const colors: Color[] = [ 'primary', 'secondary', 'info', 'warning', 'error', 'success', 'accent', 'white', 'black', 'grey', 'gray', 'transparent' ]
-export const directions: Direction[] = [ 'top', 'bottom', 'left', 'right' ]
-export const componentNames: ComponentName[] = [ 'avatar', 'button', 'card', 'checkbox', 'chip', 'date-picker', 'dialog', 'divider', 'empty', 'icon', 'list', 'modal', 'panel-group', 'panel', 'progress', 'spoiler' ]
+export const directions: Direction[] = [ 'top', 'bottom', 'left', 'right', 'center' ]
+export const componentNames: ComponentName[] = [ 'avatar', 'button', 'card', 'checkbox', 'chip', 'date-picker', 'dialog', 'divider', 'empty', 'icon', 'list', 'modal', 'overlay', 'panel-group', 'panel', 'progress', 'spoiler' ]
 export const positions: Position[] = [ 'absolute', 'fixed' ]
 
 const REGEXP_IS_HEX = /^#?[0-9A-Fa-f]{3,6}$/
