@@ -57,18 +57,7 @@ export default defineComponent({
       rootRef.value?.removeEventListener('valuechange', checkFormValidity)
     })
 
-    return () => <form
-      action={props.action}
-      acceptcharset={props.acceptcharset}
-      autocomplete={props.autocomplete}
-      enctype={props.enctype}
-      method={props.method}
-      name={props.name}
-      target={props.target}
-      novalidate={props.novalidate}
-
-      ref={rootRef}
-    >
+    return () => <form {...props} ref={rootRef}>
       {slots.default ? slots.default() : undefined}
     </form>
   }
