@@ -15,6 +15,11 @@ export default defineComponent({
       default: false
     },
 
+    zIndex: {
+      type: Number,
+      default: 7
+    },
+
     title: {
       type: String,
       default: undefined
@@ -154,10 +159,12 @@ export default defineComponent({
             [`${name}`]: true,
             [`${name}--rounded`]: props.rounded
           }}
+
+          style={{ zIndex: props.zIndex }}
         >
           {renderHolder()}
 
-          <GOverlay v-model={proxy.value} />
+          <GOverlay v-model={proxy.value} closeOnClick={false} closeOnEsc={false} />
         </div>
       }
     }
