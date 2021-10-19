@@ -1,5 +1,5 @@
 import { defineComponent, h, ref } from 'vue'
-import { GAvatar, GButton, GCard, GCardActions, GCheckbox, GChip, GDatePicker, GDialog, GDivider, GEmpty, GIcon, GList, GPanel, GPanelGroup, GProgress, GSpoiler } from '../'
+import { GAvatar, GButton, GCard, GCardActions, GCheckbox, GChip, GDatePicker, GDialog, GDivider, GEmpty, GFooter, GIcon, GList, GPanel, GPanelGroup, GProgress, GSpoiler } from '../'
 import { ButtonProps } from '../button/interface'
 
 import { GModal } from '../modal'
@@ -44,7 +44,7 @@ export default defineComponent({
 
       return <div
         class='grid grid-gap--8 fjcc'
-        style={{ gridTemplateColumns: 'repeat(auto-fill, minmax(88px, 100px))' }}
+        style={{ gridTemplateColumns: 'repeat(auto-fill, minmax(88px, 110px))' }}
       >{items.map(props => <GButton {...props} />)}</div>
     }
     const renderComponents = () => {
@@ -134,8 +134,15 @@ export default defineComponent({
           </div>
         }
         case 'empty': {
+          return <div><GEmpty /></div>
+        }
+        case 'footer': {
           return <div>
-            <GEmpty />
+            <GFooter>GFooter</GFooter>
+            <GFooter color='primary'>GFooter primary</GFooter>
+            <GFooter color='error'>GFooter error</GFooter>
+            <GFooter color='success'>GFooter success</GFooter>
+            <GFooter fixed dense>GFooter fixed dense</GFooter>
           </div>
         }
         case 'icon': {
