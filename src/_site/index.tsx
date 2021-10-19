@@ -147,7 +147,7 @@ export default defineComponent({
         }
         case 'form': {
           return <div>
-            <GForm>GFooter</GForm>
+            <GForm>GForm</GForm>
           </div>
         }
         case 'icon': {
