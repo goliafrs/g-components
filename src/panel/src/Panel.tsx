@@ -16,6 +16,7 @@ export default defineComponent({
     const uid = getCurrentInstance()?.uid
 
     const rootRef = ref(`${name}-${uid}`)
+    const localExpanded = ref(false)
 
     const injection = inject(panelGroupInjection, undefined)
 
@@ -26,7 +27,6 @@ export default defineComponent({
 
       return false
     })
-    const localExpanded = ref(false)
 
     const toggle = () => {
       if (injection) {

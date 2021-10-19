@@ -146,9 +146,7 @@ export default defineComponent({
           </div>
         }
         case 'icon': {
-          return <div>
-            {renderIcons()}
-          </div>
+          return <div>{renderIcons()}</div>
         }
         case 'list': {
           return <div>
@@ -179,10 +177,15 @@ export default defineComponent({
                 })
               }
             </GPanelGroup>
-            <GPanelGroup class='mt-3'>
+            <GPanelGroup accordion class='mt-3'>
               <GPanel v-slots={{ header: () => <div>panel header</div> }}>panel 1</GPanel>
               <GPanel v-slots={{ header: () => <div>panel header</div> }}>panel 2</GPanel>
-              <GPanel v-slots={{ header: () => <div>panel header</div> }}>panel 3</GPanel>
+              <GPanel v-slots={{ header: () => <div>panel header</div> }}>
+                <GPanelGroup accordion>
+                  <GPanel v-slots={{ header: () => <div>panel header</div> }}>panel 1</GPanel>
+                  <GPanel v-slots={{ header: () => <div>panel header</div> }}>panel 2</GPanel>
+                </GPanelGroup>
+              </GPanel>
               <GPanel v-slots={{ header: () => <div>panel header</div> }}>panel 4</GPanel>
             </GPanelGroup>
           </div>
