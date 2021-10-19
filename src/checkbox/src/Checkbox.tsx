@@ -1,4 +1,4 @@
-import { PropType, computed, defineComponent, getCurrentInstance, h, reactive, ref, watch } from 'vue'
+import { PropType, computed, defineComponent, getCurrentInstance, h } from 'vue'
 
 import { colors } from '../../utils'
 import { Color } from '../../utils/interface'
@@ -28,11 +28,11 @@ export default defineComponent({
     },
 
     trueValue: {
-      type: null,
+      type: [ Boolean, String, Number ],
       default: true
     },
     falseValue: {
-      type: null,
+      type: [ Boolean, String, Number ],
       default: false
     },
 
@@ -45,15 +45,19 @@ export default defineComponent({
   emits: [ 'update:modelValue' ],
 
   setup(props, { slots, emit }) {
-    const uid = `${name}_${getCurrentInstance()?.uid}`
+    const uid = getCurrentInstance()?.uid
 
-    const checked = ref(false)
-    const proxy = ref(props.modelValue)
-
-    watch(
-      () => props.modelValue,
-      () => proxy.value = props.modelValue
-    )
+    const checked = computed<boolean>((): boolean => {
+      if (proxy.value === props.falseValue) {
+        return false
+      } else {
+        return true
+      }
+    })
+    const proxy = computed<boolean | string | number>({
+      get: () => props.modelValue,
+      set: (value: boolean | string | number) => emit('update:modelValue', value)
+    })
 
     const classes = computed(() => {
       return {
@@ -70,17 +74,14 @@ export default defineComponent({
       if (!props.disabled) {
         if (proxy.value === props.falseValue) {
           proxy.value = props.trueValue
-          checked.value = true
         } else {
           proxy.value = props.falseValue
-          checked.value = false
         }
-        emit('update:modelValue', proxy.value)
       }
     }
 
     const renderInput = () => {
-      return <input type='checkbox' name={uid} value={proxy.value} hidden />
+      return <input type='checkbox' name={`${name}-${uid}`} value={proxy.value} hidden />
     }
     const renderContent = () => {
       return <div class={`${name}__square`}>
@@ -91,13 +92,19 @@ export default defineComponent({
     }
     const renderLabel = () => {
       if (slots.default || props.label) {
-        return <label for={uid} class={`${name}__label`}>
+        return <label for={`${name}-${uid}`} class={`${name}__label`}>
           {slots.default ? slots.default() : props.label}
         </label>
       }
     }
 
-    return () => <div role='checkbox' aria-checked={proxy.value} class={classes.value} onClick={clickHandler}>
+    return () => <div
+      role='checkbox'
+
+      aria-checked={checked.value}
+      class={classes.value}
+      onClick={clickHandler}
+    >
       {renderInput()}
       {renderContent()}
       {renderLabel()}
