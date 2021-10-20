@@ -162,7 +162,7 @@ export default defineComponent({
         }
         case 'list': {
           return <div
-            class='grid'
+            class='grid faifs'
             style={{ gridTemplateColumns: '300px 300px' }}
           >
             <GCard width={300}>
