@@ -105,7 +105,7 @@ export default defineComponent({
 
     const classes = computed(() => {
       return {
-        [`${name}`]: true,
+        [name]: true,
 
         [`${name}--round`]: props.round,
         [`${name}--rounded`]: props.rounded,

@@ -103,7 +103,7 @@ export default defineComponent({
   setup(props, { slots }) {
     const classes = computed(() => {
       return {
-        [`${name}`]: true,
+        [name]: true,
 
         [`${name}--fab`]: props.fab,
         [`${name}--flat`]: props.flat,

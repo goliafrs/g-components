@@ -14,7 +14,7 @@ export default defineComponent({
 
   setup(props, { slots }) {
     return () => <div class={{
-      [`${name}`]: true,
+      [name]: true,
       [`${name}--dense`]: props.dense
     }}>
       {slots.default ? slots.default() : null}

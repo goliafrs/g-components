@@ -45,7 +45,7 @@ export default defineComponent({
       role='list'
 
       class={{
-        [`${name}`]: true,
+        [name]: true,
 
         [`${name}--wrap`]: props.wrap,
         [`${name}--dense`]: props.dense,

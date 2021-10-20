@@ -1,5 +1,5 @@
 import { defineComponent, h, ref } from 'vue'
-import { GAvatar, GButton, GCard, GCardActions, GCheckbox, GChip, GDatePicker, GDialog, GDivider, GEmpty, GFooter, GForm, GIcon, GInput, GList, GPanel, GPanelGroup, GProgress, GSpoiler } from '../'
+import { GAvatar, GButton, GCard, GCardActions, GCheckbox, GChip, GDatePicker, GDialog, GDivider, GEmpty, GFooter, GForm, GIcon, GInput, GList, GListItem, GPanel, GPanelGroup, GProgress, GSpoiler } from '../'
 import { ButtonProps } from '../button/interface'
 
 import { GModal } from '../modal'
@@ -217,6 +217,9 @@ export default defineComponent({
               ></GList>
             </GCard>
           </div>
+        }
+        case 'list-item': {
+          return <GListItem to={{ path: '/' }}>test</GListItem>
         }
         case 'modal': {
           return <div>

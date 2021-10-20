@@ -1,4 +1,5 @@
 import { PropType, defineComponent, h, ref } from 'vue'
+
 import { GList } from '..'
 
 import { GIcon } from '../../'
@@ -67,6 +68,11 @@ export default defineComponent({
     onClick: {
       type: Function as PropType<(event: MouseEvent) => void>,
       default: undefined
+    },
+
+    to: {
+      type: Object,
+      default: undefined
     }
   },
 
@@ -107,13 +113,15 @@ export default defineComponent({
       }
     }
 
-    return () => <div
+    const component = props.to ? 'router-link' : 'div'
+
+    return () => <component
       role='listitem'
 
       class={{
-        [`${name}`]: true,
+        [name]: true,
 
-        [`${name}--link`]: props.link || props.onClick,
+        [`${name}--link`]: props.link || props.onClick || props.to,
         [`${name}--dense`]: props.dense,
         [`${name}--group`]: props.group,
         [`${name}--active`]: props.active,
@@ -122,6 +130,8 @@ export default defineComponent({
 
         [`${name}--${props.color}`]: !!props.color
       }}
+
+      to={props.to}
 
       onClick={props.onClick}
     >
@@ -132,6 +142,6 @@ export default defineComponent({
       </div>
 
       {renderContent()}
-    </div>
+    </component>
   }
 })

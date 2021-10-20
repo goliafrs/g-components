@@ -71,7 +71,7 @@ export default defineComponent({
   setup(props, { slots }) {
     const classes = computed(() => {
       return {
-        [`${name}`]: true,
+        [name]: true,
 
         [`${name}--${props.color}`]: !!props.color,
 

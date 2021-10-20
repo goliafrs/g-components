@@ -77,7 +77,7 @@ export default defineComponent({
   setup(props) {
     const classes = computed(() => {
       return {
-        [`${name}`]: true,
+        [name]: true,
 
         [`${name}--tiny`]: props.tiny,
         [`${name}--small`]: props.small,

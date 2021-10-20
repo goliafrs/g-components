@@ -156,7 +156,7 @@ export default defineComponent({
       if (proxy.value) {
         return <div
           class={{
-            [`${name}`]: true,
+            [name]: true,
             [`${name}--rounded`]: props.rounded
           }}
 

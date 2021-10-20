@@ -62,7 +62,7 @@ export default defineComponent({
   setup(props) {
     const classes = computed(() => {
       return {
-        [`${name}`]: true,
+        [name]: true,
 
         [`${name}-${props.type}`]: true,
         [`${name}-${props.type}--indeterminate`]: props.indeterminate,

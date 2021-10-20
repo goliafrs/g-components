@@ -32,7 +32,7 @@ export default defineComponent({
     if (props.value) {
       return () => <i
         class={{
-          [`${name}`]: true,
+          [name]: true,
           [`${name}--${props.color}`]: !!props.color
         }}
 
