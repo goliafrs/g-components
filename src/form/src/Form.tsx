@@ -1,6 +1,6 @@
 import { FormHTMLAttributes, PropType, defineComponent, h, onBeforeUnmount, onMounted, ref } from 'vue'
 
-export const name = 'g-footer'
+export const name = 'g-form'
 
 export default defineComponent({
   name,

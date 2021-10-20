@@ -1,5 +1,5 @@
 import { defineComponent, h, ref } from 'vue'
-import { GAvatar, GButton, GCard, GCardActions, GCheckbox, GChip, GDatePicker, GDialog, GDivider, GEmpty, GFooter, GForm, GIcon, GList, GPanel, GPanelGroup, GProgress, GSpoiler } from '../'
+import { GAvatar, GButton, GCard, GCardActions, GCheckbox, GChip, GDatePicker, GDialog, GDivider, GEmpty, GFooter, GForm, GIcon, GInput, GList, GPanel, GPanelGroup, GProgress, GSpoiler } from '../'
 import { ButtonProps } from '../button/interface'
 
 import { GModal } from '../modal'
@@ -15,6 +15,7 @@ export default defineComponent({
     const booleanValue = ref(false)
     const dialog = ref(false)
     const modal = ref(false)
+    const inputValue = ref()
     const arrayNumberValue = ref([ 1633640400000 ])
     const arrayNumbersValue = ref([ 1633640400000 ])
     const arrayNumbersValues = ref([ 1633640400000, 1634936400000 ])
@@ -152,6 +153,12 @@ export default defineComponent({
         }
         case 'icon': {
           return <div>{renderIcons()}</div>
+        }
+        case 'input': {
+          return <div class='grid grid-cols-1'>
+            <GCard outline rounded class='pa-3'><pre>{inputValue.value}</pre></GCard>
+            <GInput v-model={inputValue.value} placeholder='GInput' />
+          </div>
         }
         case 'list': {
           return <div>
