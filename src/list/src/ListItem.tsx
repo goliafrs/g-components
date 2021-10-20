@@ -1,10 +1,12 @@
 import { PropType, defineComponent, h, ref } from 'vue'
+import { GList } from '..'
 
 import { GIcon } from '../../'
 
 import { colors } from '../../utils'
 import { icons } from '../../utils/icons'
 import { Color, Icon } from '../../utils/interface'
+import { ListItemProps } from '../interface'
 
 export const name = 'g-list-item'
 
@@ -17,6 +19,15 @@ export default defineComponent({
       default: undefined
     },
 
+    items: {
+      type: Array as PropType<ListItemProps[]>,
+      default: () => []
+    },
+
+    group: {
+      type: Boolean,
+      default: false
+    },
     active: {
       type: Boolean,
       default: false
@@ -45,7 +56,6 @@ export default defineComponent({
         return !!~colors.indexOf(value)
       }
     },
-
     icon: {
       type: String as PropType<Icon>,
       default: undefined,
@@ -61,6 +71,15 @@ export default defineComponent({
   },
 
   setup(props, { slots }) {
+    const proxy = ref(false)
+
+    const clickHandler = (event: MouseEvent) => {
+      if (props.group) {
+        event.stopPropagation()
+        proxy.value = !proxy.value
+      }
+    }
+
     const renderIcon = () => {
       if (props.icon) {
         return <div class={`${name}__holder`}>
@@ -68,15 +87,26 @@ export default defineComponent({
         </div>
       }
     }
-    const renderContent = () => {
+    const renderLabel = () => {
       if (slots.default || props.label) {
-        return <div class={`${name}__content`}>
+        return <div class={`${name}__label`}>
           {slots.default ? slots.default() : props.label}
         </div>
       }
     }
+    const renderArrow = () => {
+      if (props.group) {
+        return <div class={`${name}__holder`}>
+          <GIcon value={proxy.value ? 'keyboard_arrow_up' : 'keyboard_arrow_down'} color='grey' size={21} />
+        </div>
+      }
+    }
+    const renderContent = () => {
+      if (props.group && proxy.value) {
+        return <GList items={props.items} />
+      }
+    }
 
-    // TODO: реализовать возможность использовать любой тэг через свойство
     return () => <div
       role='listitem'
 
@@ -85,6 +115,7 @@ export default defineComponent({
 
         [`${name}--link`]: props.link || props.onClick,
         [`${name}--dense`]: props.dense,
+        [`${name}--group`]: props.group,
         [`${name}--active`]: props.active,
         [`${name}--hovered`]: props.hovered,
         [`${name}--disabled`]: props.disabled,
@@ -94,7 +125,12 @@ export default defineComponent({
 
       onClick={props.onClick}
     >
-      {renderIcon()}
+      <div class={`${name}__content`} onClick={clickHandler}>
+        {renderIcon()}
+        {renderLabel()}
+        {renderArrow()}
+      </div>
+
       {renderContent()}
     </div>
   }

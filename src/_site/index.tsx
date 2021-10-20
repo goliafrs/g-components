@@ -156,18 +156,66 @@ export default defineComponent({
         }
         case 'input': {
           return <div class='grid grid-cols-1'>
-            <GCard outline rounded class='pa-3'><pre>{inputValue.value}</pre></GCard>
-            <GInput v-model={inputValue.value} placeholder='GInput' />
+            <GInput v-model:trim={inputValue.value} placeholder='GInput' autofocus />
+            <GCard outline rounded class='pa-3' width={300}><pre>{inputValue.value}</pre></GCard>
           </div>
         }
         case 'list': {
-          return <div>
-            <GList items={[
-              { label: 'item 1' },
-              { label: 'item 2' },
-              { label: 'item 3' },
-              { label: 'item 4' }
-            ]}></GList>
+          return <div
+            class='grid'
+            style={{ gridTemplateColumns: '300px 300px' }}
+          >
+            <GCard width={300}>
+              <GList
+                items={[
+                  { label: 'item 1' },
+                  { label: 'item 2' },
+                  {
+                    label: 'item 3',
+                    group: true,
+                    items: [
+                      { label: 'item 1' },
+                      { label: 'item 2' },
+                      {
+                        label: 'item 3',
+                        group: true,
+                        items: [
+                          { label: 'item 1' },
+                          { label: 'item 2' }
+                        ]
+                      }
+                    ]
+                  },
+                  { label: 'item 4' }
+                ]}
+              ></GList>
+            </GCard>
+            <GCard width={300}>
+              <GList
+                items={[
+                  { label: 'item 1' },
+                  { label: 'item 2' },
+                  {
+                    label: 'item 3',
+                    group: true,
+                    items: [
+                      { label: 'item 1' },
+                      { label: 'item 2' },
+                      {
+                        label: 'item 3',
+                        group: true,
+                        items: [
+                          { label: 'item 1' },
+                          { label: 'item 2' }
+                        ]
+                      }
+                    ]
+                  },
+                  { label: 'item 4' }
+                ]}
+                dense
+              ></GList>
+            </GCard>
           </div>
         }
         case 'modal': {

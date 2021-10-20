@@ -1,4 +1,4 @@
-import { defineComponent, h } from 'vue'
+import { PropType, defineComponent, h } from 'vue'
 
 import { GListItem } from '..'
 import { ListItemProps } from '../interface'
@@ -10,7 +10,7 @@ export default defineComponent({
 
   props: {
     items: {
-      type: Array,
+      type: Array as PropType<ListItemProps[]>,
       default: () => []
     },
 
@@ -26,7 +26,7 @@ export default defineComponent({
       type: Boolean,
       default: false
     },
-    transparent: {
+    nested: {
       type: Boolean,
       default: false
     }
@@ -50,7 +50,7 @@ export default defineComponent({
         [`${name}--wrap`]: props.wrap,
         [`${name}--dense`]: props.dense,
         [`${name}--rounded`]: props.rounded,
-        [`${name}--transparent`]: props.transparent
+        [`${name}--nested`]: props.nested
       }}
     >
       {slots.default ? slots.default() : renderContent()}

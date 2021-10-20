@@ -2,6 +2,8 @@ import { Color, Icon } from '../utils/interface'
 
 export interface ListItemProps {
   label?: string | number,
+  items?: ListItemProps[],
+  group?: boolean,
   active?: boolean,
   disabled?: boolean,
   hovered?: boolean,

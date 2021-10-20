@@ -1,4 +1,4 @@
-import { InputHTMLAttributes, PropType, computed, defineComponent, h, ref } from 'vue'
+import { InputHTMLAttributes, PropType, computed, defineComponent, h } from 'vue'
 import { CustomInputEvent, CustomInputEventCallback } from '../interface'
 import { inputEvents } from '../utils'
 
@@ -8,6 +8,11 @@ export default defineComponent({
   name,
 
   props: {
+    modelValue: {
+      type: null,
+      default: undefined
+    },
+
     id: {
       type: String as PropType<InputHTMLAttributes['id']>,
       default: undefined
@@ -139,16 +144,6 @@ export default defineComponent({
       default: undefined
     },
 
-    value: {
-      type: null,
-      default: undefined
-    },
-
-    modelValue: {
-      type: null,
-      default: undefined
-    },
-
     onChange: {
       type: Function as PropType<(event: CustomInputEvent) => void>,
       default: undefined
@@ -250,7 +245,7 @@ export default defineComponent({
 
       value={proxy.value}
 
-      onInput={(event: any) => proxy.value = event?.target?.value}
+      onInput={(event: any) => proxy.value = event.target.value}
     />
   }
 })
