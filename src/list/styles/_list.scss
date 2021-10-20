@@ -14,19 +14,6 @@ $size-dense: 40px;
     display: flex;
     flex-direction: column;
 
-    &--rounded {
-      border-radius: 16px;
-      overflow: hidden;
-    }
-
-    &--wrap {
-      &.g-list-item__label {
-        text-overflow: clip;
-        white-space: normal;
-        overflow: auto;
-      }
-    }
-
     &-item {
       @include colors;
 
@@ -110,6 +97,19 @@ $size-dense: 40px;
         &>.g-list-item__content {
           padding-right: 0;
         }
+      }
+    }
+
+    &--rounded {
+      border-radius: 16px;
+      overflow: hidden;
+    }
+
+    &--wrap {
+      &.g-list-item__label {
+        text-overflow: clip;
+        white-space: normal;
+        overflow: auto;
       }
     }
 
