@@ -1,10 +1,11 @@
-import { Color, ComponentName, Direction, Position } from './interface'
+import { Color, ComponentName, Direction, Position, Style } from './interface'
 import { icons } from './icons'
 
 export const colors: Color[] = [ 'primary', 'secondary', 'info', 'warning', 'error', 'success', 'accent', 'white', 'black', 'grey', 'gray', 'transparent' ]
 export const directions: Direction[] = [ 'top', 'bottom', 'left', 'right', 'center' ]
-export const componentNames: ComponentName[] = [ 'avatar', 'button', 'card', 'checkbox', 'chip', 'date-picker', 'dialog', 'divider', 'dropdown', 'empty', 'footer', 'form', 'icon', 'input', 'list', 'list-item', 'modal', 'overlay', 'panel-group', 'panel', 'progress', 'spoiler', 'switch' ]
+export const componentNames: ComponentName[] = [ 'avatar', 'button', 'card', 'checkbox', 'chip', 'date-picker', 'dialog', 'divider', 'dropdown', 'empty', 'footer', 'form', 'icon', 'input', 'list', 'list-item', 'modal', 'overlay', 'panel-group', 'panel', 'progress', 'select', 'spoiler', 'switch' ]
 export const positions: Position[] = [ 'absolute', 'fixed' ]
+export const styles: Style[] = [ 'box', 'solo', 'outline', 'outline-label' ]
 
 const REGEXP_IS_HEX = /^#?[0-9A-Fa-f]{3,6}$/
 
@@ -43,6 +44,8 @@ export default {
   colors,
   componentNames,
   directions,
+  styles,
+
   isHEX,
   numberToPxOrString,
   normalizedValue,

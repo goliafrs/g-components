@@ -1,4 +1,4 @@
-import { PropType, computed, defineComponent, h } from 'vue'
+import { HTMLAttributes, PropType, computed, defineComponent, h } from 'vue'
 
 import { GIcon, GProgress } from '../../'
 
@@ -82,7 +82,7 @@ export default defineComponent({
     },
 
     tabindex: {
-      type: [ String, Number ],
+      type: Number as PropType<HTMLAttributes['tabindex']>,
       default: undefined
     },
 
