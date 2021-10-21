@@ -1,7 +1,4 @@
-import { PropType, computed, defineComponent, getCurrentInstance, h } from 'vue'
-
-import { colors } from '../../utils'
-import { Color } from '../../utils/interface'
+import { computed, defineComponent, getCurrentInstance, h } from 'vue'
 
 export const name = 'g-switch'
 
@@ -17,14 +14,6 @@ export default defineComponent({
     label: {
       type: String,
       default: undefined
-    },
-
-    color: {
-      type: String as PropType<Color>,
-      default: undefined,
-      validator: (value: Color): boolean => {
-        return !!~colors.indexOf(value)
-      }
     },
 
     trueValue: {
@@ -58,15 +47,12 @@ export default defineComponent({
       get: () => props.modelValue,
       set: (value: boolean | string | number) => emit('update:modelValue', value)
     })
-
     const classes = computed(() => {
       return {
         [name]: true,
 
         [`${name}--checked`]: checked.value,
-        [`${name}--disabled`]: props.disabled,
-
-        [`${name}--${props.color}`]: !!props.color
+        [`${name}--disabled`]: props.disabled
       }
     })
 
