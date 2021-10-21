@@ -15,6 +15,7 @@ import { default as Chip } from './components/chip'
 import { default as DatePicker } from './components/date-picker'
 import { default as Dialog } from './components/dialog'
 import { default as Divider } from './components/divider'
+import { default as Dropdown } from './components/dropdown'
 import { default as Empty } from './components/empty'
 import { default as Footer } from './components/footer'
 import { default as Form } from './components/form'
@@ -69,6 +70,7 @@ export default defineComponent({
         case 'date-picker': return <DatePicker />
         case 'dialog': return <Dialog />
         case 'divider': return <Divider />
+        case 'dropdown': return <Dropdown />
         case 'empty': return <Empty />
         case 'footer': return <Footer />
         case 'form': return <Form />

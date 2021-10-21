@@ -1,0 +1,26 @@
+.g {
+  &-dropdown {
+    color: $black-84;
+    display: inline-block;
+    height: inherit; // Позволяет наследовать высоту от родительских элементов
+
+    &--disabled {
+      color: $black-36;
+      cursor: default;
+      user-select: none;
+    }
+
+    &__activator {
+      display: flex;
+      align-items: center;
+      height: inherit; // Позволяет наследовать высоту оборачиваемых элементов
+      width: 100%;
+    }
+
+    &__content {
+      @include scrollbar;
+
+      z-index: 10;
+    }
+  }
+}
