@@ -7,12 +7,12 @@ export default defineComponent({
   setup() {
     const proxy = ref(false)
 
-    const renderSwitches = () => {
+    const renderContent = () => {
       return colors.map(color => {
         return <GSwitch v-model={proxy.value} color={color}></GSwitch>
       })
     }
 
-    return () => <div>{renderSwitches()}</div>
+    return () => <div>{renderContent()}</div>
   }
 })
