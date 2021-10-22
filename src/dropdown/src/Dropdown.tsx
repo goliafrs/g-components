@@ -1,4 +1,4 @@
-import { PropType, computed, defineComponent, h, nextTick, onBeforeUnmount, onMounted, onUpdated, ref, watch } from 'vue'
+import { PropType, Ref, computed, defineComponent, h, nextTick, onBeforeUnmount, onMounted, onUpdated, ref, watch } from 'vue'
 import { Instance, ModifierArguments, Options, Placement, PositioningStrategy, createPopper } from '@popperjs/core'
 
 import { numberToPxOrString } from '../../utils'
@@ -12,6 +12,11 @@ export default defineComponent({
     modelValue: {
       type: Boolean,
       default: false
+    },
+
+    attach: {
+      type: null,
+      default: undefined
     },
 
     placement: {
@@ -219,7 +224,7 @@ export default defineComponent({
       nextTick(() => {
         if (activatorRef.value && contentRef.value) {
           popper.value = createPopper(
-            activatorRef.value,
+            props.attach || activatorRef.value,
             contentRef.value,
             options.value
           )

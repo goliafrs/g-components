@@ -22,7 +22,7 @@
       }
 
       &.g-chip--outline {
-        &>.g-chip__holder {
+        &>.g-chip__icon {
           &>.g-icon {
             color: currentColor;
           }
@@ -61,11 +61,7 @@
     position: relative;
     min-width: 28px;
 
-    &+.g-chip {
-      margin-left: 8px;
-    }
-
-    &__holder {
+    &__icon {
       @include absolute-height(28px);
       @include absolute-width(28px);
 
@@ -129,7 +125,7 @@
         font-size: 11px;
       }
 
-      &>.g-chip__holder {
+      &>.g-chip__icon {
         @include absolute-height(20px);
         @include absolute-width(20px);
       }
@@ -155,7 +151,7 @@
         font-size: 13px;
       }
 
-      &>.g-chip__holder {
+      &>.g-chip__icon {
         @include absolute-height(24px);
         @include absolute-width(24px);
       }
@@ -166,6 +162,31 @@
     }
 
     &--large {
+      @include absolute-height(32px);
+
+      padding-left: 16px;
+      padding-right: 16px;
+      border-radius: 24px;
+      min-width: 32px;
+
+      &+.g-chip {
+        margin-left: 10px;
+      }
+
+      &>.g-chip__content {
+        font-size: 15px;
+      }
+
+      &>.g-chip__icon {
+        @include absolute-height(32px);
+        @include absolute-width(32px);
+      }
+
+      &.g-chip--circle {
+        @include absolute-width(32px);
+      }
+    }
+    &--giant {
       @include absolute-height(36px);
 
       padding-left: 16px;
@@ -181,7 +202,7 @@
         font-size: 15px;
       }
 
-      &>.g-chip__holder {
+      &>.g-chip__icon {
         @include absolute-height(36px);
         @include absolute-width(36px);
       }
@@ -229,7 +250,7 @@
     &--loading {
       pointer-events: none;
 
-      &>.g-chip__holder,
+      &>.g-chip__icon,
       &>.g-chip__content {
         opacity: 0;
       }
@@ -251,7 +272,7 @@
       }
 
       &>.g-chip__icon {
-        &>.g-chip__holder {
+        &>.g-chip__icon {
           &>.g-icon {
             color: $grey-400 !important;
           }

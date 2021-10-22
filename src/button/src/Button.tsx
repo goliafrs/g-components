@@ -1,12 +1,10 @@
-import { HTMLAttributes, PropType, computed, defineComponent, h } from 'vue'
+import { ButtonHTMLAttributes, PropType, computed, defineComponent, h } from 'vue'
 
 import { GIcon, GProgress } from '../../'
 
-import { colors, directions, positions } from '../../utils'
+import { colors, directions, positions, sizes } from '../../utils'
 import { icons } from '../../utils/icons'
-import { Color, Direction, Icon, Position } from '../../utils/interface'
-import { ButtonSize, ButtonType } from '../interface'
-import { buttonSizes, buttonTypes } from '../utils'
+import { Color, Direction, Icon, Position, Size } from '../../utils/interface'
 
 export const name = 'g-button'
 
@@ -26,18 +24,11 @@ export default defineComponent({
         return !!~colors.indexOf(value)
       }
     },
-    type: {
-      type: String as PropType<ButtonType>,
-      default: undefined,
-      validator: (value: ButtonType): boolean => {
-        return !!~buttonTypes.indexOf(value)
-      }
-    },
     size: {
-      type: String as PropType<ButtonSize>,
+      type: String as PropType<Size>,
       default: undefined,
-      validator: (value: ButtonSize): boolean => {
-        return !!~buttonSizes.indexOf(value)
+      validator: (value: Size): boolean => {
+        return !!~sizes.indexOf(value)
       }
     },
     icon: {
@@ -77,12 +68,16 @@ export default defineComponent({
     autofocus: Boolean,
 
     name: {
-      type: String,
+      type: String as PropType<ButtonHTMLAttributes['name']>,
+      default: undefined
+    },
+    type: {
+      type: String as PropType<ButtonHTMLAttributes['type']>,
       default: undefined
     },
 
     tabindex: {
-      type: Number as PropType<HTMLAttributes['tabindex']>,
+      type: Number as PropType<ButtonHTMLAttributes['tabindex']>,
       default: undefined
     },
 

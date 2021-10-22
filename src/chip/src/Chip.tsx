@@ -2,9 +2,9 @@ import { PropType, computed, defineComponent, h } from 'vue'
 
 import { GIcon, GProgress } from '../../'
 
-import { colors } from '../../utils'
+import { colors, sizes } from '../../utils'
 import { icons } from '../../utils/icons'
-import { Color, Icon } from '../../utils/interface'
+import { Color, Icon, Size } from '../../utils/interface'
 
 export const name = 'g-chip'
 
@@ -33,10 +33,13 @@ export default defineComponent({
     outline: Boolean,
     circle: Boolean,
 
-    tiny: Boolean,
-    small: Boolean,
-    large: Boolean,
-
+    size: {
+      type: String as PropType<Size>,
+      default: undefined,
+      validator: (value: Size): boolean => {
+        return !!~sizes.indexOf(value)
+      }
+    },
     color: {
       type: String as PropType<Color>,
       default: undefined,
@@ -56,16 +59,9 @@ export default defineComponent({
     disabled: Boolean,
 
     cancelable: Boolean,
-    cancelIcon: {
-      type: String as PropType<Icon>,
-      default: 'clear',
-      validator: (value: Icon): boolean => {
-        return !!~icons.indexOf(value)
-      }
-    },
-    cancelCallback: {
+    callback: {
       type: Function as PropType<(event: MouseEvent) => void>,
-      default: () => undefined
+      default: undefined
     },
 
     onClick: {
@@ -79,10 +75,6 @@ export default defineComponent({
       return {
         [name]: true,
 
-        [`${name}--tiny`]: props.tiny,
-        [`${name}--small`]: props.small,
-        [`${name}--large`]: props.large,
-
         [`${name}--circle`]: props.circle,
         [`${name}--outline`]: props.outline,
 
@@ -95,11 +87,41 @@ export default defineComponent({
         [`${name}--loading`]: props.loading,
         [`${name}--disabled`]: props.disabled,
 
-        [`${name}--${props.color}`]: !!props.color
+        [`${name}--${props.color}`]: !!props.color,
+        [`${name}--${props.size}`]: !!props.size
       }
     })
 
-    const size = computed(() => props.tiny ? 14 : props.small ? 18 : props.large ? 26 : 22)
+    const size = computed<number>(() => {
+      switch (props.size) {
+        case 'tiny': { return 14 }
+        case 'small': { return 18 }
+        case 'large': { return 26 }
+        case 'giant': { return 30 }
+        case 'medium':
+        default: { return 22 }
+      }
+    })
+    const loading = computed<boolean>({
+      get: () => props.loading,
+      set: (value: boolean): boolean => loading.value = value
+    })
+
+    const getLabel = () => {
+      let label: string = props.label + ''
+      if (props.cut && label.length > props.length) {
+        label = label.substring(0, props.length) + '...'
+      }
+
+      return label
+    }
+    const clickHandler = (event: MouseEvent) => {
+      if (props.callback) {
+        loading.value = true
+        props.callback(event)
+        loading.value = false
+      }
+    }
 
     const renderLoading = () => {
       if (props.loading) {
@@ -110,23 +132,18 @@ export default defineComponent({
     }
     const renderIcon = () => {
       if (props.icon) {
-        return <div class={`${name}__holder`}>
+        return <div class={`${name}__icon`}>
           <GIcon value={props.icon} size={size.value}></GIcon>
         </div>
       }
     }
     const renderContent = () => {
-      let content: string = props.label + ''
-      if (props.cut && content.length > props.length) {
-        content = content.substring(0, props.length) + '...'
-      }
-
-      return <div class={`${name}__content`}>{content}</div>
+      return <div class={`${name}__content`}>{getLabel()}</div>
     }
     const renderCancelable = () => {
       if (props.cancelable) {
-        return <div class={`${name}__holder`} onClick={props.cancelCallback}>
-          <GIcon value={props.cancelIcon} size={size.value} color={props.color ? 'white' : undefined}></GIcon>
+        return <div class={`${name}__icon`} onClick={clickHandler}>
+          <GIcon value='clear' size={size.value} color={props.color ? 'white' : undefined}></GIcon>
         </div>
       }
     }

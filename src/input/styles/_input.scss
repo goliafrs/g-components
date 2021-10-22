@@ -1,10 +1,9 @@
 @mixin input-base {
   padding-top: 14px;
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: 1fr;
   position: relative;
   min-width: 56px;
-  width: 100%;
 
   &__label {
     @include default-text-style;
@@ -28,7 +27,7 @@
   }
 
   &__holder {
-    display: flex;
+    display: grid;
     align-items: flex-start;
   }
 
@@ -126,6 +125,15 @@
     }
   }
 
+  &__icon {
+    @include absolute-height(32px);
+    @include absolute-width(32px);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
   &--solo,
   &--outline,
   &--outline-label {
@@ -214,7 +222,7 @@
       left: 13px;
       max-width: calc(100% - 36px);
 
-      @if $component == 'g-textarea' {
+      @if $component=='g-textarea' {
         top: 15px;
       }
     }

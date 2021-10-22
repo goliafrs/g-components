@@ -1,14 +1,11 @@
-import { Color, Direction, Icon, Position } from '../utils/interface'
-
-export type ButtonSize = 'tiny' | 'small' | 'medium' | 'large' | 'giant'
-export type ButtonType = 'button' | 'submit' | 'reset'
+import { ButtonHTMLAttributes } from 'vue'
+import { Color, Direction, Icon, Position, Size } from '../utils/interface'
 
 export interface ButtonProps {
   label?: string | number,
 
   color?: Color,
-  type?: ButtonType,
-  size?: ButtonSize,
+  size?: Size,
   icon?: Icon,
   position?: Position,
   direction?: Direction,
@@ -26,9 +23,10 @@ export interface ButtonProps {
   disabled?: boolean,
   autofocus?: boolean,
 
-  name?: string,
+  name?: ButtonHTMLAttributes['name'],
+  type?: ButtonHTMLAttributes['type'],
 
-  tabindex?: string | number,
+  tabindex?: ButtonHTMLAttributes['tabindex'],
 
   onClick?: (event: MouseEvent) => void,
   onMouseover?: (event: MouseEvent) => void,

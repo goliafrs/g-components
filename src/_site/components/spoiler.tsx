@@ -4,6 +4,6 @@ import { GSpoiler } from '../..'
 
 export default defineComponent({
   setup() {
-    return () => <GSpoiler title='spoiler' text='text'></GSpoiler>
+    return () => <GSpoiler title='spoiler' text='text' />
   }
 })

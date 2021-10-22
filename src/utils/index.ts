@@ -1,4 +1,4 @@
-import { Color, ComponentName, Direction, Position, Style } from './interface'
+import { Color, ComponentName, Direction, Position, Size, Style } from './interface'
 import { icons } from './icons'
 
 export const colors: Color[] = [ 'primary', 'secondary', 'info', 'warning', 'error', 'success', 'accent', 'white', 'black', 'grey', 'gray', 'transparent' ]
@@ -6,6 +6,7 @@ export const directions: Direction[] = [ 'top', 'bottom', 'left', 'right', 'cent
 export const componentNames: ComponentName[] = [ 'avatar', 'button', 'card', 'checkbox', 'chip', 'date-picker', 'dialog', 'divider', 'dropdown', 'empty', 'footer', 'form', 'icon', 'input', 'list', 'list-item', 'modal', 'overlay', 'panel-group', 'panel', 'progress', 'select', 'spoiler', 'switch' ]
 export const positions: Position[] = [ 'absolute', 'fixed' ]
 export const styles: Style[] = [ 'box', 'solo', 'outline', 'outline-label' ]
+export const sizes: Size[] = [ 'tiny', 'small', 'medium', 'large', 'giant' ]
 
 const REGEXP_IS_HEX = /^#?[0-9A-Fa-f]{3,6}$/
 
@@ -45,6 +46,7 @@ export default {
   componentNames,
   directions,
   styles,
+  sizes,
 
   isHEX,
   numberToPxOrString,

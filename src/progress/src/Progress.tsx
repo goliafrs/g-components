@@ -2,6 +2,7 @@ import { CSSProperties, PropType, computed, defineComponent, h } from 'vue'
 
 import { colors, normalizedValue, numberToPxOrString } from '../../utils'
 import { Color } from '../../utils/interface'
+import { ProgressType } from '../interface'
 
 export const name = 'g-progress'
 
@@ -15,9 +16,9 @@ export default defineComponent({
     },
 
     type: {
-      type: String,
+      type: String as PropType<ProgressType>,
       default: 'circular',
-      validator: (value: string): boolean => {
+      validator: (value: ProgressType): boolean => {
         return !!~[ 'circular', 'linear' ].indexOf(value)
       }
     },

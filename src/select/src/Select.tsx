@@ -1,7 +1,9 @@
 import { HTMLAttributes, PropType, computed, defineComponent, h, reactive, ref } from 'vue'
+import { GChip, GIcon, GProgress } from '../..'
 
-import { colors, styles } from '../../utils'
-import { Color, Style } from '../../utils/interface'
+import { colors, sizes, styles } from '../../utils'
+import { icons } from '../../utils/icons'
+import { Color, Icon, Size, Style } from '../../utils/interface'
 import { SelectItem, SelectTitle, SelectValue } from '../interface'
 
 export const name = 'g-select'
@@ -10,6 +12,11 @@ export default defineComponent({
   name,
 
   props: {
+    modelValue: {
+      type: null,
+      default: undefined
+    },
+
     items: {
       type: Array as PropType<SelectItem[]>,
       default: () => []
@@ -32,6 +39,10 @@ export default defineComponent({
       type: String,
       default: undefined
     },
+    hint: {
+      type: String,
+      default: undefined
+    },
     error: {
       type: String,
       default: undefined
@@ -42,6 +53,10 @@ export default defineComponent({
       default: false
     },
     readonly: {
+      type: Boolean,
+      default: false
+    },
+    required: {
       type: Boolean,
       default: false
     },
@@ -92,17 +107,59 @@ export default defineComponent({
       validator: (value: Style): boolean => {
         return !!~styles.indexOf(value)
       }
+    },
+    size: {
+      type: String as PropType<Size>,
+      default: undefined,
+      validator: (value: Size): boolean => {
+        return !!~sizes.indexOf(value)
+      }
+    },
+    icon: {
+      type: String as PropType<Icon>,
+      default: undefined,
+      validator: (value: Icon): boolean => {
+        return !!~icons.indexOf(value)
+      }
     }
   },
 
-  setup(props) {
+  emits: [ 'update:modelValue' ],
+
+  setup(props, { slots, emit }) {
+    const attach = ref<HTMLElement>()
+
     const search = ref<string>('')
     const selectedItems = ref<SelectItem[]>([])
     const selectedValues = ref<SelectItem[]>([])
     const cursorPosition = ref<number>(0)
     const focused = ref<boolean>(false)
 
+    const proxy = computed<boolean>({
+      get: () => props.modelValue,
+      set: (value: boolean) => emit('update:modelValue', value)
+    })
+
     const filled = computed<boolean>(() => selectedItems.value.length > 0)
+    const active = computed<boolean>(() => false) // TODO: переписать под реальные условия
+    const disabled = computed<boolean>(() => props.disabled || props.readonly)
+    const label = computed<string>(() => [ props.label, props.required && '*' ].filter(item => !!item).join(' '))
+    const labelShown = computed<boolean>(() => {
+      if (!props.label) {
+        return false
+      }
+
+      switch (props.style) {
+        case 'box':
+        case 'solo':
+        case 'outline': {
+          return !!search.value || !!selectedItems.value.length
+        }
+        default: {
+          return true
+        }
+      }
+    })
     const itemTitle = computed<SelectTitle>({
       get: () => props.itemTitle,
       set: (value): SelectTitle => itemTitle.value = value
@@ -114,6 +171,16 @@ export default defineComponent({
     const displayItems = computed<SelectValue[]>(() => {
       return props.items.map(clearDisplayItem)
     })
+    const size = computed<number>(() => {
+      switch (props.size) {
+        case 'tiny': { return 14 }
+        case 'small': { return 18 }
+        case 'large': { return 26 }
+        case 'giant': { return 30 }
+        case 'medium':
+        default: { return 22 }
+      }
+    })
 
     const mainClickHandler = (event: MouseEvent | FocusEvent): void => {
       return
@@ -121,19 +188,21 @@ export default defineComponent({
     const outsideClickHandler = (event: MouseEvent | FocusEvent): void => {
       return
     }
-    const compareValues = (a: SelectItem, b: SelectItem): boolean => a === b
-    const clearSelectedItem = (item: SelectItem): SelectItem => {
-      const value = typeof item === 'object' ? item[itemValue.value] : item
-      const title = typeof item === 'object' ? item[itemTitle.value] : value
 
+    const compareValues = (a: SelectItem, b: SelectItem): boolean => a === b
+
+    const getItemValue = (item: SelectItem): SelectItem => typeof item === 'object' ? item[itemValue.value] : item
+    const getItemTitle = (item: SelectItem): SelectItem => typeof item === 'object' ? item[itemTitle.value] : getItemValue(item)
+
+    const clearSelectedItem = (item: SelectItem): any => {
       return {
-        [itemTitle.value]: title,
-        [itemValue.value]: value
+        [itemTitle.value]: getItemValue(item),
+        [itemValue.value]: getItemTitle(item)
       }
     }
     const clearDisplayItem = (item: SelectItem, index: number): any => {
-      const value = typeof item === 'object' ? item[itemValue.value] : item
-      const title = typeof item === 'object' ? item[itemTitle.value] : value
+      const value = getItemValue(item)
+      const title = getItemTitle(item)
 
       return {
         [itemTitle.value]: title,
@@ -145,14 +214,14 @@ export default defineComponent({
         searchValid: !search.value || !!~('' + title).toLocaleLowerCase().indexOf(search.value)
       }
     }
-    const addByValue = (value: SelectItem): boolean => {
-      value = typeof value === 'object' ? value[itemValue.value] : value
-
-      const index = selectedValues.value.findIndex(selectedValue => {
-        const compareValue = typeof selectedValue === 'object' ? selectedValue[itemValue.value] : selectedValue
-
-        return compareValues(compareValue, value)
-      })
+    const clearSearch = () => {
+      if (search.value) {
+        search.value = ''
+      }
+    }
+    const addByValue = (item: SelectItem): boolean => {
+      const value = getItemValue(item)
+      const index = selectedValues.value.findIndex(selectedValue => compareValues(getItemValue(selectedValue), value))
 
       if (index === -1) {
         if (props.multiple) {
@@ -160,9 +229,7 @@ export default defineComponent({
         } else {
           selectedValues.value.splice(0, 1, value)
 
-          if (search.value) {
-            search.value = ''
-          }
+          clearSearch()
 
           focused.value = false
         }
@@ -172,31 +239,162 @@ export default defineComponent({
 
       return false
     }
+    const removeByValue = (item: SelectItem): boolean => {
+      const value = getItemValue(item)
+      const index = selectedValues.value.findIndex(selectedValue => compareValues(getItemValue(selectedValue), value))
+
+      if (index > -1) {
+        if (selectedValues.value.length === 1 && props.required) {
+          return false
+        }
+
+        selectedValues.value.splice(index, 1)
+
+        clearSearch()
+
+        return true
+      }
+
+      return false
+    }
+    // TODO: проверить работоспособность
+    const removeByIndex = (index: number, amount: number) => {
+      index = index || selectedValues.value.length - 1
+      amount = amount || selectedValues.value.length
+
+      for (let i = 0; i < amount; i++) {
+        if (!removeByValue(selectedValues.value[index])) {
+          return false
+        }
+      }
+
+      clearSearch()
+
+      return true
+    }
+    const toggleByValue = (item: SelectItem): boolean => {
+      return addByValue(item) || removeByValue(item)
+    }
 
     const renderTabindex = () => {
       return <input tabindex={props.tabindex} hidden onFocus={mainClickHandler} onBlur={outsideClickHandler} />
+    }
+    const renderLabel = () => {
+      if (labelShown.value) {
+        return <div class={`${name}__label`}>{label.value}</div>
+      }
+    }
+    const renderSelectionItem = (item: SelectItem) => {
+      return <GChip
+        label={getItemTitle(item).toLocaleString()}
+        cancelable={props.multiple}
+        callback={() => removeByValue(item)}
+        size={props.size}
+      />
+    }
+    const renderSelection = () => {
+      return <div class={`${name}__selection`}>
+        {selectedItems.value.map((item, index) => {
+          return slots.selection ? slots.selection({
+            item,
+            index,
+            items: selectedItems.value,
+            addByValue,
+            removeByValue,
+            removeByIndex,
+            toggleByValue
+          }) : renderSelectionItem(item)
+        })}
+      </div>
+    }
+    const renderIcon = () => {
+      if (props.icon) {
+        return <div class={`${name}__icon`}>
+          <GIcon value={props.icon} color={props.color} size={size.value} />
+        </div>
+      }
+    }
+    const renderClearable = () => {
+      if (props.clearable) {
+        return <div class={`${name}__icon`} onClick={() => removeByIndex(0, 0)}>
+          <GIcon value='clear' color='grey' size={size.value} />
+        </div>
+      }
+    }
+    const renderArrowOrLoading = () => {
+      if (props.loading) {
+        return <GProgress indeterminate color={props.color} width={1} size={size.value - 4} />
+      } else {
+        return <GIcon value={active.value ? 'keyboard_arrow_up' : 'keyboard_arrow_down'} color='grey' size={size.value} />
+      }
+    }
+    const renderArrow = () => {
+      return <div class={`${name}__icon`}>
+        {renderArrowOrLoading()}
+      </div>
+    }
+    const renderHolder = () => {
+      return <div class={`${name}__holder`}>
+        {renderIcon()}
+
+        <div class={`${name}__group`}>
+          {renderSelection()}
+        </div>
+
+        {renderClearable()}
+        {renderArrow()}
+      </div>
+    }
+    const renderAttach = () => {
+      if (!disabled.value) {
+        return <div class={`${name}__attach`} ref={attach}></div>
+      }
+    }
+    const renderBorder = () => {
+      return <div class={`${name}__border`}></div>
+    }
+    const renderDetails = () => {
+      if (props.details) {
+        return <div class={`${name}__details`}>
+          {props.error || props.hint}
+        </div>
+      }
+    }
+    const renderFooter = () => {
+      if (!props.style) {
+        return <div class={`${name}__footer`}>
+          {renderBorder()}
+          {renderDetails()}
+        </div>
+      }
     }
 
     return () => <div
       class={{
         [`${name}`]: true,
 
-        [`${name}--${props.color}`]: !!props.color,
-        [`${name}--${props.style}`]: !!props.style,
-
         [`${name}--filled`]: filled.value,
-        [`${name}--active`]: isActive,
+        [`${name}--active`]: active.value,
         [`${name}--labeled`]: !!props.label,
         [`${name}--disabled`]: props.disabled,
         [`${name}--readonly`]: props.readonly,
+        [`${name}--clearable`]: props.clearable,
         [`${name}--flat`]: props.flat,
         [`${name}--dense`]: props.dense,
         [`${name}--rounded`]: props.rounded,
         [`${name}--error`]: !!props.error,
-        [`${name}--multiple`]: props.multiple
+        [`${name}--multiple`]: props.multiple,
+
+        [`${name}--${props.color}`]: !!props.color,
+        [`${name}--${props.style}`]: !!props.style,
+        [`${name}--${props.size}`]: !!props.size
       }}
     >
       {renderTabindex()}
+      {renderLabel()}
+      {renderHolder()}
+      {renderAttach()}
+      {renderFooter()}
     </div>
   }
 })
