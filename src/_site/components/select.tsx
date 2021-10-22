@@ -29,10 +29,10 @@ export default defineComponent({
     return () => <div class='grid'>
       {
         styles.map(style => {
-          return <div class='grid' style={{ gridTemplateColumns: 'repeat(5, 300px)' }}>
+          return <div class='grid' style={{ gridTemplateColumns: 'repeat(5, 1fr)' }}>
             {
               sizes.map(size => {
-                return <GSelect v-model={proxy} items={items} size={size} style={style} label='GSelect' />
+                return <GSelect v-model={proxy} items={items} size={size} style={style} label={style} />
               })
             }
           </div>

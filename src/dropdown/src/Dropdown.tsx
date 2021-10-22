@@ -178,10 +178,7 @@ export default defineComponent({
       }
     })
 
-    watch(() => proxy.value, () => {
-      emit('update:modelValue', proxy.value)
-      popper.value?.update()
-    })
+    watch(() => proxy.value, () => popper.value?.update())
 
     const isChildOf = (target: any, parent: HTMLElement | undefined): boolean => {
       if (parent && parent.contains) {
@@ -222,7 +219,7 @@ export default defineComponent({
       }
 
       nextTick(() => {
-        if (activatorRef.value && contentRef.value) {
+        if ((props.attach || activatorRef.value) && contentRef.value) {
           popper.value = createPopper(
             props.attach || activatorRef.value,
             contentRef.value,

@@ -1,10 +1,11 @@
-import { HTMLAttributes, PropType, computed, defineComponent, h, reactive, ref } from 'vue'
-import { GChip, GIcon, GProgress } from '../..'
+import { JSXElement } from '@babel/types'
+import { HTMLAttributes, PropType, Slot, VNode, computed, defineComponent, h, reactive, ref } from 'vue'
+import { GChip, GDropdown, GIcon, GList, GListItem, GProgress } from '../..'
 
 import { colors, sizes, styles } from '../../utils'
 import { icons } from '../../utils/icons'
 import { Color, Icon, Size, Style } from '../../utils/interface'
-import { SelectItem, SelectTitle, SelectValue } from '../interface'
+import { SelectDisplayItem, SelectItem, SelectTitle, SelectValue } from '../interface'
 
 export const name = 'g-select'
 
@@ -127,8 +128,6 @@ export default defineComponent({
   emits: [ 'update:modelValue' ],
 
   setup(props, { slots, emit }) {
-    const attach = ref<HTMLElement>()
-
     const search = ref<string>('')
     const selectedItems = ref<SelectItem[]>([])
     const selectedValues = ref<SelectItem[]>([])
@@ -168,7 +167,7 @@ export default defineComponent({
       get: () => props.itemValue,
       set: (value): SelectValue => itemValue.value = value
     })
-    const displayItems = computed<SelectValue[]>(() => {
+    const items = computed<SelectDisplayItem[]>(() => {
       return props.items.map(clearDisplayItem)
     })
     const size = computed<number>(() => {
@@ -205,9 +204,7 @@ export default defineComponent({
       const title = getItemTitle(item)
 
       return {
-        [itemTitle.value]: title,
-        [itemValue.value]: value,
-
+        label: title,
         hovered: cursorPosition.value === index,
         selected: !!~selectedValues.value.findIndex((selectedValue: SelectItem) => compareValues(selectedValue, value)),
         disabled: !!~props.itemsDisabled.findIndex((itemDisabled: SelectItem) => compareValues(typeof itemDisabled === 'object' ? itemDisabled[itemValue.value] : itemDisabled, value)),
@@ -284,7 +281,19 @@ export default defineComponent({
         return <div class={`${name}__label`}>{label.value}</div>
       }
     }
-    const renderSelectionItem = (item: SelectItem) => {
+    const renderSelectionItem = (item: SelectItem, index: number) => {
+      if (slots.selection) {
+        return slots.selection({
+          item,
+          index,
+          items: selectedItems.value,
+          addByValue,
+          removeByValue,
+          removeByIndex,
+          toggleByValue
+        })
+      }
+
       return <GChip
         label={getItemTitle(item).toLocaleString()}
         cancelable={props.multiple}
@@ -294,17 +303,7 @@ export default defineComponent({
     }
     const renderSelection = () => {
       return <div class={`${name}__selection`}>
-        {selectedItems.value.map((item, index) => {
-          return slots.selection ? slots.selection({
-            item,
-            index,
-            items: selectedItems.value,
-            addByValue,
-            removeByValue,
-            removeByIndex,
-            toggleByValue
-          }) : renderSelectionItem(item)
-        })}
+        {selectedItems.value.map((item, index) => renderSelectionItem(item, index))}
       </div>
     }
     const renderIcon = () => {
@@ -334,7 +333,7 @@ export default defineComponent({
       </div>
     }
     const renderHolder = () => {
-      return <div class={`${name}__holder`}>
+      return <div class={`${name}__holder`} onClick={() => focused.value = !focused.value}>
         {renderIcon()}
 
         <div class={`${name}__group`}>
@@ -345,10 +344,39 @@ export default defineComponent({
         {renderArrow()}
       </div>
     }
-    const renderAttach = () => {
-      if (!disabled.value) {
-        return <div class={`${name}__attach`} ref={attach}></div>
+    const renderItem = (item: SelectDisplayItem, index: number) => {
+      if (slots.item) {
+        return slots.item({
+          item,
+          index,
+          items: selectedItems.value,
+          addByValue,
+          removeByValue,
+          removeByIndex,
+          toggleByValue
+        })
       }
+
+      return <GListItem label={item.label} disabled={item.disabled} active={item.selected} />
+    }
+    const renderItems = () => {
+      return <GList>
+        {items.value.reduce<VNode[]>((result, item, index) => {
+          if (item.searchValid) {
+            result.push(renderItem(item, index) as VNode)
+          }
+
+          return result
+        }, [])}
+      </GList>
+    }
+    const renderAttach = () => {
+      return <div class={`${name}__attach`}></div>
+    }
+    const renderDropdown = () => {
+      return <GDropdown v-slots={{ activator: () => renderAttach() }} v-model={focused.value}>
+        {renderItems()}
+      </GDropdown>
     }
     const renderBorder = () => {
       return <div class={`${name}__border`}></div>
@@ -393,7 +421,7 @@ export default defineComponent({
       {renderTabindex()}
       {renderLabel()}
       {renderHolder()}
-      {renderAttach()}
+      {renderDropdown()}
       {renderFooter()}
     </div>
   }

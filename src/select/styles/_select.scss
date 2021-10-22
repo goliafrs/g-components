@@ -104,17 +104,6 @@
       }
     }
 
-    &--search {
-      &.g-select--solo,
-      &.g-select--outline {
-        &.g-select--autocomplete {
-          & .g-select__label {
-            opacity: 0;
-          }
-        }
-      }
-    }
-
     &--multiple {
       & .g-select__group {
         cursor: default;
