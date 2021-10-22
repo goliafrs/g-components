@@ -22,6 +22,22 @@ export default defineComponent({
       {
         title: 'item 4',
         value: 'item4'
+      },
+      {
+        title: 'item 4',
+        value: 'item4'
+      },
+      {
+        title: 'item 4',
+        value: 'item4'
+      },
+      {
+        title: 'item 4',
+        value: 'item4'
+      },
+      {
+        title: 'item 4',
+        value: 'item4'
       }
     ]
     const width = 400

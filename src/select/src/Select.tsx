@@ -1,8 +1,8 @@
 import { JSXElement } from '@babel/types'
-import { HTMLAttributes, PropType, Slot, VNode, computed, defineComponent, h, reactive, ref } from 'vue'
-import { GChip, GDropdown, GIcon, GList, GListItem, GProgress } from '../..'
+import { HTMLAttributes, PropType, Slot, VNode, computed, defineComponent, h, onBeforeUnmount, onMounted, reactive, ref, watch } from 'vue'
+import { GCard, GChip, GDropdown, GIcon, GList, GListItem, GProgress } from '../..'
 
-import { colors, sizes, styles } from '../../utils'
+import { colors, isChildOf, sizes, styles } from '../../utils'
 import { icons } from '../../utils/icons'
 import { Color, Icon, Size, Style } from '../../utils/interface'
 import { SelectDisplayItem, SelectItem, SelectTitle, SelectValue } from '../interface'
@@ -128,6 +128,8 @@ export default defineComponent({
   emits: [ 'update:modelValue' ],
 
   setup(props, { slots, emit }) {
+    const rootRef = ref<HTMLElement>()
+
     const search = ref<string>('')
     const selectedItems = ref<SelectItem[]>([])
     const selectedValues = ref<SelectItem[]>([])
@@ -181,11 +183,20 @@ export default defineComponent({
       }
     })
 
+    onMounted(() => {
+      document.addEventListener('click', outsideClickHandler)
+    })
+    onBeforeUnmount(() => {
+      document.removeEventListener('click', outsideClickHandler)
+    })
+
     const mainClickHandler = (event: MouseEvent | FocusEvent): void => {
       return
     }
     const outsideClickHandler = (event: MouseEvent | FocusEvent): void => {
-      return
+      if (!isChildOf(event.target, rootRef.value)) {
+        focused.value = false
+      }
     }
 
     const compareValues = (a: SelectItem, b: SelectItem): boolean => a === b
@@ -324,7 +335,7 @@ export default defineComponent({
       if (props.loading) {
         return <GProgress indeterminate color={props.color} width={1} size={size.value - 4} />
       } else {
-        return <GIcon value={active.value ? 'keyboard_arrow_up' : 'keyboard_arrow_down'} color='grey' size={size.value} />
+        return <GIcon value={focused.value ? 'keyboard_arrow_up' : 'keyboard_arrow_down'} color='grey' size={size.value} />
       }
     }
     const renderArrow = () => {
@@ -374,8 +385,15 @@ export default defineComponent({
       return <div class={`${name}__attach`}></div>
     }
     const renderDropdown = () => {
-      return <GDropdown v-slots={{ activator: () => renderAttach() }} v-model={focused.value}>
-        {renderItems()}
+      return <GDropdown
+        v-model={focused.value}
+        v-slots={{ activator: () => renderAttach() }}
+        shadow
+        offsetDistance={0}
+        closeOnClick={false}
+        closeOnContentClick={!props.multiple}
+      >
+        <GCard width='100%'>{renderItems()}</GCard>
       </GDropdown>
     }
     const renderBorder = () => {
@@ -417,6 +435,8 @@ export default defineComponent({
         [`${name}--${props.style}`]: !!props.style,
         [`${name}--${props.size}`]: !!props.size
       }}
+
+      ref={rootRef}
     >
       {renderTabindex()}
       {renderLabel()}

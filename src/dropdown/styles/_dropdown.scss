@@ -10,6 +10,24 @@
       user-select: none;
     }
 
+    &--shadow {
+      &>.g-dropdown__content {
+        @include g-elevation(4);
+      }
+    }
+
+    &--outline {
+      &>.g-dropdown__content {
+        border: 1px solid var(--grey);
+      }
+    }
+
+    &--rounded {
+      &>.g-dropdown__content {
+        border-radius: 16px;
+      }
+    }
+
     &__activator {
       display: flex;
       align-items: center;
@@ -20,6 +38,8 @@
     &__content {
       @include scrollbar;
 
+      overflow-x: hidden;
+      overflow-y: auto;
       z-index: 10;
     }
   }

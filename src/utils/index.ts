@@ -40,6 +40,22 @@ export function capitalizeFirstLetter(value: string): string {
   return value.charAt(0).toUpperCase() + value.slice(1)
 }
 
+export function isChildOf(target: any, parent: HTMLElement | undefined): boolean {
+  if (parent && parent.contains) {
+    return parent.contains(target)
+  }
+
+  let element = target
+  while (element != null) {
+    if (element == parent) {
+      return true
+    }
+    element = element.parentNode
+  }
+
+  return false
+}
+
 export default {
   icons,
   colors,
@@ -51,5 +67,6 @@ export default {
   isHEX,
   numberToPxOrString,
   normalizedValue,
-  capitalizeFirstLetter
+  capitalizeFirstLetter,
+  isChildOf
 }

@@ -24,6 +24,7 @@ open browser http://localhost
 - [x] Date Picker
 - [x] Dialog
 - [x] Divider
+- [ ] Drop Down
 - [x] Empty
 - [x] Footer
 - [x] Form
@@ -31,7 +32,6 @@ open browser http://localhost
 - [x] Input
 - [x] List
 - [x] List Item
-- [ ] Menu
 - [x] Modal
 - [x] Overlay
 - [x] Panel

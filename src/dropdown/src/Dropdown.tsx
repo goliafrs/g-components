@@ -1,7 +1,7 @@
 import { PropType, Ref, computed, defineComponent, h, nextTick, onBeforeUnmount, onMounted, onUpdated, ref, watch } from 'vue'
 import { Instance, ModifierArguments, Options, Placement, PositioningStrategy, createPopper } from '@popperjs/core'
 
-import { numberToPxOrString } from '../../utils'
+import { isChildOf, numberToPxOrString } from '../../utils'
 
 export const name = 'g-dropdown'
 
@@ -12,11 +12,6 @@ export default defineComponent({
     modelValue: {
       type: Boolean,
       default: false
-    },
-
-    attach: {
-      type: null,
-      default: undefined
     },
 
     placement: {
@@ -68,6 +63,18 @@ export default defineComponent({
       type: Boolean,
       default: false
     },
+    shadow: {
+      type: Boolean,
+      default: false
+    },
+    outline: {
+      type: Boolean,
+      default: false
+    },
+    rounded: {
+      type: Boolean,
+      default: false
+    },
 
     closeOnContentClick: {
       type: Boolean,
@@ -101,7 +108,7 @@ export default defineComponent({
     },
     maxWidth: {
       type: [ String, Number ],
-      default: 300
+      default: 'auto'
     },
     width: {
       type: [ String, Number ],
@@ -116,8 +123,9 @@ export default defineComponent({
     const contentRef = ref<HTMLElement>()
     const rootRef = ref<HTMLElement>()
 
-    const proxy = ref<boolean>(props.modelValue)
     const popper = ref<Instance>()
+
+    const proxy = computed<boolean>(() => props.modelValue)
 
     const options = computed<Options>(() => {
       return {
@@ -180,24 +188,9 @@ export default defineComponent({
 
     watch(() => proxy.value, () => popper.value?.update())
 
-    const isChildOf = (target: any, parent: HTMLElement | undefined): boolean => {
-      if (parent && parent.contains) {
-        return parent.contains(target)
-      }
-
-      let element = target
-      while (element != null) {
-        if (element == parent) {
-          return true
-        }
-        element = element.parentNode
-      }
-
-      return false
-    }
     const clickHandler = (event: MouseEvent) => {
       if (!props.disabled && !isChildOf(event.target, rootRef.value)) {
-        proxy.value = false
+        emit('update:modelValue', false)
       }
     }
     const getTargetCoordinates = (target: any): any => {
@@ -219,9 +212,9 @@ export default defineComponent({
       }
 
       nextTick(() => {
-        if ((props.attach || activatorRef.value) && contentRef.value) {
+        if (activatorRef.value && contentRef.value) {
           popper.value = createPopper(
-            props.attach || activatorRef.value,
+            activatorRef.value,
             contentRef.value,
             options.value
           )
@@ -240,14 +233,14 @@ export default defineComponent({
 
     const activatorClickHandler = () => {
       if (!props.disabled) {
-        proxy.value = !proxy.value
+        emit('update:modelValue', !proxy.value)
       }
     }
     const contentClickHandler = (event: MouseEvent) => {
       if (props.closeOnContentClick) {
         event.stopPropagation()
         if (!props.disabled) {
-          proxy.value = false
+          emit('update:modelValue', false)
         }
       }
     }
@@ -281,7 +274,11 @@ export default defineComponent({
     return () => <div
       class={{
         [name]: true,
-        [`${name}--disabled`]: props.disabled
+
+        [`${name}--disabled`]: props.disabled,
+        [`${name}--shadow`]: props.shadow,
+        [`${name}--outline`]: props.outline,
+        [`${name}--rounded`]: props.rounded
       }}
       ref={rootRef}
     >
