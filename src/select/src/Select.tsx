@@ -1,11 +1,10 @@
-import { JSXElement } from '@babel/types'
-import { HTMLAttributes, PropType, Slot, VNode, computed, defineComponent, h, onBeforeUnmount, onMounted, reactive, ref, watch } from 'vue'
+import { HTMLAttributes, PropType, VNode, computed, defineComponent, h, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import { GCard, GChip, GDropdown, GIcon, GList, GListItem, GProgress } from '../..'
 
 import { colors, isChildOf, sizes, styles } from '../../utils'
 import { icons } from '../../utils/icons'
-import { Color, Icon, Size, Style } from '../../utils/interface'
-import { SelectDisplayItem, SelectItem, SelectTitle, SelectValue } from '../interface'
+import { Color, Icon, Primitive, Size, Style } from '../../utils/interface'
+import { FormattedSelectItem, SelectItem, SelectTitle, SelectValue } from '../interface'
 
 export const name = 'g-select'
 
@@ -22,7 +21,7 @@ export default defineComponent({
       type: Array as PropType<SelectItem[]>,
       default: () => []
     },
-    itemsDisabled: {
+    disabledItems: {
       type: Array as PropType<SelectItem[]>,
       default: () => []
     },
@@ -131,9 +130,7 @@ export default defineComponent({
     const rootRef = ref<HTMLElement>()
 
     const search = ref<string>('')
-    const selectedItems = ref<SelectItem[]>([])
-    const selectedValues = ref<SelectItem[]>([])
-    const cursorPosition = ref<number>(0)
+    const cursor = ref<number>(0)
     const focused = ref<boolean>(false)
 
     const proxy = computed<boolean>({
@@ -141,7 +138,7 @@ export default defineComponent({
       set: (value: boolean) => emit('update:modelValue', value)
     })
 
-    const filled = computed<boolean>(() => selectedItems.value.length > 0)
+    const filled = computed<boolean>(() => selection.value.length > 0)
     const active = computed<boolean>(() => false) // TODO: переписать под реальные условия
     const disabled = computed<boolean>(() => props.disabled || props.readonly)
     const label = computed<string>(() => [ props.label, props.required && '*' ].filter(item => !!item).join(' '))
@@ -154,7 +151,7 @@ export default defineComponent({
         case 'box':
         case 'solo':
         case 'outline': {
-          return !!search.value || !!selectedItems.value.length
+          return !search.value || !selection.value.length
         }
         default: {
           return true
@@ -169,8 +166,19 @@ export default defineComponent({
       get: () => props.itemValue,
       set: (value): SelectValue => itemValue.value = value
     })
-    const items = computed<SelectDisplayItem[]>(() => {
-      return props.items.map(clearDisplayItem)
+    const items = computed<FormattedSelectItem[]>(() => {
+      return props.items.map(formatItem)
+    })
+    const selection = computed<FormattedSelectItem[]>({
+      get: () => {
+        let value = props.modelValue
+        if (!props.multiple) {
+          value = [ value ]
+        }
+
+        return value.map(formatItem)
+      },
+      set: (value): FormattedSelectItem[] => selection.value.splice(selection.value.length, 0, ...value.map(formatItem))
     })
     const size = computed<number>(() => {
       switch (props.size) {
@@ -201,45 +209,39 @@ export default defineComponent({
 
     const compareValues = (a: SelectItem, b: SelectItem): boolean => a === b
 
-    const getItemValue = (item: SelectItem): SelectItem => typeof item === 'object' ? item[itemValue.value] : item
-    const getItemTitle = (item: SelectItem): SelectItem => typeof item === 'object' ? item[itemTitle.value] : getItemValue(item)
+    const getItemValue = (item: any): Primitive => item[itemValue.value] || item
+    const getItemTitle = (item: SelectItem): string => (typeof item === 'object' ? item[itemTitle.value] : getItemValue(item)).toLocaleString()
 
-    const clearSelectedItem = (item: SelectItem): any => {
-      return {
-        [itemTitle.value]: getItemValue(item),
-        [itemValue.value]: getItemTitle(item)
-      }
-    }
-    const clearDisplayItem = (item: SelectItem, index: number): any => {
+    const formatItem = (item: SelectItem, index: number): FormattedSelectItem => {
+      const label = getItemTitle(item)
       const value = getItemValue(item)
-      const title = getItemTitle(item)
 
       return {
-        label: title,
-        hovered: cursorPosition.value === index,
-        selected: !!~selectedValues.value.findIndex((selectedValue: SelectItem) => compareValues(selectedValue, value)),
-        disabled: !!~props.itemsDisabled.findIndex((itemDisabled: SelectItem) => compareValues(typeof itemDisabled === 'object' ? itemDisabled[itemValue.value] : itemDisabled, value)),
-        searchValid: !search.value || !!~('' + title).toLocaleLowerCase().indexOf(search.value)
+        label,
+        value,
+        hovered: cursor.value === index,
+        selected: !!~selection.value.findIndex(selected => compareValues(selected, value)),
+        disabled: !!~props.disabledItems.findIndex(disabledItem => compareValues(getItemValue(disabledItem), value)),
+        searchValid: !search.value || !!~('' + label).toLocaleLowerCase().indexOf(search.value)
       }
     }
     const clearSearch = () => {
       if (search.value) {
         search.value = ''
       }
+
+      focused.value = false
     }
-    const addByValue = (item: SelectItem): boolean => {
-      const value = getItemValue(item)
-      const index = selectedValues.value.findIndex(selectedValue => compareValues(getItemValue(selectedValue), value))
+    const addByValue = (value: Primitive): boolean => {
+      const index = selection.value.findIndex(selectedValue => compareValues(getItemValue(selectedValue), value))
 
       if (index === -1) {
         if (props.multiple) {
-          selectedValues.value.push(value)
+          selection.value.push(value)
         } else {
-          selectedValues.value.splice(0, 1, value)
+          selection.value.splice(0, 1, value)
 
           clearSearch()
-
-          focused.value = false
         }
 
         return true
@@ -247,16 +249,15 @@ export default defineComponent({
 
       return false
     }
-    const removeByValue = (item: SelectItem): boolean => {
-      const value = getItemValue(item)
-      const index = selectedValues.value.findIndex(selectedValue => compareValues(getItemValue(selectedValue), value))
+    const removeByValue = (value: Primitive): boolean => {
+      const index = selection.value.findIndex(selectedValue => compareValues(getItemValue(selectedValue), value))
 
       if (index > -1) {
-        if (selectedValues.value.length === 1 && props.required) {
+        if (selection.value.length === 1 && props.required) {
           return false
         }
 
-        selectedValues.value.splice(index, 1)
+        selection.value.splice(index, 1)
 
         clearSearch()
 
@@ -265,23 +266,8 @@ export default defineComponent({
 
       return false
     }
-    // TODO: проверить работоспособность
-    const removeByIndex = (index: number, amount: number) => {
-      index = index || selectedValues.value.length - 1
-      amount = amount || selectedValues.value.length
-
-      for (let i = 0; i < amount; i++) {
-        if (!removeByValue(selectedValues.value[index])) {
-          return false
-        }
-      }
-
-      clearSearch()
-
-      return true
-    }
-    const toggleByValue = (item: SelectItem): boolean => {
-      return addByValue(item) || removeByValue(item)
+    const toggleByValue = (value: Primitive): boolean => {
+      return addByValue(value) || removeByValue(value)
     }
 
     const renderTabindex = () => {
@@ -292,29 +278,28 @@ export default defineComponent({
         return <div class={`${name}__label`}>{label.value}</div>
       }
     }
-    const renderSelectionItem = (item: SelectItem, index: number) => {
+    const renderSelectionItem = (item: FormattedSelectItem, index: number) => {
       if (slots.selection) {
         return slots.selection({
           item,
           index,
-          items: selectedItems.value,
+          selection: selection.value,
           addByValue,
           removeByValue,
-          removeByIndex,
           toggleByValue
         })
       }
 
       return <GChip
-        label={getItemTitle(item).toLocaleString()}
+        label={item.label}
         cancelable={props.multiple}
-        callback={() => removeByValue(item)}
+        callback={() => removeByValue(getItemValue(item))}
         size={props.size}
       />
     }
     const renderSelection = () => {
       return <div class={`${name}__selection`}>
-        {selectedItems.value.map((item, index) => renderSelectionItem(item, index))}
+        {selection.value.map((item, index) => renderSelectionItem(item, index))}
       </div>
     }
     const renderIcon = () => {
@@ -355,20 +340,24 @@ export default defineComponent({
         {renderArrow()}
       </div>
     }
-    const renderItem = (item: SelectDisplayItem, index: number) => {
+    const renderItem = (item: FormattedSelectItem, index: number) => {
       if (slots.item) {
         return slots.item({
           item,
           index,
-          items: selectedItems.value,
+          selection: selection.value,
           addByValue,
           removeByValue,
-          removeByIndex,
           toggleByValue
         })
       }
 
-      return <GListItem label={item.label} disabled={item.disabled} active={item.selected} />
+      return <GListItem
+        label={item.label}
+        disabled={item.disabled}
+        active={item.selected}
+        onClick={() => addByValue(getItemValue(item))}
+      />
     }
     const renderItems = () => {
       return <GList>
@@ -397,7 +386,9 @@ export default defineComponent({
       </GDropdown>
     }
     const renderBorder = () => {
-      return <div class={`${name}__border`}></div>
+      if (!props.style) {
+        return <div class={`${name}__border`}></div>
+      }
     }
     const renderDetails = () => {
       if (props.details) {
@@ -407,12 +398,10 @@ export default defineComponent({
       }
     }
     const renderFooter = () => {
-      if (!props.style) {
-        return <div class={`${name}__footer`}>
-          {renderBorder()}
-          {renderDetails()}
-        </div>
-      }
+      return <div class={`${name}__footer`}>
+        {renderBorder()}
+        {renderDetails()}
+      </div>
     }
 
     return () => <div

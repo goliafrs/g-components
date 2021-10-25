@@ -1,7 +1,157 @@
+$size: 32px;
+$size-step: 4px;
+$tiny-size: $size - $size-step * 2;
+$small-size: $size - $size-step;
+$medium-size: $size;
+$large-size: $size+$size-step;
+$giant-size: $size+$size-step * 2;
+
+@mixin size($component) {
+  @if $component=='g-select' {
+    &--tiny {
+      &>.#{$component}__holder {
+        grid-template-columns: 1fr $tiny-size;
+
+        &>.#{$component}__group {
+          &>.#{$component}__selection {
+            min-height: $tiny-size;
+          }
+        }
+      }
+    }
+
+    &--small {
+      &>.#{$component}__holder {
+        grid-template-columns: 1fr $small-size;
+
+        &>.#{$component}__group {
+          &>.#{$component}__selection {
+            min-height: $small-size;
+          }
+        }
+      }
+    }
+
+    &--medium {
+      &>.#{$component}__holder {
+        grid-template-columns: 1fr $medium-size;
+
+        &>.#{$component}__group {
+          &>.#{$component}__selection {
+            min-height: $medium-size;
+          }
+        }
+      }
+    }
+
+    &--large {
+      &>.#{$component}__holder {
+        grid-template-columns: 1fr $large-size;
+
+        &>.#{$component}__group {
+          &>.#{$component}__selection {
+            min-height: $large-size;
+          }
+        }
+      }
+    }
+
+    &--giant {
+      &>.#{$component}__holder {
+        grid-template-columns: 1fr $giant-size;
+
+        &>.#{$component}__group {
+          &>.#{$component}__selection {
+            min-height: $giant-size;
+          }
+        }
+      }
+    }
+  }
+
+  &--tiny {
+    &>.#{$component}__label {
+      top: 4px;
+    }
+
+    &>.#{$component}__holder {
+      &>.#{$component}__group {
+        &>.#{$component}__icon {
+          @include absolute-height($tiny-size);
+          @include absolute-width($tiny-size);
+        }
+      }
+    }
+  }
+
+  &--small {
+    &>.#{$component}__label {
+      top: $small-size - 10px;
+    }
+
+    &>.#{$component}__holder {
+      &>.#{$component}__group {
+        & .#{$component}__icon {
+          @include absolute-height($small-size);
+          @include absolute-width($small-size);
+        }
+      }
+    }
+  }
+
+  &--medium {
+    &>.#{$component}__label {
+      top: $medium-size - 10px;
+    }
+
+    &>.#{$component}__holder {
+      &>.#{$component}__group {
+        & .#{$component}__icon {
+          @include absolute-height($medium-size);
+          @include absolute-width($medium-size);
+        }
+      }
+    }
+  }
+
+  &--large {
+    &>.#{$component}__label {
+      top: $large-size - 10px;
+    }
+
+    &>.#{$component}__holder {
+      &>.#{$component}__group {
+        & .#{$component}__icon {
+          @include absolute-height($large-size);
+          @include absolute-width($large-size);
+        }
+      }
+    }
+  }
+
+  &--giant {
+    &>.#{$component}__label {
+      top: $giant-size - 20px;
+    }
+
+    &>.#{$component}__holder {
+      &>.#{$component}__group {
+        & .#{$component}__icon {
+          @include absolute-height($giant-size);
+          @include absolute-width($giant-size);
+        }
+      }
+    }
+  }
+}
+
 @mixin input-base {
-  padding-top: 14px;
+  margin-top: 14px;
   display: grid;
   grid-template-columns: 1fr;
+  align-self: flex-start;
+  align-items: flex-start;
+  align-content: flex-start;
   position: relative;
   min-width: 56px;
 
@@ -19,9 +169,8 @@
     transition-timing-function: $transition-timing-function;
     will-change: font-size, color, top, left;
     overflow: hidden;
-    top: 22px;
     left: 0;
-    max-width: calc(100% - 32px);
+    max-width: calc(100% - $size);
     pointer-events: none;
     z-index: 1;
   }
@@ -32,19 +181,11 @@
   }
 
   &__group {
+    position: relative;
     display: flex;
     flex: 1;
-    position: relative;
     user-select: none;
     overflow: hidden;
-  }
-
-  &__footer {
-    display: flex;
-    justify-content: center;
-    position: relative;
-    height: 0;
-    width: 100%;
   }
 
   &__border {
@@ -79,6 +220,13 @@
     }
   }
 
+  &__footer {
+    position: relative;
+    display: flex;
+    align-items: flex-start;
+    flex: 1;
+  }
+
   &__details {
     @include default-text-style(12px);
 
@@ -86,52 +234,28 @@
     color: $black-54;
     user-select: none;
     display: flex;
-    justify-content: space-between;
+    flex: 1;
     min-height: 14px;
-
-    &--left {
-      padding-right: 8px;
-      display: inline-block;
-    }
   }
 }
 
 @mixin input-style($component) {
-
-  &__before,
-  &__after {
-    color: $black-54;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    user-select: none;
-    overflow: hidden;
-
-    &-holder {
-      @include absolute-height(32px);
-      @include absolute-width(32px);
-
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    &--pointer {
-
-      &.#{$component}__before-holder,
-      &.#{$component}__after-holder {
-        cursor: pointer;
-      }
-    }
-  }
+  @include size($component);
 
   &__icon {
-    @include absolute-height(32px);
-    @include absolute-width(32px);
-
     display: flex;
+    align-self: center;
     align-items: center;
+    align-content: center;
     justify-content: center;
+  }
+
+  &--box {
+    background: $black-06;
+
+    &>.#{$component}__footer {
+      background: $black-12;
+    }
   }
 
   &--solo,
@@ -139,30 +263,21 @@
   &--outline-label {
     padding-top: 0;
 
-    &.#{$component}--has-before {
-      &:not(.#{$component}--filled):not(.#{$component}--dense) {
-        & .#{$component}__label {
-          left: 60px;
-        }
-      }
+    & .#{$component}__label {
+      left: 13px;
+      max-width: calc(100% - 48px);
     }
 
-    & .#{$component}__holder {
+    &>.#{$component}__holder {
       background-color: var(--white);
-    }
 
-    & .#{$component}__group {
-      padding-left: 12px;
-      padding-right: 12px;
-      align-items: center;
-    }
-
-    &:not(.#{$component}--dense) {
-      & .#{$component}__label {
-        left: 13px;
-        max-width: calc(100% - 48px);
+      &>.#{$component}__group {
+        padding-left: 12px;
+        padding-right: 12px;
+        align-items: center;
       }
     }
+
 
     & .#{$component}__footer {
       padding-left: 12px;
@@ -174,16 +289,11 @@
     }
   }
 
-  &--solo,
-  &--outline {
-    &:not(.#{$component}--dense) {
-      & .#{$component}__label {
-        top: 15px;
-      }
-    }
-  }
-
   &--solo {
+    &>.#{$component}__label {
+      top: 14px;
+    }
+
     &:not(.#{$component}--flat) {
       & .#{$component}__holder {
         @include g-elevation(2);
@@ -191,9 +301,20 @@
     }
   }
 
+  &--outline {
+    &>.#{$component}__label {
+      top: 15px;
+    }
+  }
+
+
   &--outline,
   &--outline-label {
-    & .#{$component}__holder {
+    &>.#{$component}__label {
+      left: 13px;
+    }
+
+    &>.#{$component}__holder {
       border-style: solid;
       border-width: 1px;
       border-color: $black-12;
@@ -203,16 +324,8 @@
   &--outline-label {
     padding-top: 22px;
 
-    &:not(.#{$component}--dense) {
-      & .#{$component}__label {
-        top: 38px;
-      }
-    }
-
-    &.#{$component}--dense {
-      & .#{$component}__label {
-        top: 32px;
-      }
+    &>.#{$component}__label {
+      top: 38px;
     }
   }
 

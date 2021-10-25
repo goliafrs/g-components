@@ -1,1 +1,1 @@
-export { default as GSelect } from './src/Select'
+// export { default as GSelect } from './src/Select'

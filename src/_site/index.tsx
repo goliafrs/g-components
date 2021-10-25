@@ -28,7 +28,7 @@ import { default as Overlay } from './components/overlay'
 import { default as PanelGroup } from './components/panel-group'
 import { default as Panel } from './components/panel'
 import { default as Progress } from './components/progress'
-import { default as Select } from './components/select'
+// import { default as Select } from './components/select'
 import { default as Spoiler } from './components/spoiler'
 import { default as Switch } from './components/switch'
 
@@ -84,7 +84,7 @@ export default defineComponent({
         case 'panel-group': return <PanelGroup />
         case 'panel': return <Panel />
         case 'progress': return <Progress />
-        case 'select': return <Select />
+        // case 'select': return <Select />
         case 'spoiler': return <Spoiler />
         case 'switch': return <Switch />
       }

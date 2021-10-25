@@ -5,3 +5,4 @@ export type ComponentName = 'avatar' | 'button' | 'card' | 'checkbox' | 'chip' |
 export type Position = 'absolute' | 'fixed'
 export type Style = 'box' | 'solo' | 'outline' | 'outline-label'
 export type Size = 'tiny' | 'small' | 'medium' | 'large' | 'giant'
+export type Primitive = string | number | boolean

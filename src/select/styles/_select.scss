@@ -7,10 +7,6 @@
       cursor: pointer;
     }
 
-    &__holder {
-      grid-template-columns: 1fr 32px;
-    }
-
     &__group {
       flex-wrap: wrap;
       cursor: pointer;
@@ -22,7 +18,6 @@
       align-items: center;
       flex-wrap: wrap;
       flex: 1;
-      min-height: 32px;
       min-width: 0;
     }
 
@@ -45,72 +40,15 @@
           min-height: 48px;
         }
 
-        & .g-select__before,
-        & .g-select__after {
-          @include absolute-height(48px);
-          @include absolute-width(48px);
-        }
-
         & .g-select__input {
           line-height: 48px;
         }
       }
     }
 
-    &--dense {
-      & .g-select__selection {
-        min-height: 36px;
-      }
-
-      & .g-select__chip {
-        margin-top: 2px;
-        margin-bottom: 2px;
-        margin-right: 6px;
-        border-radius: 8px;
-
-        @include absolute-height(18px);
-
-        & .g-select__chip-title {
-          padding-left: 6px;
-          padding-right: 24px;
-          font-size: 11px;
-        }
-
-        & .g-select__chip-icon {
-          border-radius: 8px;
-
-          @include absolute-height(18px);
-          @include absolute-width(18px);
-
-          &::before {
-            font-size: 14px;
-            line-height: 14px;
-          }
-
-          &:hover {
-            @include absolute-width(32px);
-          }
-        }
-      }
-
-      & .g-select__before,
-      & .g-select__after {
-        @include absolute-height(36px);
-        @include absolute-width(36px);
-      }
-
-      & .g-select__input {
-        line-height: 36px;
-      }
-    }
-
     &--multiple {
       & .g-select__group {
         cursor: default;
-
-        &--nowrap {
-          flex-wrap: nowrap;
-        }
       }
     }
 
