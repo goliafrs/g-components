@@ -1,6 +1,6 @@
 import { defineComponent, h, ref } from 'vue'
 
-import { GButton, GDivider } from '../'
+import { GButton, GDivider, GList, GSidebar } from '../'
 
 import { componentNames } from '../utils'
 
@@ -29,14 +29,17 @@ import { default as PanelGroup } from './components/panel-group'
 import { default as Panel } from './components/panel'
 import { default as Progress } from './components/progress'
 // import { default as Select } from './components/select'
+import { default as Sidebar } from './components/sidebar'
 import { default as Spoiler } from './components/spoiler'
 import { default as Switch } from './components/switch'
+import { GContent } from '../content'
 
 export default defineComponent({
   name: 'Home',
 
   setup() {
     const name = ref(window.localStorage.getItem('name'))
+    const proxy = ref<boolean>(false)
 
     const renderList = () => {
       const items = componentNames.map((componentName: ComponentName): ButtonProps => {
@@ -85,24 +88,35 @@ export default defineComponent({
         case 'panel': return <Panel />
         case 'progress': return <Progress />
         // case 'select': return <Select />
+        case 'sidebar': return <Sidebar />
         case 'spoiler': return <Spoiler />
         case 'switch': return <Switch />
       }
     }
 
-    return () => <div class='grid grid-cols-1'>
-      <div class='pa-2'>{renderList()}</div>
-      <div class='grid grid-cols-1 pa-2'>
-        <div
-          class='grid faic'
-          style={{ gridTemplateColumns: '1fr 200px 1fr' }}
-        >
-          <GDivider></GDivider>
-          <div class='fz-24 text--grey' style={{ textAlign: 'center' }}>{name.value}</div>
-          <GDivider></GDivider>
+    return () => <div>
+      <GSidebar v-model={proxy.value}>
+        <GList items={[
+          { label: '1' },
+          { label: '1' },
+          { label: '1' },
+          { label: '1' }
+        ]}></GList>
+      </GSidebar>
+      <GContent>
+        <div class='pa-2'>{renderList()}</div>
+        <div class='grid grid-cols-1 pa-2'>
+          <div
+            class='grid faic'
+            style={{ gridTemplateColumns: '1fr 200px 1fr' }}
+          >
+            <GDivider></GDivider>
+            <div class='fz-24 text--grey' style={{ textAlign: 'center' }}>{name.value}</div>
+            <GDivider></GDivider>
+          </div>
+          {renderComponents()}
         </div>
-        {renderComponents()}
-      </div>
+      </GContent>
     </div>
   }
 })
