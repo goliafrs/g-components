@@ -3,7 +3,7 @@ import { icons } from './icons'
 
 export const colors: Color[] = [ 'primary', 'secondary', 'info', 'warning', 'error', 'success', 'accent', 'white', 'black', 'grey', 'gray', 'transparent' ]
 export const directions: Direction[] = [ 'top', 'bottom', 'left', 'right', 'center' ]
-export const componentNames: ComponentName[] = [ 'avatar', 'button', 'card', 'checkbox', 'chip', 'content', 'date-picker', 'dialog', 'divider', 'dropdown', 'empty', 'footer', 'form', 'icon', 'input', 'list', 'list-item', 'modal', 'overlay', 'panel-group', 'panel', 'progress', 'select', 'sidebar', 'spoiler', 'switch' ]
+export const componentNames: ComponentName[] = [ 'avatar', 'button', 'card', 'checkbox', 'chip', 'content', 'date-picker', 'dialog', 'divider', 'dropdown', 'empty', 'footer', 'form', 'icon', 'input', 'list', 'list-item', 'modal', 'overlay', 'panel-group', 'panel', 'progress', 'select', 'sidebar', 'snackbar', 'spoiler', 'switch' ]
 export const positions: Position[] = [ 'absolute', 'fixed' ]
 export const styles: Style[] = [ 'box', 'solo', 'outline', 'outline-label' ]
 export const sizes: Size[] = [ 'tiny', 'small', 'medium', 'large', 'giant' ]

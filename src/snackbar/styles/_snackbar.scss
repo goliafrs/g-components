@@ -1,0 +1,165 @@
+$directions: (top, bottom, left, right);
+
+@mixin direction {
+  @each $direction in $directions {
+    &--#{$direction} {
+      #{$direction}: 16px;
+
+      @media only screen and (max-width: $xs) {
+        #{$direction}: 0;
+      }
+    }
+  }
+}
+
+@mixin colors {
+  @each $name in $colorNames {
+    &--#{$name} {
+      color: var(--#{$name});
+
+      &.g-snackbar--outline {
+        &>.g-snackbar__content {
+          &>.g-snackbar__title,
+          &>.g-snackbar__text {
+            color: var(--#{$name});
+          }
+        }
+      }
+    }
+  }
+}
+
+.g {
+  &-snackbar {
+    @include colors;
+
+    padding-top: 8px;
+    padding-bottom: 8px;
+    padding-left: 16px;
+    padding-right: 16px;
+    color: $black-84;
+    background-color: currentColor;
+    position: relative;
+    display: grid;
+    grid-template-columns: 1fr;
+    align-items: flex-start;
+    pointer-events: auto;
+    overflow: hidden;
+    min-height: 48px;
+    min-width: 300px;
+    max-width: 600px;
+
+    &:not(.g-snackbar--outline) {
+      @include g-elevation(2);
+    }
+
+    &.g-snackbar--icon.g-snackbar--cancelable {
+      grid-template-columns: 48px 1fr 48px;
+    }
+
+    &--outline {
+      border: 1px solid currentColor;
+      background-color: transparent;
+    }
+    &--rounded {
+      border-radius: 16px;
+    }
+    &--icon {
+      padding-left: 0;
+      grid-template-columns: 48px 1fr;
+    }
+    &--cancelable {
+      padding-right: 0;
+      grid-template-columns: 1fr 48px;
+    }
+
+    &__title {
+      @include default-text-style(15px, 500);
+
+      color: var(--white);
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      overflow: hidden;
+    }
+
+    &__text {
+      @include default-text-style(13px);
+
+      color: var(--white);
+      word-wrap: break-word;
+    }
+
+    &__content {
+      display: grid;
+      grid-template-columns: 1fr;
+      grid-gap: 2px;
+    }
+
+    &__actions {
+      display: flex;
+      align-items: center;
+      align-content: center;
+      justify-content: center;
+      height: 100%;
+    }
+
+    &-group {
+      @include direction;
+
+      position: fixed;
+      display: grid;
+      grid-gap: 16px;
+      z-index: 1000;
+
+      @media only screen and (max-width: $xs) {
+        width: 100%;
+      }
+    }
+  }
+}
+
+.show-snackbar-enter-active,
+.show-snackbar-leave-active {
+  & .g-snackbar {
+    transition: opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1), transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+}
+
+.show-snackbar-enter-from,
+.show-snackbar-leave-to {
+  & .g-snackbar {
+    opacity: 0;
+    transform: translate3d(0, 100%, 0);
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 100%, 0);
+  }
+
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.fadeInUp {
+  animation-name: fadeInUp;
+}
+
+@keyframes fadeOutDown {
+  from {
+    opacity: 1;
+  }
+
+  to {
+    opacity: 0;
+    transform: translate3d(0, 100%, 0);
+  }
+}
+
+.fadeOutDown {
+  animation-name: fadeOutDown;
+}

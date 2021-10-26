@@ -1,6 +1,6 @@
 import { defineComponent, h, ref } from 'vue'
 
-import { GButton, GDivider, GList, GSidebar } from '../'
+import { GButton, GContent, GDivider, GList, GSidebar } from '../'
 
 import { componentNames } from '../utils'
 
@@ -30,9 +30,9 @@ import { default as Panel } from './components/panel'
 import { default as Progress } from './components/progress'
 // import { default as Select } from './components/select'
 import { default as Sidebar } from './components/sidebar'
+import { default as Snackbar } from './components/snackbar'
 import { default as Spoiler } from './components/spoiler'
 import { default as Switch } from './components/switch'
-import { GContent } from '../content'
 
 export default defineComponent({
   name: 'Home',
@@ -88,7 +88,8 @@ export default defineComponent({
         case 'panel': return <Panel />
         case 'progress': return <Progress />
         // case 'select': return <Select />
-        case 'sidebar': return <Sidebar />
+        case 'sidebar': return <Sidebar v-model={proxy.value} />
+        case 'snackbar': return <Snackbar />
         case 'spoiler': return <Spoiler />
         case 'switch': return <Switch />
       }
