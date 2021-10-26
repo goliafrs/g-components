@@ -33,6 +33,7 @@ import { default as Sidebar } from './components/sidebar'
 import { default as Snackbar } from './components/snackbar'
 import { default as Spoiler } from './components/spoiler'
 import { default as Switch } from './components/switch'
+import { default as Table } from './components/table'
 
 export default defineComponent({
   name: 'Home',
@@ -92,6 +93,7 @@ export default defineComponent({
         case 'snackbar': return <Snackbar />
         case 'spoiler': return <Spoiler />
         case 'switch': return <Switch />
+        case 'table': return <Table />
       }
     }
 

@@ -1,12 +1,13 @@
-import { Color, ComponentName, Direction, Position, Size, Style } from './interface'
+import { Color, ComponentName, Direction, Position, Size, Sort, Style } from './interface'
 import { icons } from './icons'
 
 export const colors: Color[] = [ 'primary', 'secondary', 'info', 'warning', 'error', 'success', 'accent', 'white', 'black', 'grey', 'gray', 'transparent' ]
 export const directions: Direction[] = [ 'top', 'bottom', 'left', 'right', 'center' ]
-export const componentNames: ComponentName[] = [ 'avatar', 'button', 'card', 'checkbox', 'chip', 'content', 'date-picker', 'dialog', 'divider', 'dropdown', 'empty', 'footer', 'form', 'icon', 'input', 'list', 'list-item', 'modal', 'overlay', 'panel-group', 'panel', 'progress', 'select', 'sidebar', 'snackbar', 'spoiler', 'switch' ]
+export const componentNames: ComponentName[] = [ 'avatar', 'button', 'card', 'checkbox', 'chip', 'content', 'date-picker', 'dialog', 'divider', 'dropdown', 'empty', 'footer', 'form', 'icon', 'input', 'list', 'list-item', 'modal', 'overlay', 'panel-group', 'panel', 'progress', 'select', 'sidebar', 'snackbar', 'spoiler', 'switch', 'table' ]
 export const positions: Position[] = [ 'absolute', 'fixed' ]
 export const styles: Style[] = [ 'box', 'solo', 'outline', 'outline-label' ]
 export const sizes: Size[] = [ 'tiny', 'small', 'medium', 'large', 'giant' ]
+export const sorts: Sort[] = [ 'desc', 'DESC', 'asc', 'ASC', '0', 0, '1', 1, '-1', -1 ]
 
 const REGEXP_IS_HEX = /^#?[0-9A-Fa-f]{3,6}$/
 

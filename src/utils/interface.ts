@@ -2,9 +2,10 @@ export type Icon = '10k' | '10mp' | '11mp' | '12mp' | '13mp' | '14mp' | '15mp' |
 
 export type Color = 'primary' | 'secondary' | 'info' | 'warning' | 'error' | 'success' | 'accent' | 'white' | 'black' | 'grey' | 'gray' | 'transparent'
 export type Direction = 'top' | 'bottom' | 'left' | 'right' | 'center'
-export type ComponentName = 'avatar' | 'button' | 'card' | 'checkbox' | 'chip' | 'content' | 'date-picker' | 'dialog' | 'divider' | 'dropdown' | 'empty' | 'footer' | 'form' | 'icon' | 'input' | 'list' | 'list-item' | 'menu' | 'modal' | 'overlay' | 'panel-group' | 'panel' | 'progress' | 'select' | 'sidebar' | 'snackbar' | 'spoiler' | 'switch'
+export type ComponentName = 'avatar' | 'button' | 'card' | 'checkbox' | 'chip' | 'content' | 'date-picker' | 'dialog' | 'divider' | 'dropdown' | 'empty' | 'footer' | 'form' | 'icon' | 'input' | 'list' | 'list-item' | 'menu' | 'modal' | 'overlay' | 'panel-group' | 'panel' | 'progress' | 'select' | 'sidebar' | 'snackbar' | 'spoiler' | 'switch' | 'table'
 export type Position = 'absolute' | 'fixed'
 export type Style = 'box' | 'solo' | 'outline' | 'outline-label'
 export type Size = 'tiny' | 'small' | 'medium' | 'large' | 'giant'
+export type Sort = 'desc' | 'DESC' | 'asc' | 'ASC' | '1' | 1 | '-1' | -1
 
 export type Primitive = string | number | boolean
