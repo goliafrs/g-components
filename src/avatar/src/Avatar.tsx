@@ -2,9 +2,7 @@ import { CSSProperties, PropType, StyleValue, computed, defineComponent, h } fro
 
 import { GIcon } from '../../'
 
-import { colors, numberToPxOrString } from '../../utils'
-import { icons } from '../../utils/icons'
-import { Color, Icon } from '../../utils/interface'
+import { Color, Icon, colors, icons, numberToPxOrString } from '../../utils'
 
 export const name = 'g-avatar'
 
@@ -131,7 +129,7 @@ export default defineComponent({
       if (props.src) {
         return <img class={`${name}__img`} src={props.src} alt={props.title} />
       } else if (props.icon) {
-        return <GIcon value={props.icon} color={props.color} size={props.fontSize} />
+        return <GIcon icon={props.icon} color={props.color} size={props.fontSize} />
       }
 
       return <div

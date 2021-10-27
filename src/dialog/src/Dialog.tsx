@@ -1,8 +1,7 @@
 import { PropType, Transition, computed, defineComponent, h } from 'vue'
 import { GOverlay } from '../..'
 
-import { directions, numberToPxOrString } from '../../utils'
-import { Direction } from '../../utils/interface'
+import { Direction, directions, numberToPxOrString } from '../../utils'
 
 export const name = 'g-dialog'
 

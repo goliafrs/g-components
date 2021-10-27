@@ -1,8 +1,7 @@
 import { PropType, Transition, computed, defineComponent, h } from 'vue'
 import { GButton, GCardActions, GOverlay } from '../..'
 
-import { colors, numberToPxOrString } from '../../utils'
-import { Color } from '../../utils/interface'
+import { Color, colors, numberToPxOrString } from '../../utils'
 
 export const name = 'g-modal'
 

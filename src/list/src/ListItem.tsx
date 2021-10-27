@@ -4,9 +4,8 @@ import { GList } from '..'
 
 import { GIcon } from '../../'
 
-import { colors } from '../../utils'
-import { icons } from '../../utils/icons'
-import { Color, Icon } from '../../utils/interface'
+import { Color, Icon, colors, icons } from '../../utils'
+
 import { ListItemProps } from '../interface'
 
 export const name = 'g-list-item'
@@ -89,7 +88,7 @@ export default defineComponent({
     const renderIcon = () => {
       if (props.icon) {
         return <div class={`${name}__holder`}>
-          <GIcon value={props.icon} color={props.color || 'grey'} size={21} />
+          <GIcon icon={props.icon} color={props.color || 'grey'} size={21} />
         </div>
       }
     }
@@ -103,7 +102,7 @@ export default defineComponent({
     const renderArrow = () => {
       if (props.group) {
         return <div class={`${name}__holder`}>
-          <GIcon value={proxy.value ? 'keyboard_arrow_up' : 'keyboard_arrow_down'} color='grey' size={21} />
+          <GIcon icon={proxy.value ? 'keyboard_arrow_up' : 'keyboard_arrow_down'} color='grey' size={21} />
         </div>
       }
     }

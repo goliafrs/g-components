@@ -2,9 +2,7 @@ import { PropType, defineComponent, h } from 'vue'
 
 import { GIcon } from '../../'
 
-import { colors } from '../../utils'
-import { icons } from '../../utils/icons'
-import { Color, Icon } from '../../utils/interface'
+import { Color, Icon, colors, icons } from '../../utils'
 
 export const name = 'g-empty'
 
@@ -45,7 +43,7 @@ export default defineComponent({
 
   setup(props) {
     const renderIcon = () => {
-      return <GIcon value={props.icon} color={props.color} size={props.size} />
+      return <GIcon icon={props.icon} color={props.color} size={props.size} />
     }
     const renderTitle = () => {
       if (props.title) {

@@ -34,6 +34,7 @@ import { default as Snackbar } from './components/snackbar'
 import { default as Spoiler } from './components/spoiler'
 import { default as Switch } from './components/switch'
 import { default as Table } from './components/table'
+import { default as Tab } from './components/tab'
 
 export default defineComponent({
   name: 'Home',
@@ -43,22 +44,35 @@ export default defineComponent({
     const proxy = ref<boolean>(false)
 
     const renderList = () => {
-      const items = componentNames.map((componentName: ComponentName): ButtonProps => {
-        const isActive = name.value === componentName
-
-        return {
-          label: componentName,
-          color: isActive ? 'primary' : undefined,
-          depressed: isActive,
-          flat: !isActive,
-          size: 'small',
-          rounded: true,
-          onClick: () => {
-            name.value = componentName
-            window.localStorage.setItem('name', componentName)
+      const items = componentNames.reduce<ButtonProps[]>((result, component) => {
+        switch (component) {
+          case 'form':
+          case 'panel-group':
+          case 'tab-content':
+          case 'tabs':
+          case 'tabs-header':
+          case 'tabs-body': {
+            return result
+          }
+          default: {
+            const isActive = name.value === component
+            result.push({
+              label: component,
+              color: isActive ? 'primary' : undefined,
+              depressed: isActive,
+              flat: !isActive,
+              size: 'small',
+              rounded: true,
+              onClick: () => {
+                name.value = component
+                window.localStorage.setItem('name', component)
+              }
+            })
           }
         }
-      })
+
+        return result
+      }, [])
 
       return <div
         class='grid grid-gap--8 fjcc'
@@ -94,6 +108,7 @@ export default defineComponent({
         case 'spoiler': return <Spoiler />
         case 'switch': return <Switch />
         case 'table': return <Table />
+        case 'tab': return <Tab />
       }
     }
 

@@ -1,7 +1,7 @@
 import { PropType, TransitionGroup, computed, defineComponent, h } from 'vue'
 
 import { GSnackbar } from '..'
-import { Direction } from '../../utils/interface'
+import { Direction } from '../../utils'
 import { SnackbarProps } from '../interface'
 
 export const name = 'g-snackbar-group'
@@ -21,9 +21,7 @@ export default defineComponent({
     }
   },
 
-  emits: [ 'update:modelValue' ],
-
-  setup(props, { emit }) {
+  setup(props) {
     const renderItems = () => {
       return props.items.map(item => <GSnackbar {...item} />)
     }

@@ -2,9 +2,7 @@ import { ButtonHTMLAttributes, PropType, computed, defineComponent, h } from 'vu
 
 import { GIcon, GProgress } from '../../'
 
-import { colors, directions, positions, sizes } from '../../utils'
-import { icons } from '../../utils/icons'
-import { Color, Direction, Icon, Position, Size } from '../../utils/interface'
+import { Color, Direction, Icon, Position, Size, colors, directions, icons, positions, sizes } from '../../utils'
 
 export const name = 'g-button'
 
@@ -145,7 +143,7 @@ export default defineComponent({
     const renderIcon = () => {
       if (props.icon) {
         return <div class={`${name}__icon`}>
-          <GIcon value={props.icon} size={size.value} />
+          <GIcon icon={props.icon} size={size.value} />
         </div>
       }
     }

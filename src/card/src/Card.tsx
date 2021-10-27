@@ -1,7 +1,6 @@
 import { CSSProperties, PropType, computed, defineComponent, h, reactive } from 'vue'
 
-import { colors, directions, numberToPxOrString } from '../../utils'
-import { Color, Direction } from '../../utils/interface'
+import { Color, Direction, colors, directions, numberToPxOrString } from '../../utils'
 
 export const name = 'g-card'
 

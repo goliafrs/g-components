@@ -1,9 +1,7 @@
 import { PropType, defineComponent, h } from 'vue'
 import { GButton, GIcon } from '../..'
 
-import { colors, sizes } from '../../utils'
-import { icons } from '../../utils/icons'
-import { Color, Icon, Size } from '../../utils/interface'
+import { Color, Icon, Size, colors, icons, sizes } from '../../utils'
 
 export const name = 'g-snackbar'
 
@@ -66,7 +64,7 @@ export default defineComponent({
   setup(props, { slots, emit }) {
     const renderIcon = () => {
       if (props.icon) {
-        return <GIcon value={props.icon} color={props.outline ? props.color : 'white'} />
+        return <GIcon icon={props.icon} color={props.outline ? props.color : 'white'} />
       }
     }
     const renderTitle = () => {

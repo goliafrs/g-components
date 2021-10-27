@@ -1,11 +1,8 @@
 import { PropType, defineComponent, h } from 'vue'
 
-import { colors } from '../../utils'
-import { Color } from '../../utils/interface'
+import { BorderStyle, Color, borderStyles, colors } from '../../utils'
 
 export const name = 'g-divider'
-
-export type BorderStyle = 'dotted' | 'dashed' | 'solid' | 'double' | 'groove' | 'ridge' | 'inset' | 'outset'
 
 export default defineComponent({
   name,
@@ -21,8 +18,8 @@ export default defineComponent({
     style: {
       type: String as PropType<BorderStyle>,
       default: 'solid',
-      validator: (value: string): boolean => {
-        return !!~[ 'dotted', 'dashed', 'solid', 'double', 'groove', 'ridge', 'inset', 'outset' ].indexOf(value)
+      validator: (value: BorderStyle): boolean => {
+        return !!~borderStyles.indexOf(value)
       }
     },
     color: {

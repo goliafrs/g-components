@@ -1,8 +1,7 @@
 import { PropType, computed, defineComponent, h } from 'vue'
 import { GEmpty } from '../..'
 
-import { sizes } from '../../utils'
-import { Size } from '../../utils/interface'
+import { Size, sizes } from '../../utils'
 import { TableHeader } from '../interface'
 
 export const name = 'g-table'

@@ -2,9 +2,7 @@ import { PropType, computed, defineComponent, h } from 'vue'
 
 import { GIcon, GProgress } from '../../'
 
-import { colors, sizes } from '../../utils'
-import { icons } from '../../utils/icons'
-import { Color, Icon, Size } from '../../utils/interface'
+import { Color, Icon, Size, colors, icons, sizes } from '../../utils'
 
 export const name = 'g-chip'
 
@@ -133,7 +131,7 @@ export default defineComponent({
     const renderIcon = () => {
       if (props.icon) {
         return <div class={`${name}__icon`}>
-          <GIcon value={props.icon} size={size.value}></GIcon>
+          <GIcon icon={props.icon} size={size.value}></GIcon>
         </div>
       }
     }
@@ -143,7 +141,7 @@ export default defineComponent({
     const renderCancelable = () => {
       if (props.cancelable) {
         return <div class={`${name}__icon`} onClick={clickHandler}>
-          <GIcon value='clear' size={size.value} color={props.color ? 'white' : undefined}></GIcon>
+          <GIcon icon='clear' size={size.value} color={props.color ? 'white' : undefined}></GIcon>
         </div>
       }
     }

@@ -1,9 +1,8 @@
 import { HTMLAttributes, PropType, VNode, computed, defineComponent, h, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import { GCard, GChip, GDropdown, GIcon, GList, GListItem, GProgress } from '../..'
 
-import { colors, isChildOf, sizes, styles } from '../../utils'
-import { icons } from '../../utils/icons'
-import { Color, Icon, Primitive, Size, Style } from '../../utils/interface'
+import { Color, Icon, Primitive, Size, Style, colors, icons, isChildOf, sizes, styles } from '../../utils'
+
 import { FormattedSelectItem, SelectItem, SelectTitle, SelectValue } from '../interface'
 
 export const name = 'g-select'
@@ -305,14 +304,14 @@ export default defineComponent({
     const renderIcon = () => {
       if (props.icon) {
         return <div class={`${name}__icon`}>
-          <GIcon value={props.icon} color={props.color} size={size.value} />
+          <GIcon icon={props.icon} color={props.color} size={size.value} />
         </div>
       }
     }
     const renderClearable = () => {
       if (props.clearable) {
         return <div class={`${name}__icon`} onClick={() => removeByIndex(0, 0)}>
-          <GIcon value='clear' color='grey' size={size.value} />
+          <GIcon icon='clear' color='grey' size={size.value} />
         </div>
       }
     }
@@ -320,7 +319,7 @@ export default defineComponent({
       if (props.loading) {
         return <GProgress indeterminate color={props.color} width={1} size={size.value - 4} />
       } else {
-        return <GIcon value={focused.value ? 'keyboard_arrow_up' : 'keyboard_arrow_down'} color='grey' size={size.value} />
+        return <GIcon icon={focused.value ? 'keyboard_arrow_up' : 'keyboard_arrow_down'} color='grey' size={size.value} />
       }
     }
     const renderArrow = () => {

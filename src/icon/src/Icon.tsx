@@ -1,7 +1,6 @@
 import { PropType, defineComponent, h } from 'vue'
 
-import { colors } from '../../utils'
-import { Color, Icon } from '../../utils/interface'
+import { Color, Icon, colors, icons } from '../../utils'
 
 export const name = 'g-icon'
 
@@ -9,27 +8,29 @@ export default defineComponent({
   name,
 
   props: {
-    value: {
+    icon: {
       type: String as PropType<Icon>,
-      default: undefined
+      default: undefined,
+      validator: (value: Icon): boolean => {
+        return !!~icons.indexOf(value)
+      }
     },
-
-    size: {
-      type: Number,
-      default: 24
-    },
-
     color: {
       type: String as PropType<Color>,
       default: undefined,
       validator: (value: Color): boolean => {
         return !!~colors.indexOf(value)
       }
+    },
+
+    size: {
+      type: Number,
+      default: 24
     }
   },
 
   setup(props, { slots }) {
-    if (props.value) {
+    if (slots.default || props.icon) {
       return () => <i
         class={{
           [name]: true,
@@ -38,7 +39,7 @@ export default defineComponent({
 
         style={{ fontSize: props.size + 'px' }}
       >
-        {slots.default ? slots.default() : props.value}
+        {slots.default ? slots.default() : props.icon}
       </i>
     }
   }

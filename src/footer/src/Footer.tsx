@@ -1,7 +1,6 @@
 import { PropType, defineComponent, h } from 'vue'
 
-import { colors } from '../../utils'
-import { Color } from '../../utils/interface'
+import { Color, colors } from '../../utils'
 
 export const name = 'g-footer'
 
