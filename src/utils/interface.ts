@@ -2,7 +2,7 @@ export type Icon = '10k' | '10mp' | '11mp' | '12mp' | '13mp' | '14mp' | '15mp' |
 
 export type Color = 'primary' | 'secondary' | 'info' | 'warning' | 'error' | 'success' | 'accent' | 'white' | 'black' | 'grey' | 'gray' | 'transparent'
 export type Direction = 'top' | 'bottom' | 'left' | 'right' | 'center'
-export type ComponentName = 'avatar' | 'button' | 'card' | 'checkbox' | 'chip' | 'content' | 'date-picker' | 'dialog' | 'divider' | 'dropdown' | 'empty' | 'footer' | 'form' | 'icon' | 'input' | 'list' | 'list-item' | 'menu' | 'modal' | 'overlay' | 'panel' | 'panel-group' | 'progress' | 'select' | 'sidebar' | 'snackbar' | 'spoiler' | 'switch' | 'table' | 'tab' | 'tab-content' | 'tabs' | 'tabs-header' | 'tabs-body'
+export type ComponentName = 'avatar' | 'button' | 'card' | 'checkbox' | 'chip' | 'content' | 'date-picker' | 'dialog' | 'divider' | 'dropdown' | 'empty' | 'footer' | 'form' | 'icon' | 'input' | 'list' | 'list-item' | 'menu' | 'modal' | 'overlay' | 'panel' | 'panel-group' | 'progress' | 'select' | 'sidebar' | 'snackbar' | 'spoiler' | 'switch' | 'table' | 'tab' | 'tab-content' | 'tabs' | 'tabs-header' | 'tabs-body' | 'text-field'
 export type Position = 'absolute' | 'fixed'
 export type Style = 'box' | 'solo' | 'outline' | 'outline-label'
 export type Size = 'tiny' | 'small' | 'medium' | 'large' | 'giant'
