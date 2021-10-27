@@ -36,7 +36,7 @@ export default defineComponent({
 
     return () => <div class='grid'>
       {
-        sizes.map(size => <GTable items={items} headers={headers} size={size} v-slots={slots} outline rounded></GTable>)
+        sizes.map(size => <GTable items={items} headers={headers} size={size} v-slots={slots}></GTable>)
       }
     </div>
   }
