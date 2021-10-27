@@ -38,12 +38,11 @@ open browser http://localhost
 - [x] Panel Group
 - [x] Progress
 - [ ] Select
-- [ ] Sidebar
-- [ ] Snackbar
-- [ ] Subheader
+- [x] Sidebar
+- [x] Snackbar
 - [x] Spoiler
-- [ ] Switch
-- [ ] Table
+- [x] Switch
+- [x] Table
 - [ ] Tab
 - [ ] Tab Group
 - [ ] Textarea
