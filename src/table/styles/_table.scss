@@ -1,90 +1,133 @@
+$sizes: ('tiny': 32px, 'small': 40px, 'medium': 48px, 'large': 56px, 'giant': 64px);
+
+@mixin size {
+
+  @each $name,
+  $size in $sizes {
+    &--#{$name} {
+
+      &>.g-table__header,
+      &>.g-table__body,
+      &>.g-table__footer {
+        &>tr {
+          @include absolute-height($size);
+
+          &>th,
+          &>td {
+            padding-top: 0;
+            padding-bottom: 0;
+
+            @if ($name=='tiny') {
+              padding-left: 4px;
+              padding-right: 4px;
+            }
+
+            @else if ($name=='small') {
+              padding-left: 8px;
+              padding-right: 8px;
+            }
+
+            @else if ($name=='medium') {
+              padding-left: 16px;
+              padding-right: 16px;
+            }
+
+            @else if ($name=='large') {
+              padding-left: 24px;
+              padding-right: 24px;
+            }
+
+            @else if ($name=='giant') {
+              padding-left: 32px;
+              padding-right: 32px;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
 .g {
   &-table {
+    @include size;
+
     border-collapse: collapse;
     position: relative;
     width: 100%;
 
     &__header {
-      border-bottom: 1px solid $black-12;
+      border-bottom: 1px solid $border-color;
       user-select: none;
-
-      &-row {
-        height: 48px;
-      }
 
       &-cell {
         padding-top: 0;
         padding-bottom: 0;
-        padding-left: 16px;
-        padding-right: 16px;
-
-        &--sortable {
-          cursor: pointer;
-          position: relative;
-
-          &:hover {
-            background-color: $black-06;
-          }
-
-          &:active {
-            background-color: $black-12;
-          }
-
-          &::before {
-            @include absolute-height(16px);
-            @include absolute-width(16px);
-
-            margin-top: -8px;
-            content: '\e5c5';
-            font-family: 'Material Icons';
-            font-size: 16px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            position: absolute;
-            top: 50%;
-            color: $black-36;
-            opacity: 0;
-            transition-property: opacity, transform;
-            transition-duration: $transition-duration;
-            transition-timing-function: $transition-timing-function;
-          }
-
-          &-desc {
-            &::before {
-              transform: rotate(180deg);
-            }
-          }
-
-          &-active {
-            color: $black-84;
-
-            &::before {
-              color: $black-84;
-              opacity: 1;
-            }
-          }
-
-          &:hover {
-            &::before {
-              opacity: 1;
-            }
-          }
-        }
 
         &-title {
           @include default-text-style(12px, 700);
 
           color: $black-54;
           white-space: nowrap;
+          display: inline-block;
+
+          &--sortable {
+            cursor: pointer;
+            position: relative;
+
+            &:hover {
+              color: $black-84;
+            }
+
+            &::before {
+              @include absolute-height(16px);
+              @include absolute-width(16px);
+
+              margin-top: -8px;
+              content: '\e5c5';
+              font-family: 'Material Icons';
+              font-size: 16px;
+              display: flex;
+              justify-content: center;
+              align-items: center;
+              position: absolute;
+              top: 50%;
+              color: $black-36;
+              opacity: 0;
+              transition-property: opacity, transform;
+              transition-duration: $transition-duration;
+              transition-timing-function: $transition-timing-function;
+            }
+
+            &-desc {
+              &::before {
+                transform: rotate(180deg);
+              }
+            }
+
+            &-active {
+              color: $black-84;
+
+              &::before {
+                color: $black-84;
+                opacity: 1;
+              }
+            }
+
+            &:hover {
+              &::before {
+                opacity: 1;
+              }
+            }
+          }
         }
 
         &--left {
           text-align: left;
 
-          &.g-table__header-cell--sortable {
+          &>.g-table__header-cell-title--sortable {
             &::before {
-              left: calc(100% - 32px);
+              left: 100%;
             }
           }
         }
@@ -99,9 +142,9 @@
 
         &--right,
         &--center {
-          &.g-table__header-cell--sortable {
+          &>.g-table__header-cell-title--sortable {
             &::before {
-              right: calc(100% - 32px);
+              right: 100%;
             }
           }
         }
@@ -110,20 +153,15 @@
 
     &__body {
       &>tr {
-        height: 48px;
-
         &:hover {
           background-color: $black-06;
         }
 
         &+tr {
-          border-top: 1px solid $black-12;
+          border-top: 1px solid $border-color;
         }
 
         &>td {
-          padding-left: 16px;
-          padding-right: 16px;
-
           @include default-text-style(13px);
 
           color: $black-84;
@@ -132,12 +170,8 @@
     }
 
     &__footer {
-      border-top: 1px solid $black-12;
+      border-top: 1px solid $border-color;
       user-select: none;
-
-      &-row {
-        height: 48px;
-      }
     }
   }
 }

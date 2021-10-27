@@ -6,7 +6,7 @@
   }
 }
 
-@mixin styles {
+@mixin border-styles {
   @each $style in (dotted, dashed, solid, double, groove, ridge, inset, outset) {
     &--#{$style} {
       border-style: $style;
@@ -17,9 +17,9 @@
 .g {
   &-divider {
     @include colors;
-    @include styles;
+    @include border-styles;
 
-    border-color: $black-12;
+    border-color: $border-color;
     border-width: 0;
     display: flex;
     flex: 1;

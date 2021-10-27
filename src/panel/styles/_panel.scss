@@ -5,7 +5,7 @@
     flex-direction: column;
 
     &+.g-panel {
-      border-top: 1px solid $black-12;
+      border-top: 1px solid $border-color;
     }
 
     &__header {
@@ -49,7 +49,7 @@
         box-shadow: none;
         border-width: 1px;
         border-style: solid;
-        border-color: $black-12;
+        border-color: $border-color;
       }
     }
   }

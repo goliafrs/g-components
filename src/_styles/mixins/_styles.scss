@@ -1,0 +1,12 @@
+@mixin styles {
+  &--outline {
+    border-width: 1px;
+    border-style: solid;
+    border-color: $border-color;
+  }
+
+  &--rounded {
+    border-radius: 16px;
+    overflow: hidden;
+  }
+}

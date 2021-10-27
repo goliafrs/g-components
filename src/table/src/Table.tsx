@@ -43,7 +43,7 @@ export default defineComponent({
     },
     size: {
       type: String as PropType<Size>,
-      default: undefined,
+      default: 'medium',
       validator: (value: Size): boolean => {
         return !!~sizes.indexOf(value)
       }
@@ -89,16 +89,19 @@ export default defineComponent({
           class={{
             [`${name}__header-cell`]: true,
 
-            [`${name}__header-cell--${align}`]: !!align,
-
-            [`${name}__header-cell--sortable`]: sortable,
-            [`${name}__header-cell--sortable-desc`]: sortable && !!proxy.value[value] && !!~[ 'desc', 'DESC', '-1', -1 ].indexOf(proxy.value[value]),
-            [`${name}__header-cell--sortable-active`]: sortable && !!proxy.value[value]
+            [`${name}__header-cell--${align}`]: !!align
           }}
 
           onClick={() => sortable ? sorting(value) : undefined}
         >
-          <div class={`${name}__header-cell-title`}>{title || value}</div>
+          <div
+            class={{
+              [`${name}__header-cell-title`]: true,
+              [`${name}__header-cell-title--sortable`]: sortable,
+              [`${name}__header-cell-title--sortable-desc`]: sortable && !!proxy.value[value] && !!~[ 'desc', 'DESC', '-1', -1 ].indexOf(proxy.value[value]),
+              [`${name}__header-cell-title--sortable-active`]: sortable && !!proxy.value[value]
+            }}
+          >{title || value}</div>
         </th>
       }
     }
@@ -126,9 +129,7 @@ export default defineComponent({
     }
     const renderFooter = () => {
       if (slots.footer) {
-        return <tfoot class={`${name}__footer`}>
-          <tr class={`${name}_footer-row`}>{slots.footer()}</tr>
-        </tfoot>
+        return <tfoot class={`${name}__footer`}>{slots.footer()}</tfoot>
       }
     }
 

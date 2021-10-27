@@ -1,6 +1,7 @@
 import { defineComponent, h } from 'vue'
 
 import { GTable } from '../..'
+import { sizes } from '../../utils'
 
 export default defineComponent({
   setup() {
@@ -33,6 +34,10 @@ export default defineComponent({
       </tr>
     }
 
-    return () => <GTable items={[]} headers={headers} v-slots={slots}></GTable>
+    return () => <div class='grid'>
+      {
+        sizes.map(size => <GTable items={items} headers={headers} size={size} v-slots={slots} outline rounded></GTable>)
+      }
+    </div>
   }
 })
