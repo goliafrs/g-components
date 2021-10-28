@@ -5,7 +5,6 @@ import { GButton, GContent, GDivider, GList, GSidebar } from '../'
 import { componentNames } from '../utils'
 
 import { ButtonProps } from '../button/interface'
-import { ComponentName } from '../utils/interface'
 
 import { default as Avatar } from './components/avatar'
 import { default as Button } from './components/button'
@@ -35,6 +34,7 @@ import { default as Spoiler } from './components/spoiler'
 import { default as Switch } from './components/switch'
 import { default as Table } from './components/table'
 import { default as Tab } from './components/tab'
+import { default as TextField } from './components/text-field'
 
 export default defineComponent({
   name: 'Home',
@@ -109,6 +109,7 @@ export default defineComponent({
         case 'switch': return <Switch />
         case 'table': return <Table />
         case 'tab': return <Tab />
+        case 'text-field': return <TextField />
       }
     }
 

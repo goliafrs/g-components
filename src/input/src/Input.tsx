@@ -1,4 +1,4 @@
-import { InputHTMLAttributes, PropType, computed, defineComponent, h } from 'vue'
+import { InputHTMLAttributes, PropType, computed, defineComponent, h, ref } from 'vue'
 import { CustomInputEvent, CustomInputEventCallback } from '../interface'
 import { inputEvents } from '../utils'
 
@@ -9,7 +9,7 @@ export default defineComponent({
 
   props: {
     modelValue: {
-      type: null,
+      type: [ String, Number ],
       default: undefined
     },
 
@@ -113,35 +113,35 @@ export default defineComponent({
 
     autofocus: {
       type: Boolean as PropType<InputHTMLAttributes['autofocus']>,
-      default: undefined
+      default: false
     },
     checked: {
       type: Boolean as PropType<InputHTMLAttributes['checked']>,
-      default: undefined
+      default: false
     },
     disabled: {
       type: Boolean as PropType<InputHTMLAttributes['disabled']>,
-      default: undefined
+      default: false
     },
     formnovalidate: {
       type: Boolean as PropType<InputHTMLAttributes['formnovalidate']>,
-      default: undefined
+      default: false
     },
     multiple: {
       type: Boolean as PropType<InputHTMLAttributes['multiple']>,
-      default: undefined
+      default: false
     },
     readonly: {
       type: Boolean as PropType<InputHTMLAttributes['readonly']>,
-      default: undefined
+      default: false
     },
     required: {
       type: Boolean as PropType<InputHTMLAttributes['required']>,
-      default: undefined
+      default: false
     },
     spellcheck: {
       type: Boolean as PropType<InputHTMLAttributes['spellcheck']>,
-      default: undefined
+      default: false
     },
 
     onChange: {
@@ -220,10 +220,12 @@ export default defineComponent({
 
   emits: [ 'update:modelValue', ...inputEvents ],
 
-  setup(props, { emit }) {
-    const proxy = computed<any>({
+  setup(props, { emit, expose }) {
+    const rootRef = ref<HTMLElement>()
+
+    const proxy = computed<void | string | number>({
       get: () => props.modelValue,
-      set: (value: any) => emit('update:modelValue', value)
+      set: value => emit('update:modelValue', value)
     })
     const events = computed<any>(() => {
       return inputEvents.reduce<Record<string, CustomInputEventCallback>>((result, eventName) => {
@@ -237,6 +239,10 @@ export default defineComponent({
       }, {})
     })
 
+    const focus = () => rootRef.value?.focus()
+
+    expose({ focus })
+
     return () => <input
       class={name}
 
@@ -246,6 +252,8 @@ export default defineComponent({
       value={proxy.value}
 
       onInput={(event: any) => proxy.value = event.target.value}
+
+      ref={rootRef}
     />
   }
 })
