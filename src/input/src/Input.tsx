@@ -8,6 +8,11 @@ export default defineComponent({
   name,
 
   props: {
+    tag: {
+      type: String,
+      default: 'input'
+    },
+
     modelValue: {
       type: [ String, Number ],
       default: undefined
@@ -240,20 +245,24 @@ export default defineComponent({
     })
 
     const focus = () => rootRef.value?.focus()
+    const tag = () =>
 
-    expose({ focus })
+      expose({ focus })
 
-    return () => <input
-      class={name}
+    return () => h(
+      props.tag,
+      {
+        class: { name },
 
-      {...props}
-      {...events.value}
+        props,
+        ...events.value,
 
-      value={proxy.value}
+        value: proxy.value,
 
-      onInput={(event: any) => proxy.value = event.target.value}
+        // onInput={(event: any) => proxy.value = event.target.value}
 
-      ref={rootRef}
-    />
+        ref: rootRef
+      }
+    )
   }
 })

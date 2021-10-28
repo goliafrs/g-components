@@ -2,9 +2,9 @@ import { PropType, computed, defineComponent, getCurrentInstance, h, ref } from 
 
 import { GIcon, GInput, GProgress } from '../..'
 import { Color, Size, Style, colors, sizes, styles } from '../../utils'
-import { filterJoinString, stringToNumber } from '../utils'
+import { filterJoinString } from '../utils'
 
-export const name = 'g-text-field'
+export const name = 'g-textarea'
 
 export default defineComponent({
   name,
@@ -196,6 +196,9 @@ export default defineComponent({
 
     const clear = () => {
       proxy.value = props.defaultValue
+    }
+    const stringToNumber = (value: string): number => {
+      return parseFloat(value.replace(',', '.'))
     }
 
     const renderLabel = () => {

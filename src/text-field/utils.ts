@@ -1,7 +1,9 @@
 import { Primitive } from '../utils'
 
-export const filterJoinString = (strings: (void | Primitive)[]): string => {
-  return strings.filter(value => !!value).join(' ')
-}
+export const stringToNumber = (value: string): number => parseFloat(value.replace(',', '.'))
+export const filterJoinString = (strings: (void | Primitive)[]): string => strings.filter(value => !!value).join(' ')
 
-export default { filterJoinString }
+export default {
+  stringToNumber,
+  filterJoinString
+}
