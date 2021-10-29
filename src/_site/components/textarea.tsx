@@ -13,7 +13,7 @@ export default defineComponent({
           return <div class='grid' style={{ gridTemplateColumns: 'repeat(5, 1fr)' }}>
             {
               sizes.map(size => {
-                return <GTextarea v-model={proxy[index]} size={size} style={style} label={style ? style : 'label'} placeholder='placeholder' hint='hint' suffix='suffix' rounded clearable grow />
+                return <GTextarea v-model={proxy[index]} size={size} style={style} label={style ? style : 'label'} placeholder='placeholder' hint='hint' rounded clearable grow />
               })
             }
           </div>

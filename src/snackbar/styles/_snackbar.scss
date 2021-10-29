@@ -130,7 +130,8 @@ $directions: (top, bottom, left, right);
   transition-timing-function: $transition-timing-function;
 }
 
-.show-snackbar-enter-from {
+.show-snackbar-enter-from,
+.show-snackbar-leave-to {
   transform: translate3d(0, 100%, 0);
 }
 

@@ -11,7 +11,7 @@ export default defineComponent({
     }
   },
 
-  setup(props, { emit }) {
+  setup() {
     const callback = (index: number): void => {
       items.splice(index, 1)
     }

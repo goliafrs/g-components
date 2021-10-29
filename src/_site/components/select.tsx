@@ -1,6 +1,6 @@
 import { defineComponent, h, ref } from 'vue'
 
-import { GCard, GSelect } from '../..'
+import { GSelect } from '../..'
 import { sizes, styles } from '../../utils'
 
 export default defineComponent({
