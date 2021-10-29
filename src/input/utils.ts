@@ -1,6 +1,7 @@
 export const inputEvents = [
   'input',
   'change',
+  'cut',
   'paste',
 
   'focus',

@@ -35,6 +35,7 @@ import { default as Switch } from './components/switch'
 import { default as Table } from './components/table'
 import { default as Tab } from './components/tab'
 import { default as TextField } from './components/text-field'
+import { default as Textarea } from './components/textarea'
 
 export default defineComponent({
   name: 'Home',
@@ -110,6 +111,7 @@ export default defineComponent({
         case 'table': return <Table />
         case 'tab': return <Tab />
         case 'text-field': return <TextField />
+        case 'textarea': return <Textarea />
       }
     }
 

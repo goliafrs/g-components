@@ -1,8 +1,8 @@
-import { PropType, computed, defineComponent, getCurrentInstance, h, ref } from 'vue'
+import { PropType, computed, defineComponent, getCurrentInstance, h, nextTick, onMounted, onUpdated, ref } from 'vue'
 
 import { GIcon, GInput, GProgress } from '../..'
+import { filterJoinString } from '../../text-field/utils'
 import { Color, Size, Style, colors, sizes, styles } from '../../utils'
-import { filterJoinString } from '../utils'
 
 export const name = 'g-textarea'
 
@@ -21,10 +21,6 @@ export default defineComponent({
       type: [ String, Number ],
       default: undefined
     },
-    suffix: {
-      type: [ String, Number ],
-      default: undefined
-    },
     hint: {
       type: [ String, Number ],
       default: undefined
@@ -32,6 +28,15 @@ export default defineComponent({
     error: {
       type: [ String, Number ],
       default: undefined
+    },
+
+    cols: {
+      type: Number,
+      default: undefined
+    },
+    rows: {
+      type: Number,
+      default: 1
     },
 
     flat: {
@@ -51,6 +56,10 @@ export default defineComponent({
       default: true
     },
     loading: {
+      type: Boolean,
+      default: false
+    },
+    grow: {
       type: Boolean,
       default: false
     },
@@ -101,6 +110,7 @@ export default defineComponent({
       }
     })
 
+    const height = computed<string>(() => props.rows ? 18 * props.rows + 'px' : 'auto')
     const label = computed<undefined | string>(() => {
       if (props.label) {
         return filterJoinString([ props.label.toLocaleString(), props.required && '*' ])
@@ -194,12 +204,20 @@ export default defineComponent({
       }
     }
 
-    const clear = () => {
-      proxy.value = props.defaultValue
-    }
-    const stringToNumber = (value: string): number => {
-      return parseFloat(value.replace(',', '.'))
-    }
+    const clear = () => proxy.value = props.defaultValue
+    const stringToNumber = (value: string): number => parseFloat(value.replace(',', '.'))
+    const resize = () => window.setTimeout(() => {
+      if (props.grow) {
+        const textarea = document.getElementById(key)
+        if (textarea) {
+          textarea.style.height = height.value
+          textarea.style.height = textarea.scrollHeight + 'px'
+        }
+      }
+    }, 0)
+
+    onMounted(resize)
+    onUpdated(resize)
 
     const renderLabel = () => {
       if (labeled.value) {
@@ -208,6 +226,8 @@ export default defineComponent({
     }
     const renderInput = () => {
       return <GInput
+        tag='textarea'
+
         v-model={proxy.value}
 
         class={`${name}__input`}
@@ -215,13 +235,14 @@ export default defineComponent({
         id={key}
         name={key}
 
+        cols={props.cols}
+        rows={props.rows}
+
         placeholder={placeholder.value}
 
         required={props.required}
         disabled={props.disabled}
         readonly={props.readonly}
-
-        type={props.type}
 
         onFocusin={onFocusIn}
         onFocusout={onFocusOut}
@@ -231,12 +252,6 @@ export default defineComponent({
 
         ref={inputRef}
       />
-    }
-    const renderSuffix = () => {
-      const value = props.suffix?.toLocaleString()
-      if (value) {
-        return <div class={`${name}__suffix`}>{value}</div>
-      }
     }
     const renderClearable = () => {
       if (clearable.value) {
@@ -251,9 +266,8 @@ export default defineComponent({
       }
     }
     const renderGroup = () => {
-      return <div class={`${name}__group`}>
+      return <div class={`${name}__group`} onClick={() => inputRef.value?.focus()}>
         {renderInput()}
-        {renderSuffix()}
       </div>
     }
     const renderHolder = () => {

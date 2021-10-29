@@ -1,4 +1,5 @@
-import { InputHTMLAttributes, PropType, computed, defineComponent, h, ref } from 'vue'
+import { InputHTMLAttributes, PropType, TextareaHTMLAttributes, computed, defineComponent, h, ref } from 'vue'
+
 import { CustomInputEvent, CustomInputEventCallback } from '../interface'
 import { inputEvents } from '../utils'
 
@@ -79,6 +80,14 @@ export default defineComponent({
       default: undefined
     },
 
+    cols: {
+      type: Number as PropType<TextareaHTMLAttributes['cols']>,
+      default: undefined
+    },
+    rows: {
+      type: Number as PropType<TextareaHTMLAttributes['rows']>,
+      default: undefined
+    },
     height: {
       type: Number as PropType<InputHTMLAttributes['height']>,
       default: undefined
@@ -150,6 +159,10 @@ export default defineComponent({
     },
 
     onChange: {
+      type: Function as PropType<(event: CustomInputEvent) => void>,
+      default: undefined
+    },
+    onCut: {
       type: Function as PropType<(event: CustomInputEvent) => void>,
       default: undefined
     },
@@ -245,24 +258,20 @@ export default defineComponent({
     })
 
     const focus = () => rootRef.value?.focus()
-    const tag = () =>
 
-      expose({ focus })
+    expose({ focus })
 
-    return () => h(
-      props.tag,
-      {
-        class: { name },
+    return () => <props.tag
+      class={name}
 
-        props,
-        ...events.value,
+      {...props}
+      {...events.value}
 
-        value: proxy.value,
+      value={proxy.value}
 
-        // onInput={(event: any) => proxy.value = event.target.value}
+      onInput={(event: any) => proxy.value = event.target.value}
 
-        ref: rootRef
-      }
-    )
+      ref={rootRef}
+    />
   }
 })

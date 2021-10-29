@@ -1,11 +1,7 @@
 .g {
-  &-text-field {
+  &-textarea {
     @include input-base;
-    @include input-style('g-text-field');
-
-    &__label {
-      cursor: text;
-    }
+    @include input-style('g-textarea');
 
     &__holder {
       grid-template-columns: 1fr;
@@ -17,34 +13,13 @@
       cursor: text;
     }
 
-    &__suffix {
-      font-size: 16px;
-      font-weight: 400;
-      color: $black-54;
-      user-select: none;
-    }
+    &__input {
+      @include scrollbar;
 
-    &__suffix {
-      padding-left: 4px;
-    }
-
-    & input {
-
-      &::-webkit-outer-spin-button,
-      &::-webkit-inner-spin-button {
-        margin: 0;
-        -webkit-appearance: none;
-      }
-
-      &[type='number'] {
-        -moz-appearance: textfield;
-      }
-    }
-
-    &:hover:not(.g-text-field--disabled):not(.g-text-field--error) {
-      & .g-text-field__border {
-        border-bottom-color: $black-84;
-      }
+      line-height: 18px;
+      resize: none;
+      white-space: pre-wrap;
+      overflow-x: hidden;
     }
   }
 }
