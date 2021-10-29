@@ -3,6 +3,10 @@
     @include input-base;
     @include input-style('g-textarea');
 
+    &__label {
+      line-height: 18px;
+    }
+
     &__holder {
       grid-template-columns: 1fr;
     }

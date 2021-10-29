@@ -1,4 +1,4 @@
-import { PropType, computed, defineComponent, getCurrentInstance, h, nextTick, onMounted, onUpdated, ref } from 'vue'
+import { PropType, computed, defineComponent, getCurrentInstance, h, onMounted, onUpdated, ref } from 'vue'
 
 import { GIcon, GInput, GProgress } from '../..'
 import { filterJoinString } from '../../text-field/utils'

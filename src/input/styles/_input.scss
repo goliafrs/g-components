@@ -74,13 +74,13 @@ $giant-size: $size+$size-step * 2;
   @else if ($component=='g-textarea') {
     &--tiny {
       &>.#{$component}__label {
-        top: 2px;
+        top: 3px;
       }
 
       &.#{$component}--outline,
       &.#{$component}--outline-label {
         &>.#{$component}__label {
-          top: 3px;
+          top: 4px;
         }
       }
 
@@ -95,13 +95,13 @@ $giant-size: $size+$size-step * 2;
 
     &--small {
       &>.#{$component}__label {
-        top: 4px;
+        top: 5px;
       }
 
       &.#{$component}--outline,
       &.#{$component}--outline-label {
         &>.#{$component}__label {
-          top: 5px;
+          top: 6px;
         }
       }
 
@@ -116,13 +116,13 @@ $giant-size: $size+$size-step * 2;
 
     &--medium {
       &>.#{$component}__label {
-        top: 6px;
+        top: 7px;
       }
 
       &.#{$component}--outline,
       &.#{$component}--outline-label {
         &>.#{$component}__label {
-          top: 7px;
+          top: 8px;
         }
       }
 
@@ -137,13 +137,13 @@ $giant-size: $size+$size-step * 2;
 
     &--large {
       &>.#{$component}__label {
-        top: 8px;
+        top: 9px;
       }
 
       &.#{$component}--outline,
       &.#{$component}--outline-label {
         &>.#{$component}__label {
-          top: 9px;
+          top: 10px;
         }
       }
 
@@ -158,13 +158,13 @@ $giant-size: $size+$size-step * 2;
 
     &--giant {
       &>.#{$component}__label {
-        top: 10px;
+        top: 11px;
       }
 
       &.#{$component}--outline,
       &.#{$component}--outline-label {
         &>.#{$component}__label {
-          top: 11px;
+          top: 12px;
         }
       }
 
