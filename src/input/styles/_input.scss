@@ -128,8 +128,8 @@ $giant-size: $size+$size-step * 2;
 
       &>.#{$component}__holder {
         &>.#{$component}__group {
-          padding-top: 8px;
-          padding-bottom: 8px;
+          padding-top: 7px;
+          padding-bottom: 7px;
           min-height: $medium-size;
         }
       }
