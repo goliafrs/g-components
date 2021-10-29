@@ -19,6 +19,7 @@ $directions: (top, bottom, left, right);
 
       &.g-snackbar--outline {
         &>.g-snackbar__content {
+
           &>.g-snackbar__title,
           &>.g-snackbar__text {
             color: var(--#{$name});
@@ -61,13 +62,16 @@ $directions: (top, bottom, left, right);
       border: 1px solid currentColor;
       background-color: transparent;
     }
+
     &--rounded {
       border-radius: 16px;
     }
+
     &--icon {
       padding-left: 0;
       grid-template-columns: 48px 1fr;
     }
+
     &--cancelable {
       padding-right: 0;
       grid-template-columns: 1fr 48px;
@@ -118,48 +122,24 @@ $directions: (top, bottom, left, right);
   }
 }
 
+.show-snackbar-move,
 .show-snackbar-enter-active,
 .show-snackbar-leave-active {
-  & .g-snackbar {
-    transition: opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1), transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  }
+  transition-property: opacity, transform;
+  transition-duration: $transition-duration;
+  transition-timing-function: $transition-timing-function;
+}
+
+.show-snackbar-enter-from {
+  transform: translate3d(0, 100%, 0);
 }
 
 .show-snackbar-enter-from,
 .show-snackbar-leave-to {
-  & .g-snackbar {
-    opacity: 0;
-    transform: translate3d(0, 100%, 0);
-  }
+  opacity: 0;
 }
 
-@keyframes fadeInUp {
-  from {
-    opacity: 0;
-    transform: translate3d(0, 100%, 0);
-  }
-
-  to {
-    opacity: 1;
-    transform: none;
-  }
-}
-
-.fadeInUp {
-  animation-name: fadeInUp;
-}
-
-@keyframes fadeOutDown {
-  from {
-    opacity: 1;
-  }
-
-  to {
-    opacity: 0;
-    transform: translate3d(0, 100%, 0);
-  }
-}
-
-.fadeOutDown {
-  animation-name: fadeOutDown;
+.show-snackbar-enter-to,
+.show-snackbar-leave-from {
+  transform: translate3d(0, 0, 0);
 }

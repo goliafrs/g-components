@@ -1,4 +1,4 @@
-import { PropType, Transition, computed, defineComponent, h } from 'vue'
+import { PropType, Teleport, Transition, computed, defineComponent, h } from 'vue'
 import { GOverlay } from '../..'
 
 import { Direction, directions, numberToPxOrString } from '../../utils'

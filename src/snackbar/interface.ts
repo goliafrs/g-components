@@ -6,6 +6,7 @@ export interface SnackbarProps {
   rounded?: boolean,
   outline?: boolean,
   cancelable?: boolean,
+  callback?: (value: any) => void,
   color?: Color,
   size?: Size,
   icon?: Icon,

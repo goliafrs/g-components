@@ -23,7 +23,7 @@ export default defineComponent({
 
   setup(props) {
     const renderItems = () => {
-      return props.items.map(item => <GSnackbar {...item} />)
+      return props.items.map((item, index) => <GSnackbar {...item} key={`${name}-item-${index}`} />)
     }
     const renderContent = () => {
       return <TransitionGroup name='show-snackbar'>{renderItems()}</TransitionGroup>

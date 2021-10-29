@@ -64,9 +64,7 @@ export default defineComponent({
     })
 
     const renderContent = () => {
-      if (proxy.value) {
-        return <div class={name} onClick={clickHandler}></div>
-      }
+      return <div v-show={proxy.value} class={name} onClick={clickHandler}></div>
     }
 
     return () => <Transition name='show-overlay'>{renderContent()}</Transition>

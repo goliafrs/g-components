@@ -1,4 +1,4 @@
-import { ButtonHTMLAttributes, PropType, computed, defineComponent, h } from 'vue'
+import { ButtonHTMLAttributes, PropType, Teleport, computed, defineComponent, h } from 'vue'
 
 import { GIcon, GProgress } from '../../'
 
@@ -156,7 +156,7 @@ export default defineComponent({
     }
     const renderDialog = () => {
       if (slots.dialog) {
-        return slots.dialog()
+        return <Teleport to='body'>{slots.dialog()}</Teleport>
       }
     }
 

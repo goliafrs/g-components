@@ -12,6 +12,9 @@ export default defineComponent({
   },
 
   setup(props, { emit }) {
+    const callback = (index: number): void => {
+      items.splice(index, 1)
+    }
     const items = reactive<SnackbarProps[]>([
       {
         title: 'Title',
@@ -19,7 +22,8 @@ export default defineComponent({
         color: 'primary',
         rounded: true,
         outline: true,
-        cancelable: true
+        cancelable: true,
+        callback
       }
     ])
 
@@ -31,7 +35,8 @@ export default defineComponent({
         text: `Text ${getRandom()}`,
         color: 'success',
         rounded: true,
-        cancelable: true
+        cancelable: true,
+        callback: () => callback(items.length - 1)
       })} />
       <GSnackbarGroup items={items} />
     </div>
