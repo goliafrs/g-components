@@ -1,4 +1,4 @@
-import { InputHTMLAttributes, PropType, TextareaHTMLAttributes, computed, defineComponent, h, ref } from 'vue'
+import { InputHTMLAttributes, PropType, TextareaHTMLAttributes, computed, defineComponent, h, onMounted, onUpdated, ref } from 'vue'
 
 import { CustomInputEvent, CustomInputEventCallback } from '../interface'
 import { inputEvents } from '../utils'
@@ -86,7 +86,7 @@ export default defineComponent({
     },
     rows: {
       type: Number as PropType<TextareaHTMLAttributes['rows']>,
-      default: undefined
+      default: 1
     },
     height: {
       type: Number as PropType<InputHTMLAttributes['height']>,
@@ -155,6 +155,10 @@ export default defineComponent({
     },
     spellcheck: {
       type: Boolean as PropType<InputHTMLAttributes['spellcheck']>,
+      default: false
+    },
+    grow: {
+      type: Boolean,
       default: false
     },
 
@@ -241,17 +245,16 @@ export default defineComponent({
   setup(props, { emit, expose }) {
     const rootRef = ref<HTMLElement>()
 
+    const rows = computed<number>(() => props.rows as number)
+    const height = computed<string>(() => props.rows ? 18 * rows.value + 'px' : 'auto')
     const proxy = computed<void | string | number>({
       get: () => props.modelValue,
       set: value => emit('update:modelValue', value)
     })
-    const events = computed<any>(() => {
+    const events = computed<Record<string, CustomInputEventCallback>>(() => {
       return inputEvents.reduce<Record<string, CustomInputEventCallback>>((result, eventName) => {
-        const eventNameProp = 'on' + eventName.charAt(0).toUpperCase() + eventName.slice(1) as any
-
-        if (props[eventNameProp]) {
-          result[eventNameProp] = (event: any) => emit(eventName as CustomInputEvent, event)
-        }
+        const eventNameProp = 'on' + eventName.charAt(0).toUpperCase() + eventName.slice(1)
+        result[eventNameProp] = (event: CustomInputEvent) => emit(eventName as CustomInputEvent, event)
 
         return result
       }, {})
@@ -259,9 +262,25 @@ export default defineComponent({
 
     const focus = () => rootRef.value?.focus()
 
+    const resize = () => {
+      if (props.tag === 'textarea') {
+        window.setTimeout(() => {
+          if (props.grow) {
+            if (rootRef.value) {
+              rootRef.value.style.height = height.value
+              rootRef.value.style.height = rootRef.value.scrollHeight + 'px'
+            }
+          }
+        }, 0)
+      }
+    }
+
+    onMounted(resize)
+    onUpdated(resize)
+
     expose({ focus })
 
-    return () => <props.tag
+    return () => <input
       class={name}
 
       {...props}
@@ -269,7 +288,9 @@ export default defineComponent({
 
       value={proxy.value}
 
-      onInput={(event: any) => proxy.value = event.target.value}
+      onInput={(payload: Event): void => {
+        proxy.value = payload.target?.value
+      }}
 
       ref={rootRef}
     />

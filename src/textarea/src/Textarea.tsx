@@ -1,8 +1,8 @@
-import { PropType, computed, defineComponent, getCurrentInstance, h, onMounted, onUpdated, ref } from 'vue'
+import { computed, defineComponent, getCurrentInstance, h, ref } from 'vue'
 
 import { GIcon, GInput, GProgress } from '../..'
+import { props } from '../../text-field/src/TextField'
 import { filterJoinString } from '../../text-field/utils'
-import { Color, Size, Style, colors, sizes, styles } from '../../utils'
 
 export const name = 'g-textarea'
 
@@ -12,78 +12,11 @@ export default defineComponent({
   extends: GInput,
 
   props: {
-    defaultValue: {
-      type: [ String, Number ],
-      default: undefined
-    },
+    ...props,
 
-    label: {
-      type: [ String, Number ],
-      default: undefined
-    },
-    hint: {
-      type: [ String, Number ],
-      default: undefined
-    },
-    error: {
-      type: [ String, Number ],
-      default: undefined
-    },
-
-    cols: {
-      type: Number,
-      default: undefined
-    },
-    rows: {
-      type: Number,
-      default: 1
-    },
-
-    flat: {
-      type: Boolean,
-      default: false
-    },
-    rounded: {
-      type: Boolean,
-      default: false
-    },
-    clearable: {
-      type: Boolean,
-      default: false
-    },
-    details: {
-      type: Boolean,
-      default: true
-    },
-    loading: {
-      type: Boolean,
-      default: false
-    },
     grow: {
       type: Boolean,
       default: false
-    },
-
-    color: {
-      type: String as PropType<Color>,
-      default: undefined,
-      validator: (value: Color): boolean => {
-        return !!~colors.indexOf(value)
-      }
-    },
-    style: {
-      type: String as PropType<Style>,
-      default: undefined,
-      validator: (value: Style): boolean => {
-        return !!~styles.indexOf(value)
-      }
-    },
-    size: {
-      type: String as PropType<Size>,
-      default: undefined,
-      validator: (value: Size): boolean => {
-        return !!~sizes.indexOf(value)
-      }
     }
   },
 
@@ -99,18 +32,10 @@ export default defineComponent({
     const focused = ref<boolean>(false)
 
     const proxy = computed<void | string | number>({
-      get: () => {
-        return props.modelValue
-      },
-      set: value => {
-        if (props.type === 'number' && typeof value === 'string') {
-          value = stringToNumber(value)
-        }
-        emit('update:modelValue', value)
-      }
+      get: () => props.modelValue,
+      set: value => emit('update:modelValue', value)
     })
 
-    const height = computed<string>(() => props.rows ? 18 * props.rows + 'px' : 'auto')
     const label = computed<undefined | string>(() => {
       if (props.label) {
         return filterJoinString([ props.label.toLocaleString(), props.required && '*' ])
@@ -205,19 +130,6 @@ export default defineComponent({
     }
 
     const clear = () => proxy.value = props.defaultValue
-    const stringToNumber = (value: string): number => parseFloat(value.replace(',', '.'))
-    const resize = () => window.setTimeout(() => {
-      if (props.grow) {
-        const textarea = document.getElementById(key)
-        if (textarea) {
-          textarea.style.height = height.value
-          textarea.style.height = textarea.scrollHeight + 'px'
-        }
-      }
-    }, 0)
-
-    onMounted(resize)
-    onUpdated(resize)
 
     const renderLabel = () => {
       if (labeled.value) {
@@ -237,6 +149,7 @@ export default defineComponent({
 
         cols={props.cols}
         rows={props.rows}
+        grow={props.grow}
 
         placeholder={placeholder.value}
 
@@ -314,8 +227,6 @@ export default defineComponent({
         [`${name}--readonly`]: props.readonly,
 
         [`${name}--clearable`]: clearable.value,
-
-        [`${name}--time`]: props.type === 'time',
 
         [`${name}--${props.size}`]: !!props.size,
         [`${name}--${props.color}`]: !!props.color,

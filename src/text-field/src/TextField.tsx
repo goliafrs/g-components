@@ -6,77 +6,79 @@ import { filterJoinString, stringToNumber } from '../utils'
 
 export const name = 'g-text-field'
 
+export const props = {
+  defaultValue: {
+    type: [ String, Number ],
+    default: undefined
+  },
+
+  label: {
+    type: [ String, Number ],
+    default: undefined
+  },
+  suffix: {
+    type: [ String, Number ],
+    default: undefined
+  },
+  hint: {
+    type: [ String, Number ],
+    default: undefined
+  },
+  error: {
+    type: [ String, Number ],
+    default: undefined
+  },
+
+  flat: {
+    type: Boolean,
+    default: false
+  },
+  rounded: {
+    type: Boolean,
+    default: false
+  },
+  clearable: {
+    type: Boolean,
+    default: false
+  },
+  details: {
+    type: Boolean,
+    default: true
+  },
+  loading: {
+    type: Boolean,
+    default: false
+  },
+
+  color: {
+    type: String as PropType<Color>,
+    default: undefined,
+    validator: (value: Color): boolean => {
+      return !!~colors.indexOf(value)
+    }
+  },
+  style: {
+    type: String as PropType<Style>,
+    default: undefined,
+    validator: (value: Style): boolean => {
+      return !!~styles.indexOf(value)
+    }
+  },
+  size: {
+    type: String as PropType<Size>,
+    default: undefined,
+    validator: (value: Size): boolean => {
+      return !!~sizes.indexOf(value)
+    }
+  }
+}
+
 export default defineComponent({
   name,
 
   extends: GInput,
 
-  props: {
-    defaultValue: {
-      type: [ String, Number ],
-      default: undefined
-    },
-
-    label: {
-      type: [ String, Number ],
-      default: undefined
-    },
-    suffix: {
-      type: [ String, Number ],
-      default: undefined
-    },
-    hint: {
-      type: [ String, Number ],
-      default: undefined
-    },
-    error: {
-      type: [ String, Number ],
-      default: undefined
-    },
-
-    flat: {
-      type: Boolean,
-      default: false
-    },
-    rounded: {
-      type: Boolean,
-      default: false
-    },
-    clearable: {
-      type: Boolean,
-      default: false
-    },
-    details: {
-      type: Boolean,
-      default: true
-    },
-    loading: {
-      type: Boolean,
-      default: false
-    },
-
-    color: {
-      type: String as PropType<Color>,
-      default: undefined,
-      validator: (value: Color): boolean => {
-        return !!~colors.indexOf(value)
-      }
-    },
-    style: {
-      type: String as PropType<Style>,
-      default: undefined,
-      validator: (value: Style): boolean => {
-        return !!~styles.indexOf(value)
-      }
-    },
-    size: {
-      type: String as PropType<Size>,
-      default: undefined,
-      validator: (value: Size): boolean => {
-        return !!~sizes.indexOf(value)
-      }
-    }
-  },
+  props,
 
   emits: [ 'update:modelValue', 'focus', 'blur', 'click', 'mouseup', 'mousedown' ],
 
@@ -194,9 +196,7 @@ export default defineComponent({
       }
     }
 
-    const clear = () => {
-      proxy.value = props.defaultValue
-    }
+    const clear = () => proxy.value = props.defaultValue
 
     const renderLabel = () => {
       if (labeled.value) {
