@@ -165,9 +165,7 @@ export default defineComponent({
       get: () => props.itemValue,
       set: (value): SelectValue => itemValue.value = value
     })
-    const items = computed<FormattedSelectItem[]>(() => {
-      return props.items.map(formatItem)
-    })
+    const items = computed<FormattedSelectItem[]>(() => props.items.map(formatItem))
     const selection = computed<FormattedSelectItem[]>({
       get: () => {
         let value = props.modelValue
@@ -177,7 +175,7 @@ export default defineComponent({
 
         return value.map(formatItem)
       },
-      set: (value): FormattedSelectItem[] => selection.value.splice(selection.value.length, 0, ...value.map(formatItem))
+      set: (value): FormattedSelectItem[] => selection.value.splice(selection.value.length, 0, ...value)
     })
     const size = computed<number>(() => {
       switch (props.size) {
@@ -198,7 +196,7 @@ export default defineComponent({
     })
 
     const mainClickHandler = (event: MouseEvent | FocusEvent): void => {
-      return
+      return // TODO: дописать
     }
     const outsideClickHandler = (event: MouseEvent | FocusEvent): void => {
       if (!isChildOf(event.target, rootRef.value)) {
@@ -206,10 +204,10 @@ export default defineComponent({
       }
     }
 
-    const compareValues = (a: SelectItem, b: SelectItem): boolean => a === b
+    const compareValues = (a: SelectItem | FormattedSelectItem, b: SelectItem | FormattedSelectItem): boolean => getItemValue(a) === getItemValue(b)
 
-    const getItemValue = (item: any): Primitive => item[itemValue.value] || item
-    const getItemTitle = (item: SelectItem): string => (typeof item === 'object' ? item[itemTitle.value] : getItemValue(item)).toLocaleString()
+    const getItemValue = (item: SelectItem | FormattedSelectItem | Primitive): Primitive => typeof item === 'object' ? item[itemTitle.value] : item
+    const getItemTitle = (item: SelectItem | FormattedSelectItem): string => (typeof item === 'object' ? item[itemTitle.value] : getItemValue(item)).toLocaleString()
 
     const formatItem = (item: SelectItem, index: number): FormattedSelectItem => {
       const label = getItemTitle(item)
@@ -220,7 +218,7 @@ export default defineComponent({
         value,
         hovered: cursor.value === index,
         selected: !!~selection.value.findIndex(selected => compareValues(selected, value)),
-        disabled: !!~props.disabledItems.findIndex(disabledItem => compareValues(getItemValue(disabledItem), value)),
+        disabled: !!~props.disabledItems.findIndex(disabledItem => compareValues(disabledItem, value)),
         searchValid: !search.value || !!~('' + label).toLocaleLowerCase().indexOf(search.value)
       }
     }
@@ -232,13 +230,14 @@ export default defineComponent({
       focused.value = false
     }
     const addByValue = (value: Primitive): boolean => {
-      const index = selection.value.findIndex(selectedValue => compareValues(getItemValue(selectedValue), value))
+      const index = selection.value.findIndex(selectedValue => compareValues(selectedValue, value))
+      const result = formatItem(value, selection.value.length)
 
       if (index === -1) {
         if (props.multiple) {
-          selection.value.push(value)
+          selection.value.push(result)
         } else {
-          selection.value.splice(0, 1, value)
+          selection.value.splice(0, 1, result)
 
           clearSearch()
         }
@@ -265,9 +264,7 @@ export default defineComponent({
 
       return false
     }
-    const toggleByValue = (value: Primitive): boolean => {
-      return addByValue(value) || removeByValue(value)
-    }
+    const toggleByValue = (value: Primitive): boolean => addByValue(value) || removeByValue(value)
 
     const renderTabindex = () => {
       return <input tabindex={props.tabindex} hidden onFocus={mainClickHandler} onBlur={outsideClickHandler} />
@@ -310,7 +307,7 @@ export default defineComponent({
     }
     const renderClearable = () => {
       if (props.clearable) {
-        return <div class={`${name}__icon`} onClick={() => removeByIndex(0, 0)}>
+        return <div class={`${name}__icon`} onClick={() => selection.value.splice(0, -1)}>
           <GIcon icon='clear' color='grey' size={size.value} />
         </div>
       }

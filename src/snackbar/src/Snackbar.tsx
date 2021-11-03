@@ -1,4 +1,4 @@
-import { PropType, defineComponent, h } from 'vue'
+import { PropType, defineComponent, getCurrentInstance, h, onBeforeUnmount, onMounted } from 'vue'
 import { GButton, GIcon } from '../..'
 
 import { Color, Icon, Size, colors, icons, sizes } from '../../utils'
@@ -9,6 +9,10 @@ export default defineComponent({
   name,
 
   props: {
+    key: {
+      type: String,
+      default: undefined
+    },
     title: {
       type: String,
       default: undefined
@@ -31,8 +35,13 @@ export default defineComponent({
       default: false
     },
 
+    timeout: {
+      type: Number,
+      default: 0
+    },
+
     callback: {
-      type: Function as PropType<(event: MouseEvent) => void>,
+      type: Function as PropType<(payload: any) => void>,
       default: undefined
     },
 
@@ -59,9 +68,29 @@ export default defineComponent({
     }
   },
 
-  emits: [ 'hide' ],
+  emits: [ 'timeout' ],
 
   setup(props, { slots, emit }) {
+    const uid = getCurrentInstance()?.uid
+    const key = props.key || `${name}-${uid}`
+
+    let timeout = 0
+
+    onMounted(() => {
+      if (props.timeout) {
+        timeout = setTimeout(() => {
+          if (props.callback) {
+            props.callback(key)
+          } else {
+            emit('timeout', key)
+          }
+        }, props.timeout)
+      }
+    })
+    onBeforeUnmount(() => {
+      clearTimeout(timeout)
+    })
+
     const renderIcon = () => {
       if (props.icon) {
         return <GIcon icon={props.icon} color={props.outline ? props.color : 'white'} />
@@ -103,6 +132,8 @@ export default defineComponent({
         [`${name}--outline`]: props.outline,
         [`${name}--cancelable`]: props.cancelable
       }}
+
+      key={key}
     >
       {renderIcon()}
       {renderContent()}

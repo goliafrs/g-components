@@ -12,33 +12,23 @@ export default defineComponent({
   },
 
   setup() {
-    const callback = (index: number): void => {
-      items.splice(index, 1)
-    }
-    const items = reactive<SnackbarProps[]>([
-      {
-        title: 'Title',
-        text: 'text',
-        color: 'primary',
-        rounded: true,
-        outline: true,
-        cancelable: true,
-        callback
-      }
-    ])
+    const items = reactive<SnackbarProps[]>([])
 
     const getRandom = (max = 10) => Math.floor(Math.random() * max)
-
-    return () => <div>
-      <GButton label='add snackbar' flat rounded onClick={() => items.push({
+    const clickHandler = () => {
+      items.push({
         title: `Title ${getRandom()}`,
         text: `Text ${getRandom()}`,
         color: 'success',
         rounded: true,
         cancelable: true,
-        callback: () => callback(items.length - 1)
-      })} />
-      <GSnackbarGroup items={items} />
+        timeout: 10 * 1000
+      })
+    }
+
+    return () => <div>
+      <GButton label='add snackbar' flat rounded onClick={clickHandler} />
+      <GSnackbarGroup v-model={items} />
     </div>
   }
 })

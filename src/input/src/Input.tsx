@@ -11,7 +11,10 @@ export default defineComponent({
   props: {
     tag: {
       type: String,
-      default: 'input'
+      default: 'input',
+      validator: (value: string): boolean => {
+        return !!~[ 'input', 'textarea' ].indexOf(value)
+      }
     },
 
     modelValue: {
@@ -280,17 +283,17 @@ export default defineComponent({
 
     expose({ focus })
 
-    return () => <input
+    return () => <props.tag
       class={name}
-
-      {...props}
-      {...events.value}
 
       value={proxy.value}
 
-      onInput={(payload: Event): void => {
+      onInput={(payload: any): void => {
         proxy.value = payload.target?.value
       }}
+
+      {...props}
+      {...events.value}
 
       ref={rootRef}
     />
