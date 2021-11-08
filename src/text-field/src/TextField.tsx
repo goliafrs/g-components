@@ -103,6 +103,33 @@ export default defineComponent({
       }
     })
 
+    const classes = computed(() => {
+      return {
+        [name]: true,
+
+        [`${name}--flat`]: props.flat,
+        [`${name}--rounded`]: props.rounded,
+
+        [`${name}--error`]: !!props.error,
+
+        [`${name}--active`]: isActive.value,
+        [`${name}--filled`]: filled.value,
+        [`${name}--focused`]: isFocused.value,
+        [`${name}--labeled`]: labeled.value,
+
+        [`${name}--required`]: props.required,
+        [`${name}--disabled`]: props.disabled,
+        [`${name}--readonly`]: props.readonly,
+
+        [`${name}--clearable`]: clearable.value,
+
+        [`${name}--time`]: props.type === 'time',
+
+        [`${name}--${props.size}`]: !!props.size,
+        [`${name}--${props.color}`]: !!props.color,
+        [`${name}--${props.style}`]: !!props.style
+      }
+    })
     const label = computed<undefined | string>(() => {
       if (props.label) {
         return filterJoinString([ props.label.toLocaleString(), props.required && '*' ])
@@ -279,31 +306,7 @@ export default defineComponent({
     }
 
     return () => <div
-      class={{
-        [name]: true,
-
-        [`${name}--flat`]: props.flat,
-        [`${name}--rounded`]: props.rounded,
-
-        [`${name}--error`]: !!props.error,
-
-        [`${name}--active`]: isActive.value,
-        [`${name}--filled`]: filled.value,
-        [`${name}--focused`]: isFocused.value,
-        [`${name}--labeled`]: labeled.value,
-
-        [`${name}--required`]: props.required,
-        [`${name}--disabled`]: props.disabled,
-        [`${name}--readonly`]: props.readonly,
-
-        [`${name}--clearable`]: clearable.value,
-
-        [`${name}--time`]: props.type === 'time',
-
-        [`${name}--${props.size}`]: !!props.size,
-        [`${name}--${props.color}`]: !!props.color,
-        [`${name}--${props.style}`]: !!props.style
-      }}
+      class={classes.value}
 
       key={key}
     >

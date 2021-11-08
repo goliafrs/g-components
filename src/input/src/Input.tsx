@@ -18,7 +18,7 @@ export default defineComponent({
     },
 
     modelValue: {
-      type: [ String, Number ],
+      type: null,
       default: undefined
     },
 
@@ -149,7 +149,7 @@ export default defineComponent({
       default: false
     },
     readonly: {
-      type: Boolean as PropType<InputHTMLAttributes['readonly']>,
+      type: Boolean as PropType<TextareaHTMLAttributes['readonly']>,
       default: false
     },
     required: {
@@ -165,18 +165,6 @@ export default defineComponent({
       default: false
     },
 
-    onChange: {
-      type: Function as PropType<(event: CustomInputEvent) => void>,
-      default: undefined
-    },
-    onCut: {
-      type: Function as PropType<(event: CustomInputEvent) => void>,
-      default: undefined
-    },
-    onPaste: {
-      type: Function as PropType<(event: CustomInputEvent) => void>,
-      default: undefined
-    },
     onFocus: {
       type: Function as PropType<(event: FocusEvent) => void>,
       default: undefined
@@ -250,7 +238,7 @@ export default defineComponent({
 
     const rows = computed<number>(() => props.rows as number)
     const height = computed<string>(() => props.rows ? 18 * rows.value + 'px' : 'auto')
-    const proxy = computed<void | string | number>({
+    const proxy = computed({
       get: () => props.modelValue,
       set: value => emit('update:modelValue', value)
     })
@@ -277,25 +265,34 @@ export default defineComponent({
         }, 0)
       }
     }
+    const onInputHandler = (payload: any): void => {
+      proxy.value = payload.target?.value
+    }
 
     onMounted(resize)
     onUpdated(resize)
 
     expose({ focus })
 
-    return () => <props.tag
-      class={name}
+    return () => {
+      const attrs = {
+        class: name,
 
-      value={proxy.value}
+        value: proxy.value,
 
-      onInput={(payload: any): void => {
-        proxy.value = payload.target?.value
-      }}
+        ...props,
+        ...events.value,
 
-      {...props}
-      {...events.value}
+        ref: rootRef
+      }
 
-      ref={rootRef}
-    />
+      switch (props.tag) {
+        case 'input': {
+          return <input {...attrs} onInput={onInputHandler}/>
+        }
+        case 'textarea': {
+          return <textarea {...attrs} onInput={onInputHandler}/> }
+      }
+    }
   }
 })
