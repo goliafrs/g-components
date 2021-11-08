@@ -1,4 +1,4 @@
-import { PropType, TransitionGroup, computed, defineComponent, h, watch } from 'vue'
+import { PropType, TransitionGroup, computed, defineComponent, h, ref, watch } from 'vue'
 
 import { GSnackbar } from '..'
 import { Direction } from '../../utils'
@@ -21,26 +21,20 @@ export default defineComponent({
     }
   },
 
-  setup(props) {
-    const callback = (key: string | undefined): void => {
-      console.log(key)
-      const index = proxy.value.findIndex(item => item.key === key)
-      proxy.value.splice(index, 1)
-    }
-    const proxy = computed<SnackbarProps[]>({
-      get: () => props.modelValue.map((item, index) => {
-        const key = item.key || `snackbar-${index}`
-        if (!item.key) {
-          item.key = key
-        }
-        if (!item.callback) {
-          item.callback = () => callback(key)
-        }
+  emits: [ 'update:modelValue' ],
 
-        return item
-      }),
-      set: (value: SnackbarProps[]): SnackbarProps[] => proxy.value.splice(0, proxy.value.length, ...value)
-    })
+  setup(props, { emit }) {
+    const proxy = computed<SnackbarProps[]>(() => props.modelValue.map((item, index) => {
+      const key = item.key || `snackbar-${index}`
+      if (!item.key) {
+        item.key = key
+      }
+      if (!item.callback) {
+        item.callback = () => remove(key)
+      }
+
+      return item
+    }))
     const classes = computed<string[]>(() => {
       return props.directions.reduce<string[]>((accumulator, currentValue) => {
         accumulator.push(`${name}--${currentValue}`)
@@ -48,6 +42,24 @@ export default defineComponent({
         return accumulator
       }, [ name ])
     })
+
+    // FIXME: не работает
+    const remove = (key: string | undefined): void => {
+      console.log(proxy.value)
+      const index = proxy.value.findIndex(item => item.key === key)
+      console.log(index)
+      proxy.value.splice(index, 1)
+      console.log(proxy.value)
+    }
+
+    watch(
+      () => proxy.value,
+      () => {
+        emit('update:modelValue', proxy.value)
+        console.log('watch', proxy.value)
+      },
+      { deep: true }
+    )
 
     const renderItems = () => {
       return proxy.value.map(item => <GSnackbar {...item} onTimeout={item.callback} />)
