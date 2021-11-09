@@ -47,7 +47,7 @@ export default defineComponent({
           return <div class='grid' style={{ gridTemplateColumns: 'repeat(5, 1fr)' }}>
             {
               sizes.map(size => {
-                return <GSelect v-model={proxy} items={items} size={size} style={style} label={style ? style : 'label'} />
+                return <GSelect v-model={proxy} items={items} size={size} style={style} label={style ? style : 'label'} rounded />
               })
             }
           </div>
