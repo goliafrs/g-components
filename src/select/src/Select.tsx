@@ -197,6 +197,7 @@ export default defineComponent({
       set: (value): SelectValue => itemValue.value = value
     })
     const items = computed<FormattedSelectItem[]>(() => props.items.map(formatItem))
+    // TODO: переосмыслить и дописать
     const selection = computed<FormattedSelectItem[]>({
       get: () => {
         let value = proxy.value
