@@ -233,11 +233,7 @@ export default defineComponent({
       </div>
     }
 
-    return () => <div
-      class={classes.value}
-
-      key={key}
-    >
+    return () => <div class={classes.value} key={key}>
       {renderLabel()}
       {renderHolder()}
       {renderFooter()}
