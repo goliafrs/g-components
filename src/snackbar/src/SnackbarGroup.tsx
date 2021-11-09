@@ -24,17 +24,20 @@ export default defineComponent({
   emits: [ 'update:modelValue' ],
 
   setup(props, { emit }) {
-    const proxy = computed<SnackbarProps[]>(() => props.modelValue.map((item, index) => {
-      const key = item.key || `snackbar-${index}`
-      if (!item.key) {
-        item.key = key
-      }
-      if (!item.callback) {
-        item.callback = () => remove(key)
-      }
+    const proxy = computed<SnackbarProps[]>({
+      get: () => props.modelValue.map((item, index) => {
+        const key = item.key || `snackbar-${index}`
+        if (!item.key) {
+          item.key = key
+        }
+        if (!item.callback) {
+          item.callback = () => remove(key)
+        }
 
-      return item
-    }))
+        return item
+      }),
+      set: value => emit('update:modelValue', value)
+    })
     const classes = computed<string[]>(() => {
       return props.directions.reduce<string[]>((accumulator, currentValue) => {
         accumulator.push(`${name}--${currentValue}`)
@@ -43,23 +46,12 @@ export default defineComponent({
       }, [ name ])
     })
 
-    // FIXME: не работает
     const remove = (key: string | undefined): void => {
-      console.log(proxy.value)
+      const items = proxy.value
       const index = proxy.value.findIndex(item => item.key === key)
-      console.log(index)
-      proxy.value.splice(index, 1)
-      console.log(proxy.value)
+      items.splice(index, 1)
+      proxy.value = items
     }
-
-    watch(
-      () => proxy.value,
-      () => {
-        emit('update:modelValue', proxy.value)
-        console.log('watch', proxy.value)
-      },
-      { deep: true }
-    )
 
     const renderItems = () => {
       return proxy.value.map(item => <GSnackbar {...item} onTimeout={item.callback} />)

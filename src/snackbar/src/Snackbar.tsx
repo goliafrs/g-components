@@ -1,4 +1,4 @@
-import { PropType, defineComponent, getCurrentInstance, h, onBeforeUnmount, onMounted } from 'vue'
+import { PropType, computed, defineComponent, getCurrentInstance, h, onBeforeUnmount, onMounted } from 'vue'
 import { GButton, GIcon } from '../..'
 
 import { Color, Icon, Size, colors, icons, sizes } from '../../utils'
@@ -76,6 +76,20 @@ export default defineComponent({
 
     let timeout = 0
 
+    const classes = computed(() => {
+      return {
+        [name]: true,
+
+        [`${name}--${props.color}`]: !!props.color,
+        [`${name}--${props.size}`]: !!props.size,
+
+        [`${name}--icon`]: !!props.icon,
+        [`${name}--rounded`]: props.rounded,
+        [`${name}--outline`]: props.outline,
+        [`${name}--cancelable`]: props.cancelable
+      }
+    })
+
     onMounted(() => {
       if (props.timeout) {
         timeout = setTimeout(() => {
@@ -121,17 +135,7 @@ export default defineComponent({
     }
 
     return () => <div
-      class={{
-        [name]: true,
-
-        [`${name}--${props.color}`]: !!props.color,
-        [`${name}--${props.size}`]: !!props.size,
-
-        [`${name}--icon`]: !!props.icon,
-        [`${name}--rounded`]: props.rounded,
-        [`${name}--outline`]: props.outline,
-        [`${name}--cancelable`]: props.cancelable
-      }}
+      class={classes.value}
 
       key={key}
     >
