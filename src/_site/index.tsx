@@ -103,7 +103,7 @@ export default defineComponent({
         case 'panel-group': return <PanelGroup />
         case 'panel': return <Panel />
         case 'progress': return <Progress />
-        // case 'select': return <Select />
+        case 'select': return <Select />
         case 'sidebar': return <Sidebar v-model={proxy.value} />
         case 'snackbar': return <Snackbar />
         case 'spoiler': return <Spoiler />

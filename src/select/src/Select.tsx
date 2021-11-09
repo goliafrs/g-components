@@ -1,7 +1,7 @@
 import { HTMLAttributes, PropType, VNode, computed, defineComponent, h, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import { GCard, GChip, GDropdown, GIcon, GList, GListItem, GProgress } from '../..'
 
-import { Color, Icon, Primitive, Size, Style, colors, icons, isChildOf, sizes, styles } from '../../utils'
+import { Color, Icon, Primitive, Size, Style, colors, icons, isChildOf, isPrimitive, sizes, styles } from '../../utils'
 
 import { FormattedSelectItem, SelectItem, SelectTitle, SelectValue } from '../interface'
 
@@ -132,9 +132,40 @@ export default defineComponent({
     const cursor = ref<number>(0)
     const focused = ref<boolean>(false)
 
-    const proxy = computed<boolean>({
+    const proxy = computed<Primitive | Primitive[]>({
       get: () => props.modelValue,
-      set: (value: boolean) => emit('update:modelValue', value)
+      set: (value: SelectItem | SelectItem[]): void => {
+        let result
+        if (Array.isArray(value)) {
+          result = value.map(item => getItemValue(item))
+        } else {
+          result = getItemValue(value)
+        }
+
+        emit('update:modelValue', result)
+      }
+    })
+
+    const classes = computed(() => {
+      return {
+        [`${name}`]: true,
+
+        [`${name}--filled`]: filled.value,
+        [`${name}--active`]: active.value,
+        [`${name}--labeled`]: !!props.label,
+        [`${name}--disabled`]: props.disabled,
+        [`${name}--readonly`]: props.readonly,
+        [`${name}--clearable`]: props.clearable,
+        [`${name}--flat`]: props.flat,
+        [`${name}--dense`]: props.dense,
+        [`${name}--rounded`]: props.rounded,
+        [`${name}--error`]: !!props.error,
+        [`${name}--multiple`]: props.multiple,
+
+        [`${name}--${props.color}`]: !!props.color,
+        [`${name}--${props.style}`]: !!props.style,
+        [`${name}--${props.size}`]: !!props.size
+      }
     })
 
     const filled = computed<boolean>(() => selection.value.length > 0)
@@ -168,14 +199,21 @@ export default defineComponent({
     const items = computed<FormattedSelectItem[]>(() => props.items.map(formatItem))
     const selection = computed<FormattedSelectItem[]>({
       get: () => {
-        let value = props.modelValue
-        if (!props.multiple) {
+        let value = proxy.value
+        if (isPrimitive(value)) {
           value = [ value ]
         }
 
-        return value.map(formatItem)
+        return value.reduce<FormattedSelectItem[]>((accumulator, currentValue, index) => {
+          const item = formatItem(currentValue, index)
+          if (item) {
+            accumulator.push(item)
+          }
+
+          return accumulator
+        }, [])
       },
-      set: (value): FormattedSelectItem[] => selection.value.splice(selection.value.length, 0, ...value)
+      set: (value): FormattedSelectItem[] => selection.value = value
     })
     const size = computed<number>(() => {
       switch (props.size) {
@@ -204,10 +242,26 @@ export default defineComponent({
       }
     }
 
-    const compareValues = (a: SelectItem | FormattedSelectItem, b: SelectItem | FormattedSelectItem): boolean => getItemValue(a) === getItemValue(b)
+    const compareValues = (
+      a: SelectItem | FormattedSelectItem | undefined,
+      b: SelectItem | FormattedSelectItem | undefined
+    ): boolean => {
+      return getItemValue(a) === getItemValue(b)
+    }
 
-    const getItemValue = (item: SelectItem | FormattedSelectItem | Primitive): Primitive => typeof item === 'object' ? item[itemTitle.value] : item
-    const getItemTitle = (item: SelectItem | FormattedSelectItem): string => (typeof item === 'object' ? item[itemTitle.value] : getItemValue(item)).toLocaleString()
+    const getItemValue = (item: SelectItem | FormattedSelectItem | Primitive | undefined): Primitive | undefined => {
+      if (item) {
+        return isPrimitive(item) ? item : item[itemValue.value]
+      }
+    }
+    const getItemTitle = (item: SelectItem | FormattedSelectItem | undefined): string | undefined => {
+      if (item) {
+        const title = isPrimitive(item) ? getItemValue(item) : item[itemTitle.value]
+        if (title) {
+          return title.toLocalString()
+        }
+      }
+    }
 
     const formatItem = (item: SelectItem, index: number): FormattedSelectItem => {
       const label = getItemTitle(item)
@@ -229,37 +283,41 @@ export default defineComponent({
 
       focused.value = false
     }
-    const addByValue = (value: Primitive): boolean => {
-      const index = selection.value.findIndex(selectedValue => compareValues(selectedValue, value))
-      const result = formatItem(value, selection.value.length)
+    const addByValue = (value: Primitive | undefined): boolean => {
+      if (value) {
+        const index = selection.value.findIndex(selectedValue => compareValues(selectedValue, value))
+        const result = formatItem(value, selection.value.length)
 
-      if (index === -1) {
-        if (props.multiple) {
-          selection.value.push(result)
-        } else {
-          selection.value.splice(0, 1, result)
+        if (index === -1) {
+          if (props.multiple) {
+            selection.value.push(result)
+          } else {
+            selection.value.splice(0, 1, result)
 
-          clearSearch()
+            clearSearch()
+          }
+
+          return true
         }
-
-        return true
       }
 
       return false
     }
-    const removeByValue = (value: Primitive): boolean => {
-      const index = selection.value.findIndex(selectedValue => compareValues(getItemValue(selectedValue), value))
+    const removeByValue = (value: Primitive | undefined): boolean => {
+      if (value) {
+        const index = selection.value.findIndex(selectedValue => compareValues(getItemValue(selectedValue), value))
 
-      if (index > -1) {
-        if (selection.value.length === 1 && props.required) {
-          return false
+        if (index > -1) {
+          if (selection.value.length === 1 && props.required) {
+            return false
+          }
+
+          selection.value.splice(index, 1)
+
+          clearSearch()
+
+          return true
         }
-
-        selection.value.splice(index, 1)
-
-        clearSearch()
-
-        return true
       }
 
       return false
@@ -400,29 +458,7 @@ export default defineComponent({
       </div>
     }
 
-    return () => <div
-      class={{
-        [`${name}`]: true,
-
-        [`${name}--filled`]: filled.value,
-        [`${name}--active`]: active.value,
-        [`${name}--labeled`]: !!props.label,
-        [`${name}--disabled`]: props.disabled,
-        [`${name}--readonly`]: props.readonly,
-        [`${name}--clearable`]: props.clearable,
-        [`${name}--flat`]: props.flat,
-        [`${name}--dense`]: props.dense,
-        [`${name}--rounded`]: props.rounded,
-        [`${name}--error`]: !!props.error,
-        [`${name}--multiple`]: props.multiple,
-
-        [`${name}--${props.color}`]: !!props.color,
-        [`${name}--${props.style}`]: !!props.style,
-        [`${name}--${props.size}`]: !!props.size
-      }}
-
-      ref={rootRef}
-    >
+    return () => <div class={classes} ref={rootRef}>
       {renderTabindex()}
       {renderLabel()}
       {renderHolder()}

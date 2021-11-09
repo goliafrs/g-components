@@ -58,6 +58,19 @@ export function isChildOf(target: any, parent: HTMLElement | undefined): boolean
   return false
 }
 
+export function isPrimitive(value: any): boolean {
+  switch (typeof value) {
+    case 'string':
+    case 'number':
+    case 'boolean': {
+      return true
+    }
+    default: {
+      return false
+    }
+  }
+}
+
 export * from './icons'
 export * from './interface'
 
