@@ -1,7 +1,10 @@
+$name: 'g-textarea';
+
 .g {
   &-textarea {
     @include input-base;
-    @include input-style('g-textarea');
+    @include input-size-text($name);
+    @include input-style($name);
 
     &__label {
       line-height: 18px;
@@ -20,7 +23,7 @@
     &__input {
       @include scrollbar;
 
-      line-height: 18px;
+      line-height: 18px !important;
       resize: none;
       white-space: pre-wrap;
       overflow-x: hidden;

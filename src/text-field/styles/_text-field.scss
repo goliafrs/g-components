@@ -1,7 +1,10 @@
+$name: 'g-text-field';
+
 .g {
   &-text-field {
     @include input-base;
-    @include input-style('g-text-field');
+    @include input-size-text($name);
+    @include input-style($name);
 
     &__label {
       cursor: text;
@@ -41,8 +44,8 @@
       }
     }
 
-    &:hover:not(.g-text-field--disabled):not(.g-text-field--error) {
-      & .g-text-field__border {
+    &:hover:not(#{$name}--disabled):not(#{$name}--error) {
+      & #{$name}__border {
         border-bottom-color: $black-84;
       }
     }

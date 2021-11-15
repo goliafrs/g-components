@@ -73,38 +73,20 @@ $giant-size: $size+$size-step * 2;
 
   @else if ($component=='g-textarea') {
     &--tiny {
-      &>.#{$component}__label {
-        top: 3px;
-      }
-
-      &.#{$component}--outline,
-      &.#{$component}--outline-label {
-        &>.#{$component}__label {
-          top: 4px;
-        }
-      }
-
       &>.#{$component}__holder {
         &>.#{$component}__group {
           padding-top: 3px;
           padding-bottom: 3px;
           min-height: $tiny-size;
+
+          &>.#{$component}__input {
+            line-height: 18px;
+          }
         }
       }
     }
 
     &--small {
-      &>.#{$component}__label {
-        top: 5px;
-      }
-
-      &.#{$component}--outline,
-      &.#{$component}--outline-label {
-        &>.#{$component}__label {
-          top: 6px;
-        }
-      }
-
       &>.#{$component}__holder {
         &>.#{$component}__group {
           padding-top: 5px;
@@ -115,17 +97,6 @@ $giant-size: $size+$size-step * 2;
     }
 
     &--medium {
-      &>.#{$component}__label {
-        top: 7px;
-      }
-
-      &.#{$component}--outline,
-      &.#{$component}--outline-label {
-        &>.#{$component}__label {
-          top: 8px;
-        }
-      }
-
       &>.#{$component}__holder {
         &>.#{$component}__group {
           padding-top: 7px;
@@ -136,17 +107,6 @@ $giant-size: $size+$size-step * 2;
     }
 
     &--large {
-      &>.#{$component}__label {
-        top: 9px;
-      }
-
-      &.#{$component}--outline,
-      &.#{$component}--outline-label {
-        &>.#{$component}__label {
-          top: 10px;
-        }
-      }
-
       &>.#{$component}__holder {
         &>.#{$component}__group {
           padding-top: 9px;
@@ -157,17 +117,6 @@ $giant-size: $size+$size-step * 2;
     }
 
     &--giant {
-      &>.#{$component}__label {
-        top: 11px;
-      }
-
-      &.#{$component}--outline,
-      &.#{$component}--outline-label {
-        &>.#{$component}__label {
-          top: 12px;
-        }
-      }
-
       &>.#{$component}__holder {
         &>.#{$component}__group {
           padding-top: 11px;
@@ -178,177 +127,173 @@ $giant-size: $size+$size-step * 2;
     }
   }
 
-  @else {
-    &--tiny {
-      &.#{$component}--rounded {
-        border-radius: math.div($tiny-size, 2);
-      }
+  &--tiny {
+    &.#{$component}--rounded {
+      border-radius: math.div($tiny-size, 2);
+    }
 
-      &>.#{$component}__label {
-        line-height: $tiny-size;
-        max-width: calc(100% - $tiny-size);
-      }
+    &>.#{$component}__label {
+      line-height: $tiny-size;
+      max-width: calc(100% - $tiny-size);
+    }
 
-      &>.#{$component}__holder {
-        &>.#{$component}__group {
+    &>.#{$component}__holder {
+      &>.#{$component}__group {
 
-          &>.#{$component}__input,
-          &>.#{$component}__suffix {
-            line-height: $tiny-size;
-          }
+        &>.#{$component}__input,
+        &>.#{$component}__suffix {
+          line-height: $tiny-size;
         }
       }
     }
+  }
 
-    &--small {
-      &.#{$component}--rounded {
-        border-radius: math.div($small-size, 2);
-      }
+  &--small {
+    &.#{$component}--rounded {
+      border-radius: math.div($small-size, 2);
+    }
 
-      &>.#{$component}__label {
-        line-height: $small-size;
-        max-width: calc(100% - $small-size);
-      }
+    &>.#{$component}__label {
+      line-height: $small-size;
+      max-width: calc(100% - $small-size);
+    }
 
-      &>.#{$component}__holder {
-        &>.#{$component}__group {
+    &>.#{$component}__holder {
+      &>.#{$component}__group {
 
-          &>.#{$component}__input,
-          &>.#{$component}__suffix {
-            line-height: $small-size;
-          }
+        &>.#{$component}__input,
+        &>.#{$component}__suffix {
+          line-height: $small-size;
         }
       }
     }
+  }
 
-    &--medium {
-      &.#{$component}--rounded {
-        border-radius: math.div($medium-size, 2);
-      }
+  &--medium {
+    &.#{$component}--rounded {
+      border-radius: math.div($medium-size, 2);
+    }
 
-      &>.#{$component}__label {
-        line-height: $medium-size;
-        max-width: calc(100% - $medium-size);
-      }
+    &>.#{$component}__label {
+      line-height: $medium-size;
+      max-width: calc(100% - $medium-size);
+    }
 
-      &>.#{$component}__holder {
-        &>.#{$component}__group {
+    &>.#{$component}__holder {
+      &>.#{$component}__group {
 
-          &>.#{$component}__input,
-          &>.#{$component}__suffix {
-            line-height: $medium-size;
-          }
+        &>.#{$component}__input,
+        &>.#{$component}__suffix {
+          line-height: $medium-size;
         }
       }
     }
+  }
 
-    &--large {
-      &.#{$component}--rounded {
-        border-radius: math.div($large-size, 2);
-      }
+  &--large {
+    &.#{$component}--rounded {
+      border-radius: math.div($large-size, 2);
+    }
 
-      &>.#{$component}__label {
-        line-height: $large-size;
-        max-width: calc(100% - $large-size);
-      }
+    &>.#{$component}__label {
+      line-height: $large-size;
+      max-width: calc(100% - $large-size);
+    }
 
-      &>.#{$component}__holder {
-        &>.#{$component}__group {
+    &>.#{$component}__holder {
+      &>.#{$component}__group {
 
-          &>.#{$component}__input,
-          &>.#{$component}__suffix {
-            line-height: $large-size;
-          }
+        &>.#{$component}__input,
+        &>.#{$component}__suffix {
+          line-height: $large-size;
         }
       }
     }
+  }
 
-    &--giant {
-      &.#{$component}--rounded {
-        border-radius: math.div($giant-size, 2);
-      }
+  &--giant {
+    &.#{$component}--rounded {
+      border-radius: math.div($giant-size, 2);
+    }
 
-      &>.#{$component}__label {
-        line-height: $giant-size;
-        max-width: calc(100% - $giant-size);
-      }
+    &>.#{$component}__label {
+      line-height: $giant-size;
+      max-width: calc(100% - $giant-size);
+    }
 
-      &>.#{$component}__holder {
-        &>.#{$component}__group {
+    &>.#{$component}__holder {
+      &>.#{$component}__group {
 
-          &>.#{$component}__input,
-          &>.#{$component}__suffix {
-            line-height: $giant-size;
-          }
+        &>.#{$component}__input,
+        &>.#{$component}__suffix {
+          line-height: $giant-size;
         }
       }
     }
   }
 }
 
-@mixin input-size-common($component) {
-  @if ($component=='g-text-field'or $component=='g-textarea') {
-    &--tiny {
-      &.#{$component}--clearable {
-        &>.#{$component}__holder {
-          grid-template-columns: 1fr $tiny-size;
+@mixin input-size-text($component) {
+  &--tiny {
+    &.#{$component}--clearable {
+      &>.#{$component}__holder {
+        grid-template-columns: 1fr $tiny-size;
 
-          &>.#{$component}__icon {
-            @include absolute-height($tiny-size);
-            @include absolute-width($tiny-size);
-          }
+        &>.#{$component}__icon {
+          @include absolute-height($tiny-size);
+          @include absolute-width($tiny-size);
         }
       }
     }
+  }
 
-    &--small {
-      &.#{$component}--clearable {
-        &>.#{$component}__holder {
-          grid-template-columns: 1fr $small-size;
+  &--small {
+    &.#{$component}--clearable {
+      &>.#{$component}__holder {
+        grid-template-columns: 1fr $small-size;
 
-          &>.#{$component}__icon {
-            @include absolute-height($small-size);
-            @include absolute-width($small-size);
-          }
+        &>.#{$component}__icon {
+          @include absolute-height($small-size);
+          @include absolute-width($small-size);
         }
       }
     }
+  }
 
-    &--medium {
-      &.#{$component}--clearable {
-        &>.#{$component}__holder {
-          grid-template-columns: 1fr $medium-size;
+  &--medium {
+    &.#{$component}--clearable {
+      &>.#{$component}__holder {
+        grid-template-columns: 1fr $medium-size;
 
-          &>.#{$component}__icon {
-            @include absolute-height($medium-size);
-            @include absolute-width($medium-size);
-          }
+        &>.#{$component}__icon {
+          @include absolute-height($medium-size);
+          @include absolute-width($medium-size);
         }
       }
     }
+  }
 
-    &--large {
-      &.#{$component}--clearable {
-        &>.#{$component}__holder {
-          grid-template-columns: 1fr $large-size;
+  &--large {
+    &.#{$component}--clearable {
+      &>.#{$component}__holder {
+        grid-template-columns: 1fr $large-size;
 
-          &>.#{$component}__icon {
-            @include absolute-height($large-size);
-            @include absolute-width($large-size);
-          }
+        &>.#{$component}__icon {
+          @include absolute-height($large-size);
+          @include absolute-width($large-size);
         }
       }
     }
+  }
 
-    &--giant {
-      &.#{$component}--clearable {
-        &>.#{$component}__holder {
-          grid-template-columns: 1fr $giant-size;
+  &--giant {
+    &.#{$component}--clearable {
+      &>.#{$component}__holder {
+        grid-template-columns: 1fr $giant-size;
 
-          &>.#{$component}__icon {
-            @include absolute-height($giant-size);
-            @include absolute-width($giant-size);
-          }
+        &>.#{$component}__icon {
+          @include absolute-height($giant-size);
+          @include absolute-width($giant-size);
         }
       }
     }
@@ -452,7 +397,6 @@ $giant-size: $size+$size-step * 2;
 
 @mixin input-style($component) {
   @include input-size($component);
-  @include input-size-common($component);
 
   &__icon {
     display: flex;

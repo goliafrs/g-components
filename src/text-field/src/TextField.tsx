@@ -112,9 +112,9 @@ export default defineComponent({
 
         [`${name}--error`]: !!props.error,
 
-        [`${name}--active`]: isActive.value,
+        [`${name}--active`]: active.value,
         [`${name}--filled`]: filled.value,
-        [`${name}--focused`]: isFocused.value,
+        [`${name}--focused`]: focused.value,
         [`${name}--labeled`]: labeled.value,
 
         [`${name}--required`]: props.required,
@@ -170,8 +170,6 @@ export default defineComponent({
       }
     })
 
-    const isActive = computed<boolean>(() => active.value)
-    const isFocused = computed<boolean>(() => focused.value)
     const filled = computed<boolean>(() => typeof proxy.value === 'number' ? !!proxy.value.toLocaleString() : !!proxy.value)
     const labeled = computed<boolean>(() => {
       if (!props.label) {

@@ -32,20 +32,6 @@
       }
     }
 
-    &--solo,
-    &--outline,
-    &--outline-label {
-      &:not(.g-select--dense) {
-        & .g-select__selection {
-          min-height: 48px;
-        }
-
-        & .g-select__input {
-          line-height: 48px;
-        }
-      }
-    }
-
     &--multiple {
       & .g-select__group {
         cursor: default;
